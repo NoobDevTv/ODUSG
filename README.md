@@ -1,7 +1,7 @@
 # odusg
 
 ### Our definitly unique social game (ODUSG)
-- lokaler Mehrspieler
+- lokaler Mehrspieler (Later maybe also online mode)
 - Angelehnt an Spiele wie: Mafia / Werwolf, Secret Hitler, Triple Agent etc.
 - GGf unterschiedliche Schauplätze (Finde den Mörder, Wer ist der Doppelagent, Hexer / Magier wer ist besessen, etc. pp.)
   - Bietet möglichkeiten für gänzlich unteschiedliche Events
