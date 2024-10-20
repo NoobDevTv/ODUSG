@@ -199,7 +199,7 @@ class _TickerProviderElement extends AutoDisposeStreamProviderElement<int>
   Duration get duration => (origin as TickerProvider).duration;
 }
 
-String _$playerManagerHash() => r'72668bde34044497d81e1091ad16699d6a3dc73a';
+String _$playerManagerHash() => r'd25a1a2b2bed7548be4acf0b63b284b8479f42b6';
 
 /// See also [PlayerManager].
 @ProviderFor(PlayerManager)

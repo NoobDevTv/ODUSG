@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:odusg/conditions/win_condition.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/extensions.dart';
 import 'package:odusg/models/player.dart';
@@ -51,7 +50,7 @@ class PlayerManager extends _$PlayerManager {
           role: role,
           keyWord: x,
           keyWordSet: keyWords,
-          tags: Tags([role.toString(), x, DefaultWinCondition.tag]));
+          tags: Tags([role.toString(), x]));
     }).toList();
   }
 

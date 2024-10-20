@@ -22,13 +22,20 @@ class ForPlayer extends HookConsumerWidget {
       return hiddenContent;
     }
 
-    return Row(
+    return Column(
       children: [
-        Text("Information für: ${player.name}"),
-        MaterialButton(
-          onLongPress: () => hasUnlocked.value = true,
-          onPressed: () {},
-          child: const Text("Hold to Unlock"),
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 8.0, top: 8, bottom: 8, right: 0),
+          child: Text("Information für: ${player.name}"),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onLongPress: () => hasUnlocked.value = true,
+            onPressed: () {},
+            child: const Text("Hold to Unlock"),
+          ),
         )
       ],
     );

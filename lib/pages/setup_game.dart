@@ -21,9 +21,10 @@ class SetupGamePage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         isExtended: true,
-        label: const Text("Start Game"),
-        onPressed: () => Navigator.pushReplacementNamed(context, "/game"),
-        icon: const Icon(Icons.sports_esports),
+        label: const Text("Select Scenario"),
+        onPressed: () =>
+            Navigator.pushReplacementNamed(context, "/scenario_selector"),
+        icon: const Icon(Icons.arrow_forward),
       ),
     );
   }

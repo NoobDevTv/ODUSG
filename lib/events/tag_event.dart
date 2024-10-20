@@ -1,6 +1,5 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:odusg/events/event_info.dart';
-import 'package:odusg/events/event_text.dart';
 import 'package:odusg/models/player.dart';
 
 class TagEvent extends EventInfo {

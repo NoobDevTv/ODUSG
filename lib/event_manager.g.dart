@@ -6,12 +6,12 @@ part of 'event_manager.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$eventManagerHash() => r'f8d28e268d1de677109b43fdd366f7b152e24ab4';
+String _$eventManagerHash() => r'304b97feffccae47843ccd54a854e3f516c79f94';
 
 /// See also [EventManager].
 @ProviderFor(EventManager)
 final eventManagerProvider =
-    AutoDisposeNotifierProvider<EventManager, EventInfo?>.internal(
+    NotifierProvider<EventManager, EventInfo?>.internal(
   EventManager.new,
   name: r'eventManagerProvider',
   debugGetCreateSourceHash:
@@ -20,6 +20,6 @@ final eventManagerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$EventManager = AutoDisposeNotifier<EventInfo?>;
+typedef _$EventManager = Notifier<EventInfo?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

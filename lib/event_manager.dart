@@ -1,15 +1,16 @@
+import 'package:odusg/current_scenario.dart';
 import 'package:odusg/events/event_info.dart';
-import 'package:odusg/events/events.dart';
-import 'package:odusg/events/single_selection_event.dart';
 import 'package:odusg/events/tag_event.dart';
 import 'package:odusg/game_logic.dart';
+import 'package:odusg/models/player.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'event_manager.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class EventManager extends _$EventManager {
   final Map<EventInfo, int> _usedEvents = {};
+  final Map<Player, EventInfo> assignedEvents = {};
 
   @override
   EventInfo? build() {
@@ -23,7 +24,9 @@ class EventManager extends _$EventManager {
       state = null;
       return null;
     }
-    final matchingEvents = textEvents
+    final scenario = ref.watch(currentScenarioProvider);
+
+    final matchingEvents = scenario.possibleEvents
         .where((x) =>
             x.requiredTags.matches(nextPlayer.tags.tags) &&
             (!_usedEvents.containsKey(x) || _usedEvents[x]! < x.maximumAmount))
@@ -39,6 +42,7 @@ class EventManager extends _$EventManager {
     } else {
       _usedEvents[chosen] = 1;
     }
+    assignedEvents[nextPlayer] = chosen;
 
     state = chosen;
     return chosen;

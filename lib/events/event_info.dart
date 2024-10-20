@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:format/format.dart';
 import 'package:odusg/events/default_event_widget.dart';
 import 'package:odusg/events/event_text.dart';
-import 'package:odusg/events/game_theme.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
@@ -14,7 +13,6 @@ class EventInfo {
   final List<EventText> textAlterations;
   final Tags requiredTags;
   final int maximumAmount;
-  final GameTheme _theme = GameTheme.magic;
 
   const EventInfo(
     this.textAlterations, {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/pages/export.dart';
+import 'package:odusg/pages/scenario_selector_page.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -16,13 +17,14 @@ class MyApp extends StatelessWidget {
       routes: {
         "/main_menu": (_) => const MainMenuPage(),
         "/setup_game": (_) => const SetupGamePage(),
+        "/scenario_selector": (_) => const ScenarioSelectorPage(),
         "/game": (_) => const GamePage(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(),
+      home: const MainMenuPage(),
     );
   }
 }

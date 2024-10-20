@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:odusg/game_logic.dart';
 
 class MainMenuPage extends ConsumerWidget {
   const MainMenuPage({super.key});
@@ -18,9 +19,8 @@ class MainMenuPage extends ConsumerWidget {
             title: const Text("Start"),
             onTap: () => Navigator.pushNamed(context, "/setup_game"),
           ),
-          ListTile(
-            title: const Text("Hilfe"),
-            onTap: () => print(GameState.fromValue(1)),
+          const ListTile(
+            title: Text("Hilfe"),
           ),
           const ListTile(
             title: Text("Einstellungen"),
@@ -28,8 +28,9 @@ class MainMenuPage extends ConsumerWidget {
           const ListTile(
             title: Text("Über"),
           ),
-          const ListTile(
-            title: Text("Beenden"),
+          ListTile(
+            title: const Text("Beenden"),
+            onTap: () => exit(0),
           ),
         ],
       ),
