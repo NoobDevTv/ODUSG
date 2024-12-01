@@ -16,6 +16,7 @@ class CurrentScenario extends _$CurrentScenario {
       preGameWidget: PreGameWidget.roleAssignment,
       showAssignedEventAtEnd: false,
       description: "",
+      roles: [],
     );
   }
 

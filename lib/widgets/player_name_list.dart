@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/dialogs/exports.dart';
+import 'package:odusg/main.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'player_name_list.g.dart';
 
 @Riverpod(keepAlive: true)
 class PlayerNames extends _$PlayerNames {
+  late SharedPreferences _prefs;
+  static const String _prefsKey = "playerNames";
+
   @override
   List<String> build() {
-    return [];
+    _prefs = ref.watch(sharedPreferencesProvider);
+    return _prefs.getStringList("playerNames") ?? [];
   }
 
   bool addPlayer(String playerName) {
     if (state.contains(playerName)) return false;
     state = [...state, playerName];
+    _prefs.setStringList(_prefsKey, state);
     return true;
   }
 
@@ -23,11 +30,13 @@ class PlayerNames extends _$PlayerNames {
 
     state[state.indexOf(oldPlayerName)] = newPlayerName;
     state = [...state];
+    _prefs.setStringList(_prefsKey, state);
     return true;
   }
 
   void removePlayer(String playerName) {
     state = [...state.where((x) => x != playerName)];
+    _prefs.setStringList(_prefsKey, state);
   }
 }
 
