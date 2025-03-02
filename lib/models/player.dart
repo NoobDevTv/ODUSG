@@ -17,4 +17,13 @@ class Player {
   final String keyWord;
   final List<String> keyWordSet;
   final Tags tags;
+
+  List<Tag> getCompleteTags() {
+    return tags.tags.map((x) => Tag("player.${x.tag}")).toList();
+  }
+
+  @override
+  String toString() {
+    return "Player $name, with tags ${tags.tags.join(", ")}";
+  }
 }

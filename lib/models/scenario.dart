@@ -1,9 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:odusg/conditions/win_condition.dart';
+import 'package:odusg/dynamic_logic/block_widget.dart';
+import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/events/event_info.dart';
 import 'package:odusg/events/events.dart';
+import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
+
+part 'scenario.mapper.dart';
 
 final scenarios = {
   ScenarioType.barcamp: Scenario(
@@ -19,6 +24,7 @@ final scenarios = {
             getAssignableAmount: (players) => (players, players)),
       ],
       startingTags: const [MostVotesCondition.tag],
+      steps: [],
       description:
           "Each one enters a topic, where someone has to do a pitch about it. It can even be the person, who entered the topic. At the end, everyone votes for the best pitch, and the one with the most votes wins."),
   ScenarioType.standard: Scenario(
@@ -27,6 +33,7 @@ final scenarios = {
       endText: "please vote for the player, who you think is the bad one",
       preGameWidget: PreGameWidget.roleAssignment,
       showAssignedEventAtEnd: false,
+      steps: [],
       roles: [
         Roles(
             tag: "good",
@@ -71,8 +78,9 @@ final scenarios = {
         Roles(
           tag: "villager",
           intlKey: "villager_player",
+          isDefault: true,
           getAssignableAmount: (players) {
-            return (0, 1 << 31);
+            return (0, 0);
           },
         ),
         Roles(
@@ -92,6 +100,7 @@ final scenarios = {
           },
         ),
       ],
+      steps: werewolfGame,
       description:
           "A social deduction game. Find out which players are the bad ones, with the help of events. Only if atleast one bad person has the most votes, the good ones win, otherwise the bad ones have it."),
 };
@@ -110,8 +119,8 @@ enum ScenarioType {
 
 enum PreGameWidget { roleAssignment, textInput }
 
-@immutable
-class Scenario {
+@MappableClass()
+class Scenario with ScenarioMappable {
   const Scenario({
     required this.type,
     required this.possibleEvents,
@@ -120,6 +129,7 @@ class Scenario {
     required this.preGameWidget,
     required this.description,
     required this.roles,
+    required this.steps,
     this.startingTags = const [DefaultWinCondition.tag],
   });
 
@@ -129,27 +139,9 @@ class Scenario {
   final bool showAssignedEventAtEnd;
   final PreGameWidget preGameWidget;
   final String description;
-  final List<String> startingTags;
+  final List<Tag> startingTags;
   final List<Roles> roles;
-
-  Scenario copyWith(
-          {ScenarioType? type,
-          List<EventInfo>? possibleEvents,
-          String? endText,
-          bool? showAssignedEventAtEnd,
-          PreGameWidget? preGameWidget,
-          List<String>? startingTags,
-          List<Roles>? roles}) =>
-      Scenario(
-          type: type ?? this.type,
-          possibleEvents: possibleEvents ?? this.possibleEvents,
-          endText: endText ?? this.endText,
-          showAssignedEventAtEnd:
-              showAssignedEventAtEnd ?? this.showAssignedEventAtEnd,
-          preGameWidget: preGameWidget ?? this.preGameWidget,
-          description: description,
-          startingTags: startingTags ?? this.startingTags,
-          roles: roles ?? this.roles);
+  final List<Step> steps;
 
   void preparePlayers(List<Player> players) {
     for (var player in players) {

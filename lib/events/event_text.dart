@@ -6,5 +6,5 @@ class EventText {
 
   const EventText(this.text, {this.tags = const Tags([])});
 
-  bool matches(List<String> myTags) => tags.matches(myTags);
+  bool matches(List<Tag> myTags) => tags.matches(myTags);
 }

@@ -1,5 +1,4 @@
 import 'package:odusg/events/event_info.dart';
-import 'package:odusg/game_logic.dart';
 import 'package:odusg/models/scenario.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -17,13 +16,12 @@ class CurrentScenario extends _$CurrentScenario {
       showAssignedEventAtEnd: false,
       description: "",
       roles: [],
+      steps: [],
     );
   }
 
   void selectOther(Scenario scenario) {
     state = scenario;
-    final players = ref.read(playerManagerProvider);
-    scenario.preparePlayers(players);
   }
 
   void addNewEventToCurrent(EventInfo additionalEvent) {

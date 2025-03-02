@@ -17,14 +17,14 @@ const textEvents = [
       EventText(
           "Du erinnerst dich an die schönen Tage die du mit {good_1} schon erlebt hast. So ein Vertrauen ist viel wert.")
     ],
-    requiredTags: Tags(["Role.good"]),
+    requiredTags: Tags([Tag("Role.good")]),
   ),
   EventInfo(
     [
       EventText(
           "Du erinnerst dich an die schönen Tage die du mit {bad_1} schon erlebt hast. So ein Vertrauen ist viel wert.")
     ],
-    requiredTags: Tags(["Role.bad"]),
+    requiredTags: Tags([Tag("Role.bad")]),
   ),
   EventInfo([
     EventText("Spieler {good_1} ist einer der guten"),
@@ -33,7 +33,7 @@ const textEvents = [
     [
       EventText("Du traust {bad_1} nicht so richtig"),
     ],
-    requiredTags: Tags(["Role.good"]),
+    requiredTags: Tags([Tag("Role.good")]),
   ),
   EventInfo(
     [
@@ -42,7 +42,7 @@ const textEvents = [
       EventText(
           "Du siehst {good_1} und {good_2} immer nur zusammen. Führen die was im Schilde?"),
     ],
-    requiredTags: Tags(["Role.good"]),
+    requiredTags: Tags([Tag("Role.good")]),
   ),
   EventInfo([
     EventText(
@@ -56,13 +56,13 @@ const textEvents = [
       EventText(
         "Spieler {selected_1} ausgewählt, er ist gut",
         tags: Tags(
-          ["Role.good"],
+          [Tag("Role.good")],
         ),
       ),
       EventText(
         "Spieler {selected_1} ausgewählt, er ist böse",
         tags: Tags(
-          ["Role.bad"],
+          [Tag("Role.bad")],
         ),
       ),
     ]

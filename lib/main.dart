@@ -5,8 +5,19 @@ import 'package:odusg/pages/scenario_selector_page.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+part 'main.g.dart';
+
 final sharedPreferencesProvider =
     Provider<SharedPreferences>((ref) => throw UnimplementedError());
+
+@Riverpod(keepAlive: true)
+class GlobalRef extends _$GlobalRef {
+  static late Ref globalRef;
+  @override
+  void build() {
+    globalRef = ref;
+  }
+}
 
 Future main() async {
   final prefs = await SharedPreferences.getInstance();
@@ -15,8 +26,21 @@ Future main() async {
     overrides: [
       sharedPreferencesProvider.overrideWithValue(prefs),
     ],
-    child: const MyApp(),
+    child: const _EarlyInitializer(child: MyApp()),
   ));
+}
+
+class _EarlyInitializer extends ConsumerWidget {
+  final Widget child;
+
+  const _EarlyInitializer({required this.child});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(globalRefProvider);
+
+    return child;
+  }
 }
 
 class MyApp extends StatelessWidget {

@@ -1,23 +1,92 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:odusg/current_scenario.dart';
+import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/events/tags.dart';
-import 'package:odusg/extensions.dart';
+import 'package:odusg/helpers/iterable_extensions.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
+import 'package:odusg/models/scenario.dart';
 import 'package:odusg/widgets/player_name_list.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_logic.g.dart';
 
 @Riverpod(keepAlive: true)
-Random random(RandomRef ref) {
+Random random(Ref ref) {
   return Random();
 }
 
 @riverpod
-Player? nextPlayer(NextPlayerRef ref) {
+Player? nextPlayer(Ref ref) {
   return ref.read(playerManagerProvider.notifier)._getNextPlayer();
+}
+
+@Riverpod(keepAlive: true)
+class GameManager extends _$GameManager {
+  late List<Step> _steps;
+  late int _currentStepIdx;
+  Map<String, dynamic> _allCurrentTags = {};
+  Tags gameTags = Tags.mutable([]);
+
+  Map<String, dynamic> get currentTags => _allCurrentTags;
+
+  late final List<Player> _players;
+  Step build() {
+    _steps = ref.watch(currentScenarioProvider).steps;
+    _currentStepIdx = 0;
+    _players = ref.watch(playerManagerProvider);
+    gameTags.tags.clear();
+    return _steps[_currentStepIdx];
+  }
+
+  void advance() {
+    //TODO Multi Player Advancing (Same Step for all matching players)
+
+    //TODO Overflow check
+    //TODO Endless Loop Check (No Step matched)
+    _currentStepIdx = (_currentStepIdx + 1) % _steps.length;
+
+    var step = _steps[_currentStepIdx];
+    while (!getEntryGuardEvaluation(step)) {
+      _currentStepIdx = (_currentStepIdx + 1) % _steps.length;
+      step = _steps[_currentStepIdx];
+    }
+    state = step;
+  }
+
+  bool getEntryGuardEvaluation(Step step) {
+    final allTags = step.filter.getTagMap(_players, getCompleteTags());
+    final didMatch = step.entryGuard.evaluate(allTags);
+    _allCurrentTags.clear();
+    if (didMatch) {
+      final tagVals = allTags.keys.map((x) {
+        final lastPoint = x.lastIndexOf('.');
+        return (
+          x.substring(0, lastPoint).replaceAll('.', '_'),
+          x.substring(lastPoint + 1)
+        );
+      });
+
+      for (var element in tagVals) {
+        final curVal = _allCurrentTags[element.$1];
+        if (curVal == null) {
+          _allCurrentTags[element.$1] = element.$2;
+        } else if (curVal is String) {
+          _allCurrentTags[element.$1] = [curVal, element.$2];
+        } else if (curVal is List<String>) {
+          curVal.add(element.$2);
+        }
+      }
+    }
+    return didMatch;
+  }
+
+  List<Tag> getCompleteTags() {
+    return gameTags.asStringList().map((x) => Tag("game.$x")).toList();
+  }
 }
 
 @riverpod
@@ -28,30 +97,54 @@ class PlayerManager extends _$PlayerManager {
   List<Player> build() {
     final names = ref.read(playerNamesProvider);
     names.shuffle();
-    var bads = (names.length / 2 - 1);
+    final scenario = ref.watch(currentScenarioProvider);
+    if (scenario.type == ScenarioType.none) return [];
+    final roles = scenario.roles.toList();
+    roles.sort((a, b) => b.priority.compareTo(a.priority));
+    List<(String, int)> rolesBucket = [];
+    // Map<String, (int, bool)> rolesToAssign = {};
     final random = ref.read(randomProvider);
 
-    List<int> badsIndx = [];
-    for (var i = 0; i < bads; i++) {
-      final newBadI = random.nextInt(names.length);
-      if (badsIndx.contains(newBadI)) {
-        i--;
-      } else {
-        badsIndx.add(newBadI);
+    for (var element in roles) {
+      final (minA, maxA) = element.getAssignableAmount(names.length);
+      for (var i = 0; i < minA; i++) {
+        rolesBucket.add((element.tag, 1 << 16 | element.priority));
+      }
+      final upTo = maxA - minA;
+      if (upTo == 0) continue;
+      final addAdditional = random.nextInt(upTo);
+      for (var i = 0; i < addAdditional; i++) {
+        rolesBucket.add((element.tag, element.priority));
       }
     }
+    rolesBucket.shuffle(random);
+    rolesBucket.sort((x, y) => x.$2.compareTo(y.$2));
+    final defRole = (roles.firstOrDefault((x) => x.isDefault)?.tag, 0);
 
-    return names.mapIndexed((x, i) {
-      final keyWords = [x, "$x 1", "$x 2", "$x 3", "$x 4"];
-      keyWords.shuffle();
-      final role = badsIndx.contains(i) ? Role.bad : Role.good;
-      return Player(
-          name: x,
-          role: role,
-          keyWord: x,
+    List<Player> ret = [];
+    for (var name in names) {
+      final keyWords = [name, "$name 1", "$name 2", "$name 3", "$name 4"];
+      final roleForUser =
+          rolesBucket.isEmpty ? defRole : rolesBucket.removeAt(0);
+      ret.add(
+        Player(
+          name: name,
+          role: Role.undefined,
+          keyWord: name,
           keyWordSet: keyWords,
-          tags: Tags([role.toString(), x]));
-    }).toList();
+          tags: Tags(
+            [
+              Tag("role.${roleForUser.$1!}"),
+              Tag("name.$name"),
+            ],
+          ),
+        ),
+      );
+    }
+
+    scenario.preparePlayers(ret);
+    ret.shuffle(random);
+    return ret;
   }
 
   void reorder() {
@@ -73,7 +166,7 @@ class PlayerManager extends _$PlayerManager {
 }
 
 @riverpod
-Stream<int> ticker(TickerRef ref, Duration period, Duration duration) async* {
+Stream<int> ticker(Ref ref, Duration period, Duration duration) async* {
   final tickUntil = DateTime.timestamp().add(duration);
   yield tickUntil.difference(DateTime.timestamp()).inSeconds;
 

@@ -35,6 +35,17 @@ void main() {
     expect(res3, true);
   }
 
+  void doParseThenEvaluate(String input, bool expects) {
+    final parsed = TagCondition.parse(input);
+    expect(parsed.evaluate(), expects);
+  }
+
+  void doParseThenEvaluateWT(
+      String input, Map<String, int> tags, bool expects) {
+    final parsed = TagCondition.parse(input);
+    expect(parsed.evaluate(tags), expects);
+  }
+
   group('Parse', () {
     parameterizedTest(
         'String Parsing Success',
@@ -94,6 +105,12 @@ void main() {
             <dynamic>[1, 2, 3, 3],
             false
           ],
+          [
+            [TagOperator.less, TagOperator.greater],
+            <ConditionOperator>[ConditionOperator.or],
+            <dynamic>[2, 11, 3, 3],
+            true
+          ],
         ],
         doTest);
 
@@ -114,6 +131,48 @@ void main() {
           ],
         ],
         doTest);
+  });
+  group('Parse Evaluate', () {
+    parameterizedTest(
+        'String Parsing Success',
+        [
+          [
+            "2 < 11",
+            true,
+          ],
+          ["1 < 5", true],
+          ["1.5 < 5", true],
+          ["5.5 < 5", false],
+          ["0.1 > 0.01", true],
+        ],
+        doParseThenEvaluate);
+  });
+  group('Parse Evaluate With Tags', () {
+    parameterizedTest(
+        'String Parsing Success',
+        [
+          [
+            "player.alive < 11",
+            {"player.alive": 12},
+            false,
+          ],
+          [
+            "player.alive < 5",
+            <String, int>{},
+            true,
+          ],
+          [
+            "player.alive < 11",
+            {"player.alive": 10},
+            true,
+          ],
+          [
+            "player.alive > 1",
+            {"players.alive": 10},
+            false,
+          ],
+        ],
+        doParseThenEvaluateWT);
   });
 
   group('Simple Conditions', () {
@@ -137,6 +196,12 @@ void main() {
             <ConditionOperator>[],
             <dynamic>[2, 2],
             false
+          ],
+          [
+            <TagOperator>[],
+            <ConditionOperator>[],
+            <dynamic>[],
+            true,
           ]
         ],
         doTest);

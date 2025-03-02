@@ -41,7 +41,8 @@ class ScenarioSelectorPage extends HookConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         isExtended: true,
         label: const Text("Start Game"),
-        onPressed: isOpened.value == -1
+        onPressed: isOpened.value == -1 ||
+                scenarios.entries.elementAt(isOpened.value).value.steps.isEmpty
             ? null
             : () {
                 ref.read(currentScenarioProvider.notifier).selectOther(

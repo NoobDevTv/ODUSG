@@ -16,3 +16,11 @@ enum TagOperator {
   final String representation;
   const TagOperator(this.representation);
 }
+
+enum TagModifier {
+  none(""),
+  invert("!");
+
+  final String representation;
+  const TagModifier(this.representation);
+}

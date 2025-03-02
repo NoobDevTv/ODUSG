@@ -6,7 +6,7 @@ part of 'game_logic.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$randomHash() => r'703ce29aaaeb1a0e472789bfe8afab80351a815e';
+String _$randomHash() => r'7212a63c3c423b03b24773b828bd364328d3e650';
 
 /// See also [random].
 @ProviderFor(random)
@@ -19,8 +19,10 @@ final randomProvider = Provider<Random>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef RandomRef = ProviderRef<Random>;
-String _$nextPlayerHash() => r'cc35a31046b60c018fc5d6b0f02e589afaeaee50';
+String _$nextPlayerHash() => r'20b82bf25177d940c33f987fb01f182f2fe9cdf8';
 
 /// See also [nextPlayer].
 @ProviderFor(nextPlayer)
@@ -33,8 +35,10 @@ final nextPlayerProvider = AutoDisposeProvider<Player?>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef NextPlayerRef = AutoDisposeProviderRef<Player?>;
-String _$tickerHash() => r'0a483a64d1e7362cdc0682298af3af08c8664f7a';
+String _$tickerHash() => r'58d5ec40742639508868fadf3ca95dd2d401c584';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -181,6 +185,8 @@ class TickerProvider extends AutoDisposeStreamProvider<int> {
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin TickerRef on AutoDisposeStreamProviderRef<int> {
   /// The parameter `period` of this provider.
   Duration get period;
@@ -199,7 +205,21 @@ class _TickerProviderElement extends AutoDisposeStreamProviderElement<int>
   Duration get duration => (origin as TickerProvider).duration;
 }
 
-String _$playerManagerHash() => r'042af882c5c44d9af74ac1455c0ac3bdfc4ddf0a';
+String _$gameManagerHash() => r'9ed3e3c5c1820b32a26ab98f1eb2ddffcff0ffcd';
+
+/// See also [GameManager].
+@ProviderFor(GameManager)
+final gameManagerProvider = NotifierProvider<GameManager, Step>.internal(
+  GameManager.new,
+  name: r'gameManagerProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$gameManagerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$GameManager = Notifier<Step>;
+String _$playerManagerHash() => r'1bbca39d1adb1abae191d09b886dc82f999c12b3';
 
 /// See also [PlayerManager].
 @ProviderFor(PlayerManager)
@@ -248,4 +268,4 @@ final votingManagerProvider =
 
 typedef _$VotingManager = AutoDisposeNotifier<Map<Player, int>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

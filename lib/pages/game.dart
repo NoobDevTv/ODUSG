@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/conditions/win_condition.dart';
 import 'package:odusg/current_scenario.dart';
+import 'package:odusg/dynamic_logic/block_widget.dart';
 import 'package:odusg/event_manager.dart';
 import 'package:odusg/events/event_info.dart';
 import 'package:odusg/events/event_text.dart';
@@ -20,8 +21,8 @@ class GamePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(playerManagerProvider);
-    ref.watch(nextPlayerProvider);
-    ref.watch(votingManagerProvider);
+    // ref.watch(nextPlayerProvider);
+    // ref.watch(votingManagerProvider);
     return const _GamePage();
   }
 }
@@ -32,28 +33,51 @@ class _GamePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text("Spiel und Spaß"),
-          leading: IconButton(
-              onPressed: () => Navigator.of(context).pop(),
-              icon: const Icon(Icons.arrow_back)),
-        ),
-        body: getWidgetBasedOnState(context, ref)
-        // ListView(
-        //   children: [
-        //     ...players.map((x) => ListTile(
-        //           leading: Icon(x.bad ? Icons.badge : Icons.golf_course),
-        //           title: Text(x.name),
-        //           subtitle: Row(
-        //             mainAxisSize: MainAxisSize.min,
-        //             children: x.keyWordSet.map((y) => Text("$y, ")).toList(),
-        //           ),
-        //         )),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: const Text("Spiel und Spaß"),
+        leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: const Icon(Icons.arrow_back)),
+      ),
+      body: _steppedBasedGame(ref),
 
-        //   ],
-        // ),
-        );
+      //getWidgetBasedOnState(context, ref)
+      // ListView(
+      //   children: [
+      //     ...players.map((x) => ListTile(
+      //           leading: Icon(x.bad ? Icons.badge : Icons.golf_course),
+      //           title: Text(x.name),
+      //           subtitle: Row(
+      //             mainAxisSize: MainAxisSize.min,
+      //             children: x.keyWordSet.map((y) => Text("$y, ")).toList(),
+      //           ),
+      //         )),
+      //   ],
+      // ),
+    );
+  }
+
+  Widget _steppedBasedGame(WidgetRef ref) {
+    final step = ref.watch(gameManagerProvider);
+    final widget = blockWidgetFactory[step.block.runtimeType]!(step.block);
+    final player = ref.watch(nextPlayerProvider);
+    return Column(
+      children: [
+        if (step.block.cover && player != null)
+          ForPlayer(
+            hiddenContent: widget,
+            player: player,
+          )
+        else
+          widget,
+        MaterialButton(
+            child: Text("Im the button"),
+            onPressed: () {
+              ref.read(gameManagerProvider.notifier).advance();
+            }),
+      ],
+    );
   }
 
   Widget getWidgetBasedOnState(BuildContext context, WidgetRef ref) {
@@ -74,12 +98,7 @@ class _GamePage extends HookConsumerWidget {
         return const _VotingWidget();
       case GameState.end:
         return const _EndWidget();
-      default:
     }
-    return FittedBox(
-      fit: BoxFit.fill,
-      child: Text(currentGameState.name),
-    );
   }
 }
 
@@ -234,9 +253,7 @@ class _MainWidget extends HookConsumerWidget {
     if (currentEvent == null || curPlayer == null) {
       return ListTile(
         title: TimerWidget(
-            tickUntil: DateTime.timestamp().add(
-              const Duration(seconds: 3),
-            ),
+            tickFor: const Duration(seconds: 3),
             elapsed: () {
               print("Timer elapsed");
 

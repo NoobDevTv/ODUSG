@@ -6,7 +6,7 @@ part of 'current_scenario.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentScenarioHash() => r'c569fb508df6a9ae69b51f16da51f1a256462539';
+String _$currentScenarioHash() => r'dd9a1070e0293a5350835871309edb341bdc1d45';
 
 /// See also [CurrentScenario].
 @ProviderFor(CurrentScenario)
@@ -23,4 +23,4 @@ final currentScenarioProvider =
 
 typedef _$CurrentScenario = Notifier<Scenario>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
