@@ -6,6 +6,52 @@
 
 part of 'scenario.dart';
 
+class PreGameWidgetMapper extends EnumMapper<PreGameWidget> {
+  PreGameWidgetMapper._();
+
+  static PreGameWidgetMapper? _instance;
+  static PreGameWidgetMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = PreGameWidgetMapper._());
+    }
+    return _instance!;
+  }
+
+  static PreGameWidget fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  PreGameWidget decode(dynamic value) {
+    switch (value) {
+      case 'roleAssignment':
+        return PreGameWidget.roleAssignment;
+      case 'textInput':
+        return PreGameWidget.textInput;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(PreGameWidget self) {
+    switch (self) {
+      case PreGameWidget.roleAssignment:
+        return 'roleAssignment';
+      case PreGameWidget.textInput:
+        return 'textInput';
+    }
+  }
+}
+
+extension PreGameWidgetMapperExtension on PreGameWidget {
+  String toValue() {
+    PreGameWidgetMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<PreGameWidget>(this) as String;
+  }
+}
+
 class ScenarioMapper extends ClassMapperBase<Scenario> {
   ScenarioMapper._();
 
@@ -13,6 +59,11 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
   static ScenarioMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ScenarioMapper._());
+      EventInfoMapper.ensureInitialized();
+      PreGameWidgetMapper.ensureInitialized();
+      RolesMapper.ensureInitialized();
+      StepMapper.ensureInitialized();
+      TagMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -20,8 +71,8 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
   @override
   final String id = 'Scenario';
 
-  static ScenarioType _$type(Scenario v) => v.type;
-  static const Field<Scenario, ScenarioType> _f$type = Field('type', _$type);
+  static String _$title(Scenario v) => v.title;
+  static const Field<Scenario, String> _f$title = Field('title', _$title);
   static List<EventInfo> _$possibleEvents(Scenario v) => v.possibleEvents;
   static const Field<Scenario, List<EventInfo>> _f$possibleEvents =
       Field('possibleEvents', _$possibleEvents);
@@ -47,7 +98,7 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
 
   @override
   final MappableFields<Scenario> fields = const {
-    #type: _f$type,
+    #title: _f$title,
     #possibleEvents: _f$possibleEvents,
     #endText: _f$endText,
     #showAssignedEventAtEnd: _f$showAssignedEventAtEnd,
@@ -60,7 +111,7 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
 
   static Scenario _instantiate(DecodingData data) {
     return Scenario(
-        type: data.dec(_f$type),
+        title: data.dec(_f$title),
         possibleEvents: data.dec(_f$possibleEvents),
         endText: data.dec(_f$endText),
         showAssignedEventAtEnd: data.dec(_f$showAssignedEventAtEnd),
@@ -120,13 +171,13 @@ extension ScenarioValueCopy<$R, $Out> on ObjectCopyWith<$R, Scenario, $Out> {
 
 abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, EventInfo, ObjectCopyWith<$R, EventInfo, EventInfo>>
+  ListCopyWith<$R, EventInfo, EventInfoCopyWith<$R, EventInfo, EventInfo>>
       get possibleEvents;
-  ListCopyWith<$R, Roles, ObjectCopyWith<$R, Roles, Roles>> get roles;
-  ListCopyWith<$R, Step, ObjectCopyWith<$R, Step, Step>> get steps;
-  ListCopyWith<$R, Tag, ObjectCopyWith<$R, Tag, Tag>> get startingTags;
+  ListCopyWith<$R, Roles, RolesCopyWith<$R, Roles, Roles>> get roles;
+  ListCopyWith<$R, Step, StepCopyWith<$R, Step, Step>> get steps;
+  ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get startingTags;
   $R call(
-      {ScenarioType? type,
+      {String? title,
       List<EventInfo>? possibleEvents,
       String? endText,
       bool? showAssignedEventAtEnd,
@@ -147,28 +198,24 @@ class _ScenarioCopyWithImpl<$R, $Out>
   late final ClassMapperBase<Scenario> $mapper =
       ScenarioMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, EventInfo, ObjectCopyWith<$R, EventInfo, EventInfo>>
-      get possibleEvents => ListCopyWith(
-          $value.possibleEvents,
-          (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(possibleEvents: v));
+  ListCopyWith<$R, EventInfo, EventInfoCopyWith<$R, EventInfo, EventInfo>>
+      get possibleEvents => ListCopyWith($value.possibleEvents,
+          (v, t) => v.copyWith.$chain(t), (v) => call(possibleEvents: v));
   @override
-  ListCopyWith<$R, Roles, ObjectCopyWith<$R, Roles, Roles>> get roles =>
-      ListCopyWith($value.roles, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(roles: v));
-  @override
-  ListCopyWith<$R, Step, ObjectCopyWith<$R, Step, Step>> get steps =>
-      ListCopyWith($value.steps, (v, t) => ObjectCopyWith(v, $identity, t),
-          (v) => call(steps: v));
-  @override
-  ListCopyWith<$R, Tag, ObjectCopyWith<$R, Tag, Tag>> get startingTags =>
+  ListCopyWith<$R, Roles, RolesCopyWith<$R, Roles, Roles>> get roles =>
       ListCopyWith(
-          $value.startingTags,
-          (v, t) => ObjectCopyWith(v, $identity, t),
+          $value.roles, (v, t) => v.copyWith.$chain(t), (v) => call(roles: v));
+  @override
+  ListCopyWith<$R, Step, StepCopyWith<$R, Step, Step>> get steps =>
+      ListCopyWith(
+          $value.steps, (v, t) => v.copyWith.$chain(t), (v) => call(steps: v));
+  @override
+  ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get startingTags =>
+      ListCopyWith($value.startingTags, (v, t) => v.copyWith.$chain(t),
           (v) => call(startingTags: v));
   @override
   $R call(
-          {ScenarioType? type,
+          {String? title,
           List<EventInfo>? possibleEvents,
           String? endText,
           bool? showAssignedEventAtEnd,
@@ -178,7 +225,7 @@ class _ScenarioCopyWithImpl<$R, $Out>
           List<Step>? steps,
           List<Tag>? startingTags}) =>
       $apply(FieldCopyWithData({
-        if (type != null) #type: type,
+        if (title != null) #title: title,
         if (possibleEvents != null) #possibleEvents: possibleEvents,
         if (endText != null) #endText: endText,
         if (showAssignedEventAtEnd != null)
@@ -191,7 +238,7 @@ class _ScenarioCopyWithImpl<$R, $Out>
       }));
   @override
   Scenario $make(CopyWithData data) => Scenario(
-      type: data.get(#type, or: $value.type),
+      title: data.get(#title, or: $value.title),
       possibleEvents: data.get(#possibleEvents, or: $value.possibleEvents),
       endText: data.get(#endText, or: $value.endText),
       showAssignedEventAtEnd:
@@ -206,4 +253,54 @@ class _ScenarioCopyWithImpl<$R, $Out>
   ScenarioCopyWith<$R2, Scenario, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _ScenarioCopyWithImpl($value, $cast, t);
+}
+
+typedef _t$_R0<A, B, C> = (A, B, C);
+
+class _t$_R0Mapper extends RecordMapperBase<_t$_R0> {
+  static _t$_R0Mapper? _instance;
+  _t$_R0Mapper._();
+
+  static _t$_R0Mapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = _t$_R0Mapper._());
+      MapperBase.addType(<A, B, C>(f) => f<(A, B, C)>());
+    }
+    return _instance!;
+  }
+
+  static dynamic _$$1(_t$_R0 v) => v.$1;
+  static dynamic _arg$$1<A, B, C>(f) => f<A>();
+  static const Field<_t$_R0, dynamic> _f$$1 = Field('\$1', _$$1, arg: _arg$$1);
+  static dynamic _$$2(_t$_R0 v) => v.$2;
+  static dynamic _arg$$2<A, B, C>(f) => f<B>();
+  static const Field<_t$_R0, dynamic> _f$$2 = Field('\$2', _$$2, arg: _arg$$2);
+  static dynamic _$$3(_t$_R0 v) => v.$3;
+  static dynamic _arg$$3<A, B, C>(f) => f<C>();
+  static const Field<_t$_R0, dynamic> _f$$3 = Field('\$3', _$$3, arg: _arg$$3);
+
+  @override
+  final MappableFields<_t$_R0> fields = const {
+    #$1: _f$$1,
+    #$2: _f$$2,
+    #$3: _f$$3,
+  };
+
+  @override
+  Function get typeFactory => <A, B, C>(f) => f<_t$_R0<A, B, C>>();
+
+  static _t$_R0<A, B, C> _instantiate<A, B, C>(DecodingData<_t$_R0> data) {
+    return (data.dec(_f$$1), data.dec(_f$$2), data.dec(_f$$3));
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static _t$_R0<A, B, C> fromMap<A, B, C>(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<_t$_R0<A, B, C>>(map);
+  }
+
+  static _t$_R0<A, B, C> fromJson<A, B, C>(String json) {
+    return ensureInitialized().decodeJson<_t$_R0<A, B, C>>(json);
+  }
 }

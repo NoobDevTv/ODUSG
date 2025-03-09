@@ -1,9 +1,15 @@
+import 'package:dart_mappable/dart_mappable.dart';
+
+part 'roles.mapper.dart';
+
+@MappableEnum()
 enum Role { undefined, bad, good }
 
-class Roles {
+@MappableClass()
+class Roles with RolesMappable {
   final String tag;
   final String intlKey;
-  final (int, int) Function(int) getAssignableAmount;
+  final List<(int player, int min, int max)> getAssignableAmount;
   final int priority;
   final bool isDefault;
 

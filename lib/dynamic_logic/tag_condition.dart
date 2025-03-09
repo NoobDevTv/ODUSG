@@ -1,10 +1,14 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/services.dart';
 import 'package:odusg/dynamic_logic/condition_operator.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/helpers/iterable_extensions.dart';
 import 'package:odusg/models/player.dart';
 
-class TagFilter {
+part 'tag_condition.mapper.dart';
+
+@MappableClass()
+class TagFilter with TagFilterMappable {
   static const TagFilter empty = TagFilter(
     modifiers: [],
     conditionOperators: [],
@@ -13,7 +17,7 @@ class TagFilter {
 
   final List<TagModifier> modifiers;
   final List<ConditionOperator> conditionOperators;
-  final List<dynamic> operands;
+  final List<String> operands;
 
   const TagFilter({
     required this.modifiers,
@@ -118,7 +122,8 @@ class TagFilter {
   }
 }
 
-class TagCondition {
+@MappableClass()
+class TagCondition with TagConditionMappable {
   static const enter =
       TagCondition(tagOperators: [], conditionOperators: [], operands: []);
 

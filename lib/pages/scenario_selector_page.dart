@@ -13,7 +13,7 @@ class ScenarioSelectorPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isOpened = useState(-1);
     ref.watch(playerManagerProvider);
-
+    final scenarios = ref.watch(scenariosProvider);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -30,7 +30,7 @@ class ScenarioSelectorPage extends HookConsumerWidget {
             elevation: 2,
             expansionCallback: (panelIndex, isExpanded) =>
                 isOpened.value = isExpanded ? panelIndex : -1,
-            children: scenarios.values
+            children: scenarios
                 .mapIndexed(
                   (e, i) => _getListTile(e, isOpened.value == i),
                 )
@@ -42,11 +42,12 @@ class ScenarioSelectorPage extends HookConsumerWidget {
         isExtended: true,
         label: const Text("Start Game"),
         onPressed: isOpened.value == -1 ||
-                scenarios.entries.elementAt(isOpened.value).value.steps.isEmpty
+                scenarios.elementAt(isOpened.value).steps.isEmpty
             ? null
             : () {
-                ref.read(currentScenarioProvider.notifier).selectOther(
-                    scenarios.entries.elementAt(isOpened.value).value);
+                ref
+                    .read(currentScenarioProvider.notifier)
+                    .selectOther(scenarios.elementAt(isOpened.value));
 
                 Navigator.pushReplacementNamed(context, "/game");
               },
@@ -56,13 +57,13 @@ class ScenarioSelectorPage extends HookConsumerWidget {
   }
 
   ExpansionPanel _getListTile(Scenario scenario, bool expanded) {
-    final type = scenario.type;
+    final type = scenario.title;
 
     return ExpansionPanel(
       headerBuilder: (context, isExpanded) => Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(
-          type.label,
+          type,
           style: TextStyle(
               fontWeight: isExpanded ? FontWeight.bold : FontWeight.normal),
         ),

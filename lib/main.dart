@@ -1,6 +1,9 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:odusg/mappers/duration_mapper.dart';
 import 'package:odusg/pages/export.dart';
+import 'package:odusg/pages/manage_scenario_page.dart';
 import 'package:odusg/pages/scenario_selector_page.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +23,7 @@ class GlobalRef extends _$GlobalRef {
 }
 
 Future main() async {
+  MapperContainer.globals.use(const DurationMapper());
   final prefs = await SharedPreferences.getInstance();
 
   runApp(ProviderScope(
@@ -55,6 +59,7 @@ class MyApp extends StatelessWidget {
         "/setup_game": (_) => const SetupGamePage(),
         "/scenario_selector": (_) => const ScenarioSelectorPage(),
         "/game": (_) => const GamePage(),
+        "/manage_scenarios": (_) => const ManageScenarioPage(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

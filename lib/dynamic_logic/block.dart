@@ -1,11 +1,16 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/game_logic.dart';
 import 'package:odusg/helpers/iterable_extensions.dart';
 import 'package:odusg/main.dart';
+import 'package:odusg/mappers/duration_mapper.dart';
 
-abstract class Block {
+part 'block.mapper.dart';
+
+@MappableClass()
+abstract class Block with BlockMappable {
   final String text;
   final bool cover;
   final bool foreachPlayer;
@@ -19,7 +24,8 @@ abstract class Block {
   });
 }
 
-class NextButtonBlock extends Block {
+@MappableClass()
+class NextButtonBlock extends Block with NextButtonBlockMappable {
   final bool endsGame;
   final String buttonText;
   const NextButtonBlock({
@@ -32,7 +38,8 @@ class NextButtonBlock extends Block {
   });
 }
 
-class TimerBlock extends Block {
+@MappableClass()
+class TimerBlock extends Block with TimerBlockMappable {
   final Duration minTimer;
   final Duration maxTimer;
 
@@ -46,7 +53,8 @@ class TimerBlock extends Block {
   });
 }
 
-abstract class VotingBlock extends Block {
+@MappableClass()
+abstract class VotingBlock extends Block with VotingBlockMappable {
   final int minMultiselect;
   final int maxMultiselect;
   final Tags setTags;
@@ -65,7 +73,8 @@ abstract class VotingBlock extends Block {
   void finish(WidgetRef ref, String value);
 }
 
-class PlayerVotingBlock extends VotingBlock {
+@MappableClass()
+class PlayerVotingBlock extends VotingBlock with PlayerVotingBlockMappable {
   final TagFilter votingTargetPossibilities;
 
   const PlayerVotingBlock({
@@ -96,7 +105,8 @@ class PlayerVotingBlock extends VotingBlock {
   }
 }
 
-class ChangeTagBlock extends Block {
+@MappableClass()
+class ChangeTagBlock extends Block with ChangeTagBlockMappable {
   final TagFilter? affectedPlayers;
   final List<Tag> tags;
   final bool remove;

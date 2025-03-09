@@ -43,6 +43,8 @@ dependencies:
   shared_preferences:
   stubble: ^1.1.1
   dart_mappable: ^4.4.0
+  file_picker : ^9.0.2
+  flutter_expandable_fab: ^2.3.0
 
 dev_dependencies:
   flutter_test:

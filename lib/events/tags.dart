@@ -1,4 +1,9 @@
-class Tag {
+import 'package:dart_mappable/dart_mappable.dart';
+
+part 'tags.mapper.dart';
+
+@MappableClass()
+class Tag with TagMappable {
   final String tag;
   final bool temporary;
 
@@ -24,7 +29,8 @@ class Tag {
   }
 }
 
-class Tags {
+@MappableClass()
+class Tags with TagsMappable {
   final List<Tag> tags;
 
   const Tags(this.tags);

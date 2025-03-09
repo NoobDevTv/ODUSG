@@ -1,6 +1,10 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:odusg/events/tags.dart';
 
-class EventText {
+part 'event_text.mapper.dart';
+
+@MappableClass()
+class EventText  with EventTextMappable{
   final String text;
   final Tags tags;
 

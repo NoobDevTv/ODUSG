@@ -70,7 +70,8 @@
 
 
 ## Next Todos:
-- Im & Export von Scenarien
+- Im & Export von Scenarien ✔
+  - Persist Scenarios
 - Grafischen Editor, theoretisch Werewolf nachbauen
 - Secret Agent versuchen umzusetzen
 - UI aufbessern 

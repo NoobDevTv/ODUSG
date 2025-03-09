@@ -1,3 +1,8 @@
+import 'package:dart_mappable/dart_mappable.dart';
+
+part 'condition_operator.mapper.dart';
+
+@MappableEnum()
 enum ConditionOperator {
   none(""),
   and("&"),
@@ -7,6 +12,7 @@ enum ConditionOperator {
   const ConditionOperator(this.representation);
 }
 
+@MappableEnum()
 enum TagOperator {
   none(""),
   less("<"),
@@ -17,6 +23,7 @@ enum TagOperator {
   const TagOperator(this.representation);
 }
 
+@MappableEnum()
 enum TagModifier {
   none(""),
   invert("!");

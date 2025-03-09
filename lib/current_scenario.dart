@@ -9,7 +9,7 @@ class CurrentScenario extends _$CurrentScenario {
   @override
   Scenario build() {
     return const Scenario(
-      type: ScenarioType.none,
+      title: "",
       possibleEvents: [],
       endText: "",
       preGameWidget: PreGameWidget.roleAssignment,

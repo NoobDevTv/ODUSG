@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:format/format.dart';
 import 'package:odusg/events/default_event_widget.dart';
@@ -7,7 +8,10 @@ import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
 
-class EventInfo {
+part 'event_info.mapper.dart';
+
+@MappableClass()
+class EventInfo with EventInfoMappable {
   static Random random = Random();
 
   final List<EventText> textAlterations;

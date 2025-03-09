@@ -98,7 +98,7 @@ class PlayerManager extends _$PlayerManager {
     final names = ref.read(playerNamesProvider);
     names.shuffle();
     final scenario = ref.watch(currentScenarioProvider);
-    if (scenario.type == ScenarioType.none) return [];
+    if (scenario.title.isEmpty) return [];
     final roles = scenario.roles.toList();
     roles.sort((a, b) => b.priority.compareTo(a.priority));
     List<(String, int)> rolesBucket = [];
@@ -106,7 +106,12 @@ class PlayerManager extends _$PlayerManager {
     final random = ref.read(randomProvider);
 
     for (var element in roles) {
-      final (minA, maxA) = element.getAssignableAmount(names.length);
+      if (element.isDefault) continue;
+
+      final (_, minA, maxA) = element.getAssignableAmount.firstWhere(
+        (x) => x.$1 >= names.length,
+        orElse: () => element.getAssignableAmount.last,
+      );
       for (var i = 0; i < minA; i++) {
         rolesBucket.add((element.tag, 1 << 16 | element.priority));
       }

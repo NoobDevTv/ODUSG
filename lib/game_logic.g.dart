@@ -219,7 +219,7 @@ final gameManagerProvider = NotifierProvider<GameManager, Step>.internal(
 );
 
 typedef _$GameManager = Notifier<Step>;
-String _$playerManagerHash() => r'1bbca39d1adb1abae191d09b886dc82f999c12b3';
+String _$playerManagerHash() => r'b4c604ea35952a3ed9e558214ac447434279895a';
 
 /// See also [PlayerManager].
 @ProviderFor(PlayerManager)
