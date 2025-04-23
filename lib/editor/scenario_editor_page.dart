@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/editor/steps_edit.dart';
@@ -308,54 +309,108 @@ class Roles with RolesMappable {
         subtitle: Text(x.intlKey),
         title: Text(x.tag),
         onTap: () async {
-          var dialog = AlertDialog(
-            title: Text("Edit Role"),
-            content: _roleEditDialog(scenario, x),
-            actions: [],
+          final newRole = await showDialog(
+            context: context,
+            builder: (c) => _roleEditDialog(c, scenario, x),
+            barrierDismissible: true,
           );
-          await showDialog(context: context, builder: (c) => dialog);
+          if (newRole != null)
+            scenario.value = scenario.value.copyWith.roles.replace(
+              scenario.value.roles.indexOf(x),
+              newRole,
+            );
         },
       );
     }).toList();
   }
 
   //TODO weitermachen:
-  Widget _roleEditDialog(ValueNotifier<Scenario> scenario, Roles role) {
+  Widget _roleEditDialog(
+    BuildContext context,
+    ValueNotifier<Scenario> scenario,
+    Roles role,
+  ) {
     return HookBuilder(
       builder: (context) {
         final intlKeyText = useTextEditingController(text: role.intlKey);
+        final priorityTextController = useTextEditingController(
+          text: role.priority.toString(),
+        );
         final intlKeyError = useState<String?>(null);
+        final roleState = useState(role);
 
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: intlKeyText,
-              onEditingComplete: () {},
-              maxLines: 1,
-              decoration: InputDecoration(
-                label: Text("Translation Key"),
-                hintText: "The key used to search through the translations.",
-                errorText: intlKeyError.value,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: DropdownMenu<String>(
-                initialSelection: role.tag,
-                label: const Text("Starting Tag"),
-                onSelected: (value) {
-                  scenario.value = scenario.value.copyWith();
-                },
-                dropdownMenuEntries:
-                    UnmodifiableListView<DropdownMenuEntry<String>>(
-                      scenario.value.availableGameTags.map(
-                        (e) => DropdownMenuEntry(value: e.tag, label: e.tag),
-                      ),
-                    ),
-              ),
+        return AlertDialog(
+          title: Text("Edit Role"),
+
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(roleState.value),
+              child: Text("Save"),
             ),
           ],
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: TextField(
+                  controller: intlKeyText,
+                  onChanged: (val) {
+                    roleState.value = roleState.value.copyWith(
+                      intlKey: val,
+                    );
+                  },
+                  maxLines: 1,
+                  decoration: InputDecoration(
+                    label: const Text("Translation Key"),
+                    hintText:
+                        "The key used to search through the translations.",
+                    errorText: intlKeyError.value,
+                  ),
+                ),
+              ),
+              ListTile(
+                title: DropdownMenu<String>(
+                  initialSelection: role.tag,
+                  label: const Text("Starting Tag"),
+                  onSelected: (value) {
+                    roleState.value = roleState.value.copyWith(tag: value);
+                  },
+                  dropdownMenuEntries:
+                      UnmodifiableListView<DropdownMenuEntry<String>>(
+                        scenario.value.availableGameTags.map(
+                          (e) => DropdownMenuEntry(value: e.tag, label: e.tag),
+                        ),
+                      ),
+                ),
+              ),
+              ListTile(
+                title: TextField(
+                  controller: priorityTextController,
+                  onChanged: (val) {
+                    final newPrio = int.tryParse(val);
+                    if (newPrio == null) return;
+                    roleState.value = roleState.value.copyWith(
+                      priority: newPrio,
+                    );
+                  },
+                  maxLines: 1,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    label: Text("Priority"),
+                    hintText: "The Priority of assignment of the role",
+                  ),
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                ),
+              ),
+              CheckboxListTile(
+                title: const Text("Is Default"),
+                value: roleState.value.isDefault,
+                onChanged: (value) {
+                  roleState.value = roleState.value.copyWith(isDefault: value);
+                },
+              ),
+            ],
+          ),
         );
       },
     );

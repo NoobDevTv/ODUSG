@@ -10,8 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'main.g.dart';
 
-final sharedPreferencesProvider =
-    Provider<SharedPreferences>((ref) => throw UnimplementedError());
+final sharedPreferencesProvider = Provider<SharedPreferences>(
+  (ref) => throw UnimplementedError(),
+);
 
 @Riverpod(keepAlive: true)
 class GlobalRef extends _$GlobalRef {
@@ -26,12 +27,12 @@ Future main() async {
   MapperContainer.globals.use(const DurationMapper());
   final prefs = await SharedPreferences.getInstance();
 
-  runApp(ProviderScope(
-    overrides: [
-      sharedPreferencesProvider.overrideWithValue(prefs),
-    ],
-    child: const _EarlyInitializer(child: MyApp()),
-  ));
+  runApp(
+    ProviderScope(
+      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+      child: const _EarlyInitializer(child: MyApp()),
+    ),
+  );
 }
 
 class _EarlyInitializer extends ConsumerWidget {
@@ -63,9 +64,18 @@ class MyApp extends StatelessWidget {
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple, brightness: Brightness.dark),
+          seedColor: Colors.deepPurple,
+          brightness: Brightness.dark,
+        ),
         useMaterial3: true,
       ),
+      builder: (ctx, child) {
+        final data = MediaQuery.of(ctx);
+        return MediaQuery(
+          data: data.copyWith(textScaler: const TextScaler.linear(1.3), ),
+          child: child ?? const SizedBox(),
+        );
+      },
       home: const MainMenuPage(),
     );
   }
@@ -87,9 +97,9 @@ class MyHomePage extends ConsumerWidget {
           children: <Widget>[
             ListTile(
               title: const Text("Main Menu"),
-              onTap: () =>
-                  Navigator.pushReplacementNamed(context, "/main_menu"),
-            )
+              onTap:
+                  () => Navigator.pushReplacementNamed(context, "/main_menu"),
+            ),
           ],
         ),
       ),
