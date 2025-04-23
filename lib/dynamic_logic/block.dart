@@ -10,7 +10,7 @@ import 'package:odusg/mappers/duration_mapper.dart';
 part 'block.mapper.dart';
 
 @MappableClass()
-abstract class Block with BlockMappable {
+class Block with BlockMappable {
   final String text;
   final bool cover;
   final bool foreachPlayer;
@@ -111,11 +111,15 @@ class ChangeTagBlock extends Block with ChangeTagBlockMappable {
   final List<Tag> tags;
   final bool remove;
 
-  ChangeTagBlock(
-      {super.text = "",
-      this.affectedPlayers,
-      required this.tags,
-      this.remove = false});
+  ChangeTagBlock({
+    super.text = "",
+    this.affectedPlayers,
+    required this.tags,
+    this.remove = false,
+    super.cover = false,
+    super.foreachPlayer = false,
+    super.perTagText = const {},
+  });
 
   void act() {
     final ref = GlobalRef.globalRef;

@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:odusg/editor/scenario_editor_page.dart';
 import 'package:odusg/extensions.dart';
 import 'package:odusg/models/scenario.dart';
 
@@ -74,7 +75,12 @@ class ManageScenarioPage extends HookConsumerWidget {
             ),
           ] else ...[
             FloatingActionButton.small(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ScenarioEditorPage(
+                      startScenario: scenarios[isOpened.value]),
+                ));
+              },
               child: Icon(Icons.edit),
               tooltip: "Edit",
             ),

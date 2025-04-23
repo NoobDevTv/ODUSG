@@ -120,6 +120,22 @@ class TagFilter with TagFilterMappable {
     final map = mapped.map((key, value) => MapEntry(key, value.length));
     return map;
   }
+
+  @override
+  String toString() {
+    final retBuffer = StringBuffer();
+    for (var i = 0; i < modifiers.length; i++) {
+      if (i != 0) {
+        final cond = conditionOperators[i - 1];
+        retBuffer.write(" ${cond.representation} ");
+      }
+      final mod = modifiers[i];
+      final operand = operands[i];
+      retBuffer.write(mod.representation);
+      retBuffer.write(operand);
+    }
+    return retBuffer.toString();
+  }
 }
 
 @MappableClass()
@@ -215,7 +231,7 @@ class TagCondition with TagConditionMappable {
       final op1 = operands[i * 2];
       final op2 = operands[i * 2 + 1];
       retBuffer.write(op1);
-      retBuffer.write(operator.representation);
+      retBuffer.write(" ${operator.representation} ");
       retBuffer.write(op2);
       if (conditionOperators.length > i) {
         final cond = conditionOperators[i];

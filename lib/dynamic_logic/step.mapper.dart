@@ -94,6 +94,7 @@ extension StepValueCopy<$R, $Out> on ObjectCopyWith<$R, Step, $Out> {
 abstract class StepCopyWith<$R, $In extends Step, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   TagConditionCopyWith<$R, TagCondition, TagCondition> get entryGuard;
+  BlockCopyWith<$R, Block, Block> get block;
   TagFilterCopyWith<$R, TagFilter, TagFilter> get filter;
   $R call(
       {String? name,
@@ -112,6 +113,9 @@ class _StepCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Step, $Out>
   @override
   TagConditionCopyWith<$R, TagCondition, TagCondition> get entryGuard =>
       $value.entryGuard.copyWith.$chain((v) => call(entryGuard: v));
+  @override
+  BlockCopyWith<$R, Block, Block> get block =>
+      $value.block.copyWith.$chain((v) => call(block: v));
   @override
   TagFilterCopyWith<$R, TagFilter, TagFilter> get filter =>
       $value.filter.copyWith.$chain((v) => call(filter: v));

@@ -19,8 +19,9 @@ class ScenarioSelectorPage extends HookConsumerWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: const Text("Szenario"),
         leading: IconButton(
-            onPressed: () => Navigator.of(context).pop(),
-            icon: const Icon(Icons.arrow_back)),
+          onPressed: () => Navigator.of(context).pop(),
+          icon: const Icon(Icons.arrow_back),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -28,12 +29,11 @@ class ScenarioSelectorPage extends HookConsumerWidget {
           child: ExpansionPanelList(
             expandedHeaderPadding: const EdgeInsets.all(0),
             elevation: 2,
-            expansionCallback: (panelIndex, isExpanded) =>
-                isOpened.value = isExpanded ? panelIndex : -1,
+            expansionCallback:
+                (panelIndex, isExpanded) =>
+                    isOpened.value = isExpanded ? panelIndex : -1,
             children: scenarios
-                .mapIndexed(
-                  (e, i) => _getListTile(e, isOpened.value == i),
-                )
+                .mapIndexed((e, i) => _getListTile(e, isOpened.value == i))
                 .toList(growable: false),
           ),
         ),
@@ -41,16 +41,17 @@ class ScenarioSelectorPage extends HookConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         isExtended: true,
         label: const Text("Start Game"),
-        onPressed: isOpened.value == -1 ||
-                scenarios.elementAt(isOpened.value).steps.isEmpty
-            ? null
-            : () {
-                ref
-                    .read(currentScenarioProvider.notifier)
-                    .selectOther(scenarios.elementAt(isOpened.value));
+        onPressed:
+            isOpened.value == -1 ||
+                    scenarios.elementAt(isOpened.value).steps.isEmpty
+                ? null
+                : () {
+                  ref
+                      .read(currentScenarioProvider.notifier)
+                      .selectOther(scenarios.elementAt(isOpened.value));
 
-                Navigator.pushReplacementNamed(context, "/game");
-              },
+                  Navigator.pushReplacementNamed(context, "/game");
+                },
         icon: const Icon(Icons.sports_esports),
       ),
     );
@@ -60,14 +61,16 @@ class ScenarioSelectorPage extends HookConsumerWidget {
     final type = scenario.title;
 
     return ExpansionPanel(
-      headerBuilder: (context, isExpanded) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          type,
-          style: TextStyle(
-              fontWeight: isExpanded ? FontWeight.bold : FontWeight.normal),
-        ),
-      ),
+      headerBuilder:
+          (context, isExpanded) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              type,
+              style: TextStyle(
+                fontWeight: isExpanded ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(scenario.description),

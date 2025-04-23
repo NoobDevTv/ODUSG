@@ -91,6 +91,9 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
   static const Field<Scenario, List<Roles>> _f$roles = Field('roles', _$roles);
   static List<Step> _$steps(Scenario v) => v.steps;
   static const Field<Scenario, List<Step>> _f$steps = Field('steps', _$steps);
+  static List<Tag> _$availableGameTags(Scenario v) => v.availableGameTags;
+  static const Field<Scenario, List<Tag>> _f$availableGameTags =
+      Field('availableGameTags', _$availableGameTags, opt: true, def: const []);
   static List<Tag> _$startingTags(Scenario v) => v.startingTags;
   static const Field<Scenario, List<Tag>> _f$startingTags = Field(
       'startingTags', _$startingTags,
@@ -106,6 +109,7 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
     #description: _f$description,
     #roles: _f$roles,
     #steps: _f$steps,
+    #availableGameTags: _f$availableGameTags,
     #startingTags: _f$startingTags,
   };
 
@@ -119,6 +123,7 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
         description: data.dec(_f$description),
         roles: data.dec(_f$roles),
         steps: data.dec(_f$steps),
+        availableGameTags: data.dec(_f$availableGameTags),
         startingTags: data.dec(_f$startingTags));
   }
 
@@ -175,6 +180,7 @@ abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
       get possibleEvents;
   ListCopyWith<$R, Roles, RolesCopyWith<$R, Roles, Roles>> get roles;
   ListCopyWith<$R, Step, StepCopyWith<$R, Step, Step>> get steps;
+  ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get availableGameTags;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get startingTags;
   $R call(
       {String? title,
@@ -185,6 +191,7 @@ abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
       String? description,
       List<Roles>? roles,
       List<Step>? steps,
+      List<Tag>? availableGameTags,
       List<Tag>? startingTags});
   ScenarioCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -210,6 +217,10 @@ class _ScenarioCopyWithImpl<$R, $Out>
       ListCopyWith(
           $value.steps, (v, t) => v.copyWith.$chain(t), (v) => call(steps: v));
   @override
+  ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get availableGameTags =>
+      ListCopyWith($value.availableGameTags, (v, t) => v.copyWith.$chain(t),
+          (v) => call(availableGameTags: v));
+  @override
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get startingTags =>
       ListCopyWith($value.startingTags, (v, t) => v.copyWith.$chain(t),
           (v) => call(startingTags: v));
@@ -223,6 +234,7 @@ class _ScenarioCopyWithImpl<$R, $Out>
           String? description,
           List<Roles>? roles,
           List<Step>? steps,
+          List<Tag>? availableGameTags,
           List<Tag>? startingTags}) =>
       $apply(FieldCopyWithData({
         if (title != null) #title: title,
@@ -234,6 +246,7 @@ class _ScenarioCopyWithImpl<$R, $Out>
         if (description != null) #description: description,
         if (roles != null) #roles: roles,
         if (steps != null) #steps: steps,
+        if (availableGameTags != null) #availableGameTags: availableGameTags,
         if (startingTags != null) #startingTags: startingTags
       }));
   @override
@@ -247,6 +260,8 @@ class _ScenarioCopyWithImpl<$R, $Out>
       description: data.get(#description, or: $value.description),
       roles: data.get(#roles, or: $value.roles),
       steps: data.get(#steps, or: $value.steps),
+      availableGameTags:
+          data.get(#availableGameTags, or: $value.availableGameTags),
       startingTags: data.get(#startingTags, or: $value.startingTags));
 
   @override

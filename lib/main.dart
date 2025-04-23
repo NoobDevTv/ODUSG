@@ -62,7 +62,8 @@ class MyApp extends StatelessWidget {
         "/manage_scenarios": (_) => const ManageScenarioPage(),
       },
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple, brightness: Brightness.dark),
         useMaterial3: true,
       ),
       home: const MainMenuPage(),

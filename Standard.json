@@ -1,0 +1,199 @@
+{
+    "title": "Standard",
+    "possibleEvents": [
+        {
+            "textAlterations": [
+                {
+                    "text": "Ein dunkler Schatten flackert zwischen {bad_1} und {good_1}. Was könnte das Bedeuten?",
+                    "tags": {
+                        "tags": []
+                    }
+                },
+                {
+                    "text": "Ein dunkler Schatten flackert zwischen {good_1} und {bad_1}. Was könnte das Bedeuten?",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": []
+            }
+        },
+        {
+            "textAlterations": [
+                {
+                    "text": "Du erinnerst dich an die schönen Tage die du mit {good_1} schon erlebt hast. So ein Vertrauen ist viel wert.",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": [
+                    {
+                        "tag": "Role.good",
+                        "temporary": false
+                    }
+                ]
+            }
+        },
+        {
+            "textAlterations": [
+                {
+                    "text": "Du erinnerst dich an die schönen Tage die du mit {bad_1} schon erlebt hast. So ein Vertrauen ist viel wert.",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": [
+                    {
+                        "tag": "Role.bad",
+                        "temporary": false
+                    }
+                ]
+            }
+        },
+        {
+            "textAlterations": [
+                {
+                    "text": "Spieler {good_1} ist einer der guten",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": []
+            }
+        },
+        {
+            "textAlterations": [
+                {
+                    "text": "Du traust {bad_1} nicht so richtig",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": [
+                    {
+                        "tag": "Role.good",
+                        "temporary": false
+                    }
+                ]
+            }
+        },
+        {
+            "textAlterations": [
+                {
+                    "text": "Du siehst {bad_1} und {bad_2} immer nur zusammen. Führen die was im Schilde?",
+                    "tags": {
+                        "tags": []
+                    }
+                },
+                {
+                    "text": "Du siehst {good_1} und {good_2} immer nur zusammen. Führen die was im Schilde?",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": [
+                    {
+                        "tag": "Role.good",
+                        "temporary": false
+                    }
+                ]
+            }
+        },
+        {
+            "textAlterations": [
+                {
+                    "text": "Du hast im dunklen {count_bad} Personen gesehen. Leider konntest du nicht erkennen, um wen es sich gehandelt hat.",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": []
+            }
+        },
+        {
+            "textAlterations": [],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": []
+            }
+        },
+        {
+            "textAlterations": [
+                {
+                    "text": "Du hast gehört, dass es im Gefängnis gutes gratis Essen gibt. Du gewinnst nur noch, wenn du eingesperrt wirst.",
+                    "tags": {
+                        "tags": []
+                    }
+                }
+            ],
+            "maximumAmount": 1,
+            "requiredTags": {
+                "tags": []
+            }
+        }
+    ],
+    "endText": "please vote for the player, who you think is the bad one",
+    "showAssignedEventAtEnd": false,
+    "preGameWidget": "roleAssignment",
+    "description": "A social deduction game. Find out which players are the bad ones, with the help of events. Only if atleast one bad person has the most votes, the good ones win, otherwise the bad ones have it.",
+    "roles": [
+        {
+            "tag": "good",
+            "intlKey": "good_player",
+            "getAssignableAmount": [],
+            "priority": 0,
+            "isDefault": true
+        },
+        {
+            "tag": "bad",
+            "intlKey": "bad_player",
+            "getAssignableAmount": [
+                {
+                    "$1": 5,
+                    "$2": 1,
+                    "$3": 2
+                },
+                {
+                    "$1": 7,
+                    "$2": 2,
+                    "$3": 3
+                },
+                {
+                    "$1": 9,
+                    "$2": 3,
+                    "$3": 4
+                }
+            ],
+            "priority": 1,
+            "isDefault": false
+        }
+    ],
+    "steps": [],
+    "startingTags": [
+        {
+            "tag": "wincondition.default",
+            "temporary": false
+        }
+    ]
+}

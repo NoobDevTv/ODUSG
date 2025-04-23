@@ -45,8 +45,11 @@ class BlockMapper extends ClassMapperBase<Block> {
   };
 
   static Block _instantiate(DecodingData data) {
-    throw MapperException.missingSubclass(
-        'Block', 'type', '${data.value['type']}');
+    return Block(
+        text: data.dec(_f$text),
+        cover: data.dec(_f$cover),
+        foreachPlayer: data.dec(_f$foreachPlayer),
+        perTagText: data.dec(_f$perTagText));
   }
 
   @override
@@ -62,15 +65,83 @@ class BlockMapper extends ClassMapperBase<Block> {
 }
 
 mixin BlockMappable {
-  String toJson();
-  Map<String, dynamic> toMap();
-  BlockCopyWith<Block, Block, Block> get copyWith;
+  String toJson() {
+    return BlockMapper.ensureInitialized().encodeJson<Block>(this as Block);
+  }
+
+  Map<String, dynamic> toMap() {
+    return BlockMapper.ensureInitialized().encodeMap<Block>(this as Block);
+  }
+
+  BlockCopyWith<Block, Block, Block> get copyWith =>
+      _BlockCopyWithImpl(this as Block, $identity, $identity);
+  @override
+  String toString() {
+    return BlockMapper.ensureInitialized().stringifyValue(this as Block);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return BlockMapper.ensureInitialized().equalsValue(this as Block, other);
+  }
+
+  @override
+  int get hashCode {
+    return BlockMapper.ensureInitialized().hashValue(this as Block);
+  }
+}
+
+extension BlockValueCopy<$R, $Out> on ObjectCopyWith<$R, Block, $Out> {
+  BlockCopyWith<$R, Block, $Out> get $asBlock =>
+      $base.as((v, t, t2) => _BlockCopyWithImpl(v, t, t2));
 }
 
 abstract class BlockCopyWith<$R, $In extends Block, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? text});
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>?>
+      get perTagText;
+  $R call(
+      {String? text,
+      bool? cover,
+      bool? foreachPlayer,
+      Map<String, String>? perTagText});
   BlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+}
+
+class _BlockCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Block, $Out>
+    implements BlockCopyWith<$R, Block, $Out> {
+  _BlockCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<Block> $mapper = BlockMapper.ensureInitialized();
+  @override
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>?>
+      get perTagText => MapCopyWith(
+          $value.perTagText,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(perTagText: v));
+  @override
+  $R call(
+          {String? text,
+          bool? cover,
+          bool? foreachPlayer,
+          Map<String, String>? perTagText}) =>
+      $apply(FieldCopyWithData({
+        if (text != null) #text: text,
+        if (cover != null) #cover: cover,
+        if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
+        if (perTagText != null) #perTagText: perTagText
+      }));
+  @override
+  Block $make(CopyWithData data) => Block(
+      text: data.get(#text, or: $value.text),
+      cover: data.get(#cover, or: $value.cover),
+      foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
+      perTagText: data.get(#perTagText, or: $value.perTagText));
+
+  @override
+  BlockCopyWith<$R2, Block, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
+      _BlockCopyWithImpl($value, $cast, t);
 }
 
 class NextButtonBlockMapper extends SubClassMapperBase<NextButtonBlock> {
@@ -753,13 +824,13 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
       Field('remove', _$remove, opt: true, def: false);
   static bool _$cover(ChangeTagBlock v) => v.cover;
   static const Field<ChangeTagBlock, bool> _f$cover =
-      Field('cover', _$cover, mode: FieldMode.member);
+      Field('cover', _$cover, opt: true, def: false);
   static bool _$foreachPlayer(ChangeTagBlock v) => v.foreachPlayer;
   static const Field<ChangeTagBlock, bool> _f$foreachPlayer =
-      Field('foreachPlayer', _$foreachPlayer, mode: FieldMode.member);
+      Field('foreachPlayer', _$foreachPlayer, opt: true, def: false);
   static Map<String, String> _$perTagText(ChangeTagBlock v) => v.perTagText;
   static const Field<ChangeTagBlock, Map<String, String>> _f$perTagText =
-      Field('perTagText', _$perTagText, mode: FieldMode.member);
+      Field('perTagText', _$perTagText, opt: true, def: const {});
 
   @override
   final MappableFields<ChangeTagBlock> fields = const {
@@ -784,7 +855,10 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
         text: data.dec(_f$text),
         affectedPlayers: data.dec(_f$affectedPlayers),
         tags: data.dec(_f$tags),
-        remove: data.dec(_f$remove));
+        remove: data.dec(_f$remove),
+        cover: data.dec(_f$cover),
+        foreachPlayer: data.dec(_f$foreachPlayer),
+        perTagText: data.dec(_f$perTagText));
   }
 
   @override
@@ -843,11 +917,17 @@ abstract class ChangeTagBlockCopyWith<$R, $In extends ChangeTagBlock, $Out>
   TagFilterCopyWith<$R, TagFilter, TagFilter>? get affectedPlayers;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get tags;
   @override
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+      get perTagText;
+  @override
   $R call(
       {String? text,
       TagFilter? affectedPlayers,
       List<Tag>? tags,
-      bool? remove});
+      bool? remove,
+      bool? cover,
+      bool? foreachPlayer,
+      Map<String, String>? perTagText});
   ChangeTagBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -867,23 +947,38 @@ class _ChangeTagBlockCopyWithImpl<$R, $Out>
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get tags => ListCopyWith(
       $value.tags, (v, t) => v.copyWith.$chain(t), (v) => call(tags: v));
   @override
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+      get perTagText => MapCopyWith(
+          $value.perTagText,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(perTagText: v));
+  @override
   $R call(
           {String? text,
           Object? affectedPlayers = $none,
           List<Tag>? tags,
-          bool? remove}) =>
+          bool? remove,
+          bool? cover,
+          bool? foreachPlayer,
+          Map<String, String>? perTagText}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (affectedPlayers != $none) #affectedPlayers: affectedPlayers,
         if (tags != null) #tags: tags,
-        if (remove != null) #remove: remove
+        if (remove != null) #remove: remove,
+        if (cover != null) #cover: cover,
+        if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
+        if (perTagText != null) #perTagText: perTagText
       }));
   @override
   ChangeTagBlock $make(CopyWithData data) => ChangeTagBlock(
       text: data.get(#text, or: $value.text),
       affectedPlayers: data.get(#affectedPlayers, or: $value.affectedPlayers),
       tags: data.get(#tags, or: $value.tags),
-      remove: data.get(#remove, or: $value.remove));
+      remove: data.get(#remove, or: $value.remove),
+      cover: data.get(#cover, or: $value.cover),
+      foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
+      perTagText: data.get(#perTagText, or: $value.perTagText));
 
   @override
   ChangeTagBlockCopyWith<$R2, ChangeTagBlock, $Out2> $chain<$R2, $Out2>(
