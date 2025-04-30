@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/editor/steps_edit.dart';
 import 'package:odusg/editor/widgets/tag_selector.dart';
 import 'package:odusg/events/tags.dart';
+import 'package:odusg/extensions.dart';
 import 'package:odusg/models/roles.dart';
 import 'package:odusg/models/scenario.dart';
 
@@ -304,27 +305,47 @@ class Roles with RolesMappable {
   ) {
     final chipText = useTextEditingController();
     final chipError = useState<String?>(null);
-    return scenario.value.roles.map((x) {
-      return ListTile(
-        subtitle: Text(x.intlKey),
-        title: Text(x.tag),
-        onTap: () async {
-          final newRole = await showDialog(
-            context: context,
-            builder: (c) => _roleEditDialog(c, scenario, x),
-            barrierDismissible: true,
-          );
-          if (newRole != null)
-            scenario.value = scenario.value.copyWith.roles.replace(
-              scenario.value.roles.indexOf(x),
-              newRole,
+    return [
+      ...scenario.value.roles.map((x) {
+        return ListTile(
+          subtitle: Text(x.intlKey),
+          title: Text(x.tag),
+          onTap: () async {
+            final newRole = await showDialog(
+              context: context,
+              builder: (c) => _roleEditDialog(c, scenario, x),
+              barrierDismissible: true,
             );
-        },
-      );
-    }).toList();
+            if (newRole != null)
+              scenario.value = scenario.value.copyWith.roles.replace(
+                scenario.value.roles.indexOf(x),
+                newRole,
+              );
+          },
+        );
+      }),
+      ListTile(
+        title: IconButton(
+          onPressed: () async {
+            final newRole = await showDialog(
+              context: context,
+              builder:
+                  (c) => _roleEditDialog(
+                    c,
+                    scenario,
+                    Roles(tag: "", intlKey: "", getAssignableAmount: []),
+                  ),
+              barrierDismissible: true,
+            );
+            if (newRole != null)
+              scenario.value = scenario.value.copyWith.roles.add(newRole);
+          },
+          icon: Icon(Icons.add),
+        ),
+      ),
+    ];
   }
 
-  //TODO weitermachen:
   Widget _roleEditDialog(
     BuildContext context,
     ValueNotifier<Scenario> scenario,
@@ -338,14 +359,15 @@ class Roles with RolesMappable {
         );
         final intlKeyError = useState<String?>(null);
         final roleState = useState(role);
+        final assignables = useState(role.getAssignableAmount);
 
         return AlertDialog(
-          title: Text("Edit Role"),
+          title: const Text("Edit Role"),
 
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(roleState.value),
-              child: Text("Save"),
+              child: const Text("Save"),
             ),
           ],
           content: Column(
@@ -355,9 +377,7 @@ class Roles with RolesMappable {
                 title: TextField(
                   controller: intlKeyText,
                   onChanged: (val) {
-                    roleState.value = roleState.value.copyWith(
-                      intlKey: val,
-                    );
+                    roleState.value = roleState.value.copyWith(intlKey: val);
                   },
                   maxLines: 1,
                   decoration: InputDecoration(
@@ -409,6 +429,42 @@ class Roles with RolesMappable {
                   roleState.value = roleState.value.copyWith(isDefault: value);
                 },
               ),
+              ...assignables.value.mapIndexed(
+                (x, i) => ListTile(
+                  title: RoleAssignmentRule(
+                    assignables: x,
+                    onChanged: (newValue) {
+                      final newState = assignables.value.toList();
+                      newState[i] = newValue;
+                      assignables.value = newState;
+                      roleState.value = roleState.value.copyWith(
+                        getAssignableAmount: newState,
+                      );
+                    },
+                    deleted: () {
+                      final newState = assignables.value.toList();
+                      newState.removeAt(i);
+                      assignables.value = newState;
+                      roleState.value = roleState.value.copyWith(
+                        getAssignableAmount: newState,
+                      );
+                    },
+                  ),
+                ),
+              ),
+              ListTile(
+                title: IconButton(
+                  onPressed: () {
+                    final newState = assignables.value.toList();
+                    newState.add((0, 0, 0));
+                    assignables.value = newState;
+                    roleState.value = roleState.value.copyWith(
+                      getAssignableAmount: newState,
+                    );
+                  },
+                  icon: const Icon(Icons.add),
+                ),
+              ),
             ],
           ),
         );
@@ -418,5 +474,105 @@ class Roles with RolesMappable {
 
   List<Widget> _gameCardContent(ValueNotifier<Scenario> scenario) {
     return [StepsEdit(scenario: scenario)];
+  }
+}
+
+class RoleAssignmentRule extends HookWidget {
+  final (int requiredPlayers, int min, int max) assignables;
+  final void Function((int requiredPlayers, int min, int max) newValue)
+  onChanged;
+  final void Function() deleted;
+
+  const RoleAssignmentRule({
+    super.key,
+    required this.assignables,
+    required this.onChanged,
+    required this.deleted,
+  });
+
+  (int, int, int) _copyWith(
+    (int, int, int) orig, {
+    int? player,
+    int? min,
+    int? max,
+  }) {
+    final ret = (player ?? orig.$1, min ?? orig.$2, max ?? orig.$3);
+    if (ret != orig) onChanged(ret);
+    return ret;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final playerController = useTextEditingController(
+      text: assignables.$1.toString(),
+    );
+    final minController = useTextEditingController(
+      text: assignables.$2.toString(),
+    );
+    final maxController = useTextEditingController(
+      text: assignables.$3.toString(),
+    );
+    final state = useState(assignables);
+
+    return Row(
+      spacing: 16,
+      children: [
+        Flexible(
+          child: TextField(
+            controller: playerController,
+            onChanged: (val) {
+              final player = int.tryParse(val);
+              if (player == null) return;
+              state.value = _copyWith(state.value, player: player);
+            },
+            maxLines: 1,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: const InputDecoration(
+              label: Text("Players"),
+              hintText: "Min. required amount of players",
+            ),
+          ),
+        ),
+        Flexible(
+          child: TextField(
+            controller: minController,
+            onChanged: (val) {
+              final min = int.tryParse(val);
+              if (min == null) return;
+              state.value = _copyWith(state.value, min: min);
+            },
+            maxLines: 1,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: const InputDecoration(
+              label: Text("Min"),
+              hintText: "Minimum amount to assign",
+            ),
+          ),
+        ),
+        Flexible(
+          child: TextField(
+            controller: maxController,
+            onChanged: (val) {
+              final max = int.tryParse(val);
+              if (max == null) return;
+              state.value = _copyWith(state.value, max: max);
+            },
+            maxLines: 1,
+            keyboardType: TextInputType.number,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: const InputDecoration(
+              label: Text("Max"),
+              hintText: "Maximum amount to assign",
+            ),
+          ),
+        ),
+        IconButton(
+          onPressed: () => deleted(),
+          icon: const Icon(Icons.delete_forever),
+        ),
+      ],
+    );
   }
 }

@@ -75,3 +75,8 @@
 - Grafischen Editor, theoretisch Werewolf nachbauen
 - Secret Agent versuchen umzusetzen
 - UI aufbessern 
+
+## Editor Todos:
+1. Delete from Roles
+2. Save scenario
+3. ???

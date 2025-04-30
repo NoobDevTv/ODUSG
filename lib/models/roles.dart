@@ -9,7 +9,7 @@ enum Role { undefined, bad, good }
 class Roles with RolesMappable {
   final String tag;
   final String intlKey;
-  final List<(int player, int min, int max)> getAssignableAmount;
+  final List<(int requiredPlayers, int min, int max)> getAssignableAmount;
   final int priority;
   final bool isDefault;
 
