@@ -71,6 +71,14 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
   @override
   final String id = 'Scenario';
 
+  static String _$uid(Scenario v) => v.uid;
+  static const Field<Scenario, String> _f$uid = Field('uid', _$uid);
+  static int _$fileVersion(Scenario v) => v.fileVersion;
+  static const Field<Scenario, int> _f$fileVersion =
+      Field('fileVersion', _$fileVersion);
+  static int _$saveCounter(Scenario v) => v.saveCounter;
+  static const Field<Scenario, int> _f$saveCounter =
+      Field('saveCounter', _$saveCounter);
   static String _$title(Scenario v) => v.title;
   static const Field<Scenario, String> _f$title = Field('title', _$title);
   static List<EventInfo> _$possibleEvents(Scenario v) => v.possibleEvents;
@@ -101,6 +109,9 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
 
   @override
   final MappableFields<Scenario> fields = const {
+    #uid: _f$uid,
+    #fileVersion: _f$fileVersion,
+    #saveCounter: _f$saveCounter,
     #title: _f$title,
     #possibleEvents: _f$possibleEvents,
     #endText: _f$endText,
@@ -115,6 +126,9 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
 
   static Scenario _instantiate(DecodingData data) {
     return Scenario(
+        uid: data.dec(_f$uid),
+        fileVersion: data.dec(_f$fileVersion),
+        saveCounter: data.dec(_f$saveCounter),
         title: data.dec(_f$title),
         possibleEvents: data.dec(_f$possibleEvents),
         endText: data.dec(_f$endText),
@@ -183,7 +197,10 @@ abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get availableGameTags;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get startingTags;
   $R call(
-      {String? title,
+      {String? uid,
+      int? fileVersion,
+      int? saveCounter,
+      String? title,
       List<EventInfo>? possibleEvents,
       String? endText,
       bool? showAssignedEventAtEnd,
@@ -226,7 +243,10 @@ class _ScenarioCopyWithImpl<$R, $Out>
           (v) => call(startingTags: v));
   @override
   $R call(
-          {String? title,
+          {String? uid,
+          int? fileVersion,
+          int? saveCounter,
+          String? title,
           List<EventInfo>? possibleEvents,
           String? endText,
           bool? showAssignedEventAtEnd,
@@ -237,6 +257,9 @@ class _ScenarioCopyWithImpl<$R, $Out>
           List<Tag>? availableGameTags,
           List<Tag>? startingTags}) =>
       $apply(FieldCopyWithData({
+        if (uid != null) #uid: uid,
+        if (fileVersion != null) #fileVersion: fileVersion,
+        if (saveCounter != null) #saveCounter: saveCounter,
         if (title != null) #title: title,
         if (possibleEvents != null) #possibleEvents: possibleEvents,
         if (endText != null) #endText: endText,
@@ -251,6 +274,9 @@ class _ScenarioCopyWithImpl<$R, $Out>
       }));
   @override
   Scenario $make(CopyWithData data) => Scenario(
+      uid: data.get(#uid, or: $value.uid),
+      fileVersion: data.get(#fileVersion, or: $value.fileVersion),
+      saveCounter: data.get(#saveCounter, or: $value.saveCounter),
       title: data.get(#title, or: $value.title),
       possibleEvents: data.get(#possibleEvents, or: $value.possibleEvents),
       endText: data.get(#endText, or: $value.endText),

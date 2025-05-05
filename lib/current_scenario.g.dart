@@ -6,7 +6,7 @@ part of 'current_scenario.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$currentScenarioHash() => r'fb930e30d68b891853813460d2ba42ac7b37b38a';
+String _$currentScenarioHash() => r'e73828b4e763a5ba477caa8897a2c3c337cfccb5';
 
 /// See also [CurrentScenario].
 @ProviderFor(CurrentScenario)

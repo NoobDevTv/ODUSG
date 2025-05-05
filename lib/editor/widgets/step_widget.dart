@@ -19,9 +19,10 @@ class StepWidget extends HookWidget {
 
     return ListTile(
       title: Text(current.value.name),
-      leading: Text(current.value.block.runtimeType.toString()),
-      subtitle: Text(current.value.entryGuard.toString()),
-
+      isThreeLine: true,
+      subtitle: Text(
+        "${current.value.block.runtimeType}\n${current.value.entryGuard}",
+      ),
       onTap: () async {
         final ret = await Navigator.push(
           context,

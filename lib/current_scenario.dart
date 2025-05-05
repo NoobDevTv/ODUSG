@@ -9,6 +9,9 @@ class CurrentScenario extends _$CurrentScenario {
   @override
   Scenario build() {
     return const Scenario(
+      fileVersion: 0,
+      saveCounter: 0,
+      uid: "",
       title: "",
       possibleEvents: [],
       endText: "",
@@ -25,7 +28,8 @@ class CurrentScenario extends _$CurrentScenario {
   }
 
   void addNewEventToCurrent(EventInfo additionalEvent) {
-    state = state
-        .copyWith(possibleEvents: [...state.possibleEvents, additionalEvent]);
+    state = state.copyWith(
+      possibleEvents: [...state.possibleEvents, additionalEvent],
+    );
   }
 }

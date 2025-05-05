@@ -34,12 +34,11 @@ class ManageScenarioPage extends HookConsumerWidget {
           child: ExpansionPanelList(
             expandedHeaderPadding: const EdgeInsets.all(0),
             elevation: 2,
-            expansionCallback: (panelIndex, isExpanded) =>
-                isOpened.value = isExpanded ? panelIndex : -1,
+            expansionCallback:
+                (panelIndex, isExpanded) =>
+                    isOpened.value = isExpanded ? panelIndex : -1,
             children: scenarios
-                .mapIndexed(
-                  (e, i) => _getListTile(e, isOpened.value == i),
-                )
+                .mapIndexed((e, i) => _getListTile(e, isOpened.value == i))
                 .toList(growable: false),
           ),
         ),
@@ -71,15 +70,45 @@ class ManageScenarioPage extends HookConsumerWidget {
                 }
               },
               child: Icon(Icons.file_download),
-              tooltip: "Import",
+              tooltip: "Import existing Scenario",
+            ),
+            FloatingActionButton.small(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (context) => ScenarioEditorPage(
+                          startScenario: Scenario.create(),
+                          onSave:
+                              (scenario) => ref
+                                  .read(scenariosProvider.notifier)
+                                  .add([scenario]),
+                        ),
+                  ),
+                );
+              },
+              child: Icon(Icons.add),
+              tooltip: "Add new Scenario",
             ),
           ] else ...[
             FloatingActionButton.small(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ScenarioEditorPage(
-                      startScenario: scenarios[isOpened.value]),
-                ));
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder:
+                        (context) => ScenarioEditorPage(
+                          startScenario: scenarios[isOpened.value],
+                          onSave: (scenario) {
+                            scenario = scenario.copyWith(
+                              saveCounter: scenario.saveCounter + 1,
+                            );
+                            ref
+                                .read(scenariosProvider.notifier)
+                                .update(scenario);
+                          },
+                        ),
+                  ),
+                );
               },
               child: Icon(Icons.edit),
               tooltip: "Edit",
@@ -120,14 +149,16 @@ class ManageScenarioPage extends HookConsumerWidget {
 
     return ExpansionPanel(
       isExpanded: isExpanded,
-      headerBuilder: (context, isExpanded) => Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          type,
-          style: TextStyle(
-              fontWeight: isExpanded ? FontWeight.bold : FontWeight.normal),
-        ),
-      ),
+      headerBuilder:
+          (context, isExpanded) => Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              type,
+              style: TextStyle(
+                fontWeight: isExpanded ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(scenario.description),

@@ -15,8 +15,13 @@ typedef PreGameWidgetEntry = DropdownMenuEntry<PreGameWidget>;
 
 class ScenarioEditorPage extends HookConsumerWidget {
   final Scenario startScenario;
+  final Function(Scenario scenario) onSave;
 
-  const ScenarioEditorPage({super.key, required this.startScenario});
+  const ScenarioEditorPage({
+    super.key,
+    required this.startScenario,
+    required this.onSave,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -101,18 +106,22 @@ class ScenarioEditorPage extends HookConsumerWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          onSave(scenario.value);
+          Navigator.of(context).pop();
+        },
+        child: const Icon(Icons.save),
+      ),
     );
   }
 
   /*
 General
-  final String title;
-  final String description;
-  final String endText;
   final List<EventInfo> possibleEvents;
-  final bool showAssignedEventAtEnd;
 
  */
+
   List<Widget> _generalCardContent(ValueNotifier<Scenario> scenario) {
     final titleEdit = useTextEditingController(text: scenario.value.title);
     final descriptionEdit = useTextEditingController(
@@ -124,8 +133,8 @@ General
       ListTile(
         title: TextField(
           controller: titleEdit,
-          onEditingComplete: () {
-            scenario.value = scenario.value.copyWith(title: titleEdit.text);
+          onChanged: (val) {
+            scenario.value = scenario.value.copyWith(title: val);
           },
           decoration: const InputDecoration(
             label: Text("Game Title"),
@@ -136,10 +145,8 @@ General
       ListTile(
         title: TextField(
           controller: descriptionEdit,
-          onEditingComplete: () {
-            scenario.value = scenario.value.copyWith(
-              title: descriptionEdit.text,
-            );
+          onChanged: (val) {
+            scenario.value = scenario.value.copyWith(description: val);
           },
           maxLines: 4,
           decoration: const InputDecoration(
@@ -156,14 +163,6 @@ General
       ),
     ];
   }
-
-  /*
-Setup
-  final List<Tag> startingTags;
-  Do This:
-  final List<Roles> roles;
-  final PreGameWidget preGameWidget;
-  */
 
   List<Widget> _setupCardContent(ValueNotifier<Scenario> scenario) {
     final s = scenario.value;
@@ -217,14 +216,6 @@ Setup
       ),
     ];
   }
-
-  /*
-  
-Special
-  final List<Tag> availableGameTags;
-Game
-  final List<Step> steps;
-  */
 
   List<Widget> _specialCardContent(ValueNotifier<Scenario> scenario) {
     final chipText = useTextEditingController();
@@ -306,10 +297,16 @@ class Roles with RolesMappable {
     final chipText = useTextEditingController();
     final chipError = useState<String?>(null);
     return [
-      ...scenario.value.roles.map((x) {
+      ...scenario.value.roles.mapIndexed((x, i) {
         return ListTile(
           subtitle: Text(x.intlKey),
           title: Text(x.tag),
+          trailing: IconButton(
+            icon: Icon(Icons.delete_forever),
+            onPressed: () {
+              scenario.value = scenario.value.copyWith.roles.removeAt(i);
+            },
+          ),
           onTap: () async {
             final newRole = await showDialog(
               context: context,
