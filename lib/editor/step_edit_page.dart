@@ -3,20 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/editor/widgets/base_block_widget.dart';
+import 'package:odusg/models/scenario.dart';
 import 'package:stubble/stubble.dart';
 
 class StepEditPage extends HookWidget {
-  const StepEditPage({super.key, required this.step});
+  const StepEditPage({super.key, required this.step, required this.scenario});
 
   final s.Step step;
+  final Scenario scenario;
 
   @override
   Widget build(BuildContext context) {
     final nameController = useTextEditingController(text: step.name);
-    final entryController =
-        useTextEditingController(text: step.entryGuard.toString());
-    final filterController =
-        useTextEditingController(text: step.filter.toString());
+    final entryController = useTextEditingController(
+      text: step.entryGuard.toString(),
+    );
+    final filterController = useTextEditingController(
+      text: step.filter.toString(),
+    );
     final filterError = useState<String?>(null);
     final entryError = useState<String?>(null);
 
@@ -40,29 +44,37 @@ class StepEditPage extends HookWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
                   child: TextField(
                     controller: nameController,
                     onEditingComplete: () {
-                      current.value =
-                          current.value.copyWith(name: nameController.text);
+                      current.value = current.value.copyWith(
+                        name: nameController.text,
+                      );
                     },
                     decoration: InputDecoration(
-                        label: Text("Name"),
-                        hintText: "Unique Name of this step"),
+                      label: Text("Name"),
+                      hintText: "Unique Name of this step",
+                    ),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
                   child: TextField(
                     controller: entryController,
                     onEditingComplete: () {
                       try {
-                        final newCondition =
-                            TagCondition.parse(entryController.text);
-                        current.value =
-                            current.value.copyWith(entryGuard: newCondition);
+                        final newCondition = TagCondition.parse(
+                          entryController.text,
+                        );
+                        current.value = current.value.copyWith(
+                          entryGuard: newCondition,
+                        );
                         entryError.value = null;
                       } catch (e) {
                         entryError.value = e.toString();
@@ -70,9 +82,10 @@ class StepEditPage extends HookWidget {
                     },
                     decoration: InputDecoration(
                       label: Text("Entry"),
-                      error: entryError.value == null
-                          ? null
-                          : Text(entryError.value!),
+                      error:
+                          entryError.value == null
+                              ? null
+                              : Text(entryError.value!),
                       hintText:
                           "The Condition that must match for this step to execute",
                     ),
@@ -80,15 +93,19 @@ class StepEditPage extends HookWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      vertical: 8.0, horizontal: 16.0),
+                    vertical: 8.0,
+                    horizontal: 16.0,
+                  ),
                   child: TextField(
                     controller: filterController,
                     onEditingComplete: () {
                       try {
-                        final newFilter =
-                            TagFilter.parse(filterController.text);
-                        current.value =
-                            current.value.copyWith(filter: newFilter);
+                        final newFilter = TagFilter.parse(
+                          filterController.text,
+                        );
+                        current.value = current.value.copyWith(
+                          filter: newFilter,
+                        );
                         filterError.value = null;
                       } catch (e) {
                         filterError.value = e.toString();
@@ -96,9 +113,10 @@ class StepEditPage extends HookWidget {
                     },
                     decoration: InputDecoration(
                       label: Text("Filter"),
-                      error: filterError.value == null
-                          ? null
-                          : Text(filterError.value!),
+                      error:
+                          filterError.value == null
+                              ? null
+                              : Text(filterError.value!),
                       hintText: "Tag Filter for players",
                     ),
                   ),
@@ -111,6 +129,7 @@ class StepEditPage extends HookWidget {
             margin: const EdgeInsets.all(8.0),
             child: BaseBlockWidget(
               block: current.value.block,
+              scenario: scenario,
             ),
           ),
         ],

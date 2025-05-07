@@ -52,6 +52,7 @@ class StepsEdit extends StatelessWidget {
               child: StepWidget(
                 key: Key(s.name + index.toString()),
                 step: s,
+                scenario: scenario.value,
                 onChanged: (step) {
                   scenario.value = scenario.value.copyWith.steps.replace(
                     index,
