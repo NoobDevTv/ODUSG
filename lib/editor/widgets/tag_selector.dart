@@ -9,18 +9,21 @@ class TagSelector extends HookWidget {
     this.child,
     required this.onClosed,
     required this.selectableTags,
+    this.selectedTags,
   });
 
   final Widget? child;
   final void Function(List<Tag> selected) onClosed;
   final List<Tag> selectableTags;
 
+  final List<Tag>? selectedTags;
+
   @override
   Widget build(BuildContext context) {
     if (child == null)
       return IconButton(
         onPressed: () => _openDialog(context),
-        icon: Icon(Icons.add),
+        icon: Icon(Icons.edit),
       );
 
     return MaterialButton(onPressed: () => _openDialog(context), child: child);
@@ -31,7 +34,7 @@ class TagSelector extends HookWidget {
       title: Text("Select Tags"),
       content: HookBuilder(
         builder: (context) {
-          final selectedTags = useState(<Tag>[]);
+          final selectedTags = useState(this.selectedTags ?? []);
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [

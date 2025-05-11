@@ -79,11 +79,12 @@
 ## Editor Todos:
 1. Delete from Roles ✔
 2. Save scenario ✔
-3. Per Tag Text Widget inside Blocks / Steps
-4. Tags Selection / Addition for ChangeTagBlock
+3. Per Tag Text Widget inside Blocks / Steps ✔
+4. Tags Selection / Addition for ChangeTagBlock ✔
 5. Somehow Add EventInfos into Editor
    1. Add an event info block, where "Random" and "InOrder" can be selected
    2. Event Info Block Contains multiple EventInfos
    3. Edit event infos inside the EventInfo Block
    4. Has to support "Per Player"
    5. Maybe add "Randomize Per Player", so that the order is not known beforhand to the players / Make Per Player always randomize
+6. Make Tag Filter 

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/block.dart';
+import 'package:odusg/dynamic_logic/change_tag_block.dart';
+import 'package:odusg/dynamic_logic/next_button_block.dart';
+import 'package:odusg/dynamic_logic/player_voting_block.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
+import 'package:odusg/dynamic_logic/timer_block.dart';
 import 'package:odusg/editor/widgets/step_widget.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/scenario.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/dynamic_logic/block.dart';
+import 'package:odusg/dynamic_logic/timer_block.dart';
 import 'package:odusg/game_logic.dart';
 import 'package:odusg/widgets/timer_widget.dart';
 
@@ -17,10 +18,9 @@ class TimerBlockWidget extends ConsumerWidget {
     if (variance.isNegative || variance.inMilliseconds == 0) {
       duration = timer.minTimer;
     } else {
-      duration = timer.minTimer +
-          Duration(
-            milliseconds: random.nextInt(variance.inMilliseconds),
-          );
+      duration =
+          timer.minTimer +
+          Duration(milliseconds: random.nextInt(variance.inMilliseconds));
     }
 
     return Column(
@@ -28,8 +28,10 @@ class TimerBlockWidget extends ConsumerWidget {
         Text(timer.text),
         TimerWidget(
           tickFor: duration,
-          elapsed: () => WidgetsBinding.instance.addPostFrameCallback(
-              (_) => ref.read(gameManagerProvider.notifier).advance()),
+          elapsed:
+              () => WidgetsBinding.instance.addPostFrameCallback(
+                (_) => ref.read(gameManagerProvider.notifier).advance(),
+              ),
         ),
       ],
     );

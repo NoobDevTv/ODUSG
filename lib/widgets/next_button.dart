@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/dynamic_logic/block.dart';
+import 'package:odusg/dynamic_logic/next_button_block.dart';
 import 'package:odusg/game_logic.dart';
 import 'package:odusg/widgets/stubble_text.dart';
 

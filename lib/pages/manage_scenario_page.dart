@@ -50,6 +50,7 @@ class ManageScenarioPage extends HookConsumerWidget {
         children: [
           if (isOpened.value == -1 || isOpened.value > scenarios.length) ...[
             FloatingActionButton.small(
+              heroTag: null,
               onPressed: () async {
                 final pickerResult = await FilePicker.platform.pickFiles(
                   dialogTitle: "Load Scenario",
@@ -73,6 +74,7 @@ class ManageScenarioPage extends HookConsumerWidget {
               tooltip: "Import existing Scenario",
             ),
             FloatingActionButton.small(
+              heroTag: null,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -92,6 +94,7 @@ class ManageScenarioPage extends HookConsumerWidget {
             ),
           ] else ...[
             FloatingActionButton.small(
+              heroTag: null,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -114,6 +117,7 @@ class ManageScenarioPage extends HookConsumerWidget {
               tooltip: "Edit",
             ),
             FloatingActionButton.small(
+              heroTag: null,
               onPressed: () {
                 final current = scenarios[isOpened.value];
                 ref.read(scenariosProvider.notifier).remove(current);
@@ -122,6 +126,7 @@ class ManageScenarioPage extends HookConsumerWidget {
               tooltip: "Delete",
             ),
             FloatingActionButton.small(
+              heroTag: null,
               onPressed: () async {
                 final current = scenarios[isOpened.value];
                 final path = await FilePicker.platform.saveFile(
