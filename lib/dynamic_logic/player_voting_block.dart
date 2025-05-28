@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/dynamic_logic/voting_block.dart';
 import 'package:odusg/events/tags.dart';

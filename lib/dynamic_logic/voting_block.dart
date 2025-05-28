@@ -1,6 +1,5 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/events/tags.dart';
 

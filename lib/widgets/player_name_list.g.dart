@@ -12,13 +12,15 @@ String _$playerNamesHash() => r'1983785aac8df5a5ee0ae8f22a7cd21b221d5704';
 @ProviderFor(PlayerNames)
 final playerNamesProvider =
     NotifierProvider<PlayerNames, List<String>>.internal(
-  PlayerNames.new,
-  name: r'playerNamesProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$playerNamesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      PlayerNames.new,
+      name: r'playerNamesProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$playerNamesHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$PlayerNames = Notifier<List<String>>;
 // ignore_for_file: type=lint

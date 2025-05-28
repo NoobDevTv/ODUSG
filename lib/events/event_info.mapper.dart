@@ -13,6 +13,8 @@ class EventInfoMapper extends ClassMapperBase<EventInfo> {
   static EventInfoMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = EventInfoMapper._());
+      TagEventMapper.ensureInitialized();
+      SingleSelectionEventMapper.ensureInitialized();
       EventTextMapper.ensureInitialized();
       TagsMapper.ensureInitialized();
     }
@@ -100,14 +102,8 @@ extension EventInfoValueCopy<$R, $Out> on ObjectCopyWith<$R, EventInfo, $Out> {
 
 abstract class EventInfoCopyWith<$R, $In extends EventInfo, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, EventText, EventTextCopyWith<$R, EventText, EventText>>
-      get textAlterations;
   TagsCopyWith<$R, Tags, Tags> get requiredTags;
-  $R call(
-      {List<EventText>? textAlterations,
-      String? name,
-      int? maximumAmount,
-      Tags? requiredTags});
+  $R call({String? name, int? maximumAmount, Tags? requiredTags});
   EventInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -120,20 +116,11 @@ class _EventInfoCopyWithImpl<$R, $Out>
   late final ClassMapperBase<EventInfo> $mapper =
       EventInfoMapper.ensureInitialized();
   @override
-  ListCopyWith<$R, EventText, EventTextCopyWith<$R, EventText, EventText>>
-      get textAlterations => ListCopyWith($value.textAlterations,
-          (v, t) => v.copyWith.$chain(t), (v) => call(textAlterations: v));
-  @override
   TagsCopyWith<$R, Tags, Tags> get requiredTags =>
       $value.requiredTags.copyWith.$chain((v) => call(requiredTags: v));
   @override
-  $R call(
-          {List<EventText>? textAlterations,
-          String? name,
-          int? maximumAmount,
-          Tags? requiredTags}) =>
+  $R call({String? name, int? maximumAmount, Tags? requiredTags}) =>
       $apply(FieldCopyWithData({
-        if (textAlterations != null) #textAlterations: textAlterations,
         if (name != null) #name: name,
         if (maximumAmount != null) #maximumAmount: maximumAmount,
         if (requiredTags != null) #requiredTags: requiredTags

@@ -12,13 +12,15 @@ String _$eventManagerHash() => r'304b97feffccae47843ccd54a854e3f516c79f94';
 @ProviderFor(EventManager)
 final eventManagerProvider =
     NotifierProvider<EventManager, EventInfo?>.internal(
-  EventManager.new,
-  name: r'eventManagerProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$eventManagerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      EventManager.new,
+      name: r'eventManagerProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$eventManagerHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$EventManager = Notifier<EventInfo?>;
 // ignore_for_file: type=lint

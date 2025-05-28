@@ -1,6 +1,8 @@
 @MappableLib(discriminatorKey: "type") // will be applied to all classes
 library blocks;
 
+import 'dart:convert';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

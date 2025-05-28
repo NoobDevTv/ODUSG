@@ -71,24 +71,13 @@ class TickerFamily extends Family<AsyncValue<int>> {
   const TickerFamily();
 
   /// See also [ticker].
-  TickerProvider call(
-    Duration period,
-    Duration duration,
-  ) {
-    return TickerProvider(
-      period,
-      duration,
-    );
+  TickerProvider call(Duration period, Duration duration) {
+    return TickerProvider(period, duration);
   }
 
   @override
-  TickerProvider getProviderOverride(
-    covariant TickerProvider provider,
-  ) {
-    return call(
-      provider.period,
-      provider.duration,
-    );
+  TickerProvider getProviderOverride(covariant TickerProvider provider) {
+    return call(provider.period, provider.duration);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -109,26 +98,18 @@ class TickerFamily extends Family<AsyncValue<int>> {
 /// See also [ticker].
 class TickerProvider extends AutoDisposeStreamProvider<int> {
   /// See also [ticker].
-  TickerProvider(
-    Duration period,
-    Duration duration,
-  ) : this._internal(
-          (ref) => ticker(
-            ref as TickerRef,
-            period,
-            duration,
-          ),
-          from: tickerProvider,
-          name: r'tickerProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$tickerHash,
-          dependencies: TickerFamily._dependencies,
-          allTransitiveDependencies: TickerFamily._allTransitiveDependencies,
-          period: period,
-          duration: duration,
-        );
+  TickerProvider(Duration period, Duration duration)
+    : this._internal(
+        (ref) => ticker(ref as TickerRef, period, duration),
+        from: tickerProvider,
+        name: r'tickerProvider',
+        debugGetCreateSourceHash:
+            const bool.fromEnvironment('dart.vm.product') ? null : _$tickerHash,
+        dependencies: TickerFamily._dependencies,
+        allTransitiveDependencies: TickerFamily._allTransitiveDependencies,
+        period: period,
+        duration: duration,
+      );
 
   TickerProvider._internal(
     super._createNotifier, {
@@ -145,9 +126,7 @@ class TickerProvider extends AutoDisposeStreamProvider<int> {
   final Duration duration;
 
   @override
-  Override overrideWith(
-    Stream<int> Function(TickerRef provider) create,
-  ) {
+  Override overrideWith(Stream<int> Function(TickerRef provider) create) {
     return ProviderOverride(
       origin: this,
       override: TickerProvider._internal(
@@ -225,14 +204,15 @@ String _$playerManagerHash() => r'b4c604ea35952a3ed9e558214ac447434279895a';
 @ProviderFor(PlayerManager)
 final playerManagerProvider =
     AutoDisposeNotifierProvider<PlayerManager, List<Player>>.internal(
-  PlayerManager.new,
-  name: r'playerManagerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$playerManagerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      PlayerManager.new,
+      name: r'playerManagerProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$playerManagerHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$PlayerManager = AutoDisposeNotifier<List<Player>>;
 String _$gameStateMachineHash() => r'abf7b0c3672c17cb9567b4d11d6981a6bf02adb3';
@@ -241,14 +221,15 @@ String _$gameStateMachineHash() => r'abf7b0c3672c17cb9567b4d11d6981a6bf02adb3';
 @ProviderFor(GameStateMachine)
 final gameStateMachineProvider =
     AutoDisposeNotifierProvider<GameStateMachine, GameState>.internal(
-  GameStateMachine.new,
-  name: r'gameStateMachineProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$gameStateMachineHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      GameStateMachine.new,
+      name: r'gameStateMachineProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$gameStateMachineHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$GameStateMachine = AutoDisposeNotifier<GameState>;
 String _$votingManagerHash() => r'707a6f13fea7a692df9db2aa4ed198321d51db26';
@@ -257,14 +238,15 @@ String _$votingManagerHash() => r'707a6f13fea7a692df9db2aa4ed198321d51db26';
 @ProviderFor(VotingManager)
 final votingManagerProvider =
     AutoDisposeNotifierProvider<VotingManager, Map<Player, int>>.internal(
-  VotingManager.new,
-  name: r'votingManagerProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$votingManagerHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      VotingManager.new,
+      name: r'votingManagerProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$votingManagerHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$VotingManager = AutoDisposeNotifier<Map<Player, int>>;
 // ignore_for_file: type=lint

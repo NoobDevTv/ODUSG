@@ -1,17 +1,25 @@
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:odusg/events/event_info.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/player.dart';
+import 'package:odusg/events/event_text.dart';
 
-class TagEvent extends EventInfo {
+part 'tag_event.mapper.dart';
+
+@MappableClass()
+class TagEvent extends EventInfo with TagEventMappable {
   final Tag? replacementTag;
   final Tag? newTag;
 
-  const TagEvent(super.textAlterations,
-      {this.replacementTag,
-      this.newTag,
-      super.maximumAmount,
-      super.requiredTags});
+  const TagEvent(
+    super.textAlterations, {
+    this.replacementTag,
+    this.newTag,
+    super.maximumAmount,
+    super.requiredTags,
+    super.name,
+  });
 
   @override
   Widget getWidget(List<Player> players, Player self) {

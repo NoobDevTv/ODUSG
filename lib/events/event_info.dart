@@ -4,13 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:format/format.dart';
 import 'package:odusg/events/default_event_widget.dart';
 import 'package:odusg/events/event_text.dart';
+import 'package:odusg/events/single_selection_event.dart';
+import 'package:odusg/events/tag_event.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
 
 part 'event_info.mapper.dart';
 
-@MappableClass()
+@MappableClass(includeSubClasses: [TagEvent, SingleSelectionEvent])
 class EventInfo with EventInfoMappable {
   static Random random = Random();
 

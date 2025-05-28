@@ -81,10 +81,13 @@
 2. Save scenario ✔
 3. Per Tag Text Widget inside Blocks / Steps ✔
 4. Tags Selection / Addition for ChangeTagBlock ✔
-5. Somehow Add EventInfos into Editor
-   1. Add an event info block, where "Random" and "InOrder" can be selected
-   2. Event Info Block Contains multiple EventInfos ✔
-   3. Edit event infos inside the EventInfo Block
-   4. Has to support "Per Player"
-   5. Maybe add "Randomize Per Player", so that the order is not known beforhand to the players / Make Per Player always randomize
-6. Make Tag Filter 
+~~5. Somehow Add EventInfos into Editor (X)~~
+   ~~1. Add an event info block, where "Random" and "InOrder" can be selected~~
+   ~~2. Event Info Block Contains multiple EventInfos ✔~~
+   ~~3. Edit event infos inside the EventInfo Block~~
+   ~~4. Has to support "Per Player"~~
+   ~~5. Maybe add "Randomize Per Player", so that the order is not known beforhand to the players / Make Per Player always randomize~~
+5. Add Group Block, which can have multiple child blocks and executes them in order
+6. Add SingleChildExecutor Block, which executes a single child from it's children, either in order or random, but only single child per revolution
+7. Make Tag Filter 
+8. (Maybe) add simple templates, especially for old "EventInfo" logic, so that the user has it easier to do this

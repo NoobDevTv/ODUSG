@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:darq/darq.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:odusg/conditions/win_condition.dart';
 import 'package:odusg/dynamic_logic/block_widget.dart';
@@ -6,7 +9,9 @@ import 'package:odusg/dynamic_logic/change_tag_block.dart';
 import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/events/event_info.dart';
+import 'package:odusg/events/event_text.dart';
 import 'package:odusg/events/events.dart';
+import 'package:odusg/events/single_selection_event.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/main.dart';
 import 'package:odusg/models/player.dart';
@@ -70,7 +75,7 @@ final defaultScenarios = [
         TagCondition.parse("game.startedAlready = 0"),
         const ChangeTagBlock(tags: [Tag("game.startedAlready")]),
       ),
-      Step(
+      const Step(
         "actualGame",
         TagCondition.enter,
         EventInfoBlock(
@@ -81,7 +86,7 @@ final defaultScenarios = [
           cover: true,
         ),
       ),
-      Step(
+      const Step(
         "voting",
         TagCondition.enter,
         PlayerVotingBlock(
@@ -93,13 +98,13 @@ final defaultScenarios = [
       ),
     ],
     roles: [
-      Roles(
+      const Roles(
         tag: "good",
         intlKey: "good_player",
         isDefault: true,
         getAssignableAmount: [],
       ),
-      Roles(
+      const Roles(
         tag: "bad",
         intlKey: "bad_player",
         priority: 1,

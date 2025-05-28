@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:format/format.dart';
@@ -5,14 +8,22 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/event_manager.dart';
 import 'package:odusg/events/event_info.dart';
 import 'package:odusg/events/event_text.dart';
+import 'package:odusg/events/tags.dart';
+import 'package:odusg/helpers/iterable_extensions.dart';
 import 'package:odusg/models/player.dart';
 
-class SingleSelectionEvent extends EventInfo {
+part 'single_selection_event.mapper.dart';
+
+@MappableClass(includeCustomMappers: [IntMapEventTextMapper()])
+class SingleSelectionEvent extends EventInfo with SingleSelectionEventMappable {
   final Map<int, List<EventText>> textAlterationsPerPage;
 
-  const SingleSelectionEvent(this.textAlterationsPerPage,
-      {super.maximumAmount, super.requiredTags})
-      : super(const []);
+  const SingleSelectionEvent(
+    this.textAlterationsPerPage, {
+    super.maximumAmount,
+    super.requiredTags,
+    super.name,
+  }) : super(const []);
   @override
   Widget getWidget(List<Player> players, Player self) {
     return _SingleSelectionEventWidget(this, players, self);
@@ -23,9 +34,27 @@ class SingleSelectionEvent extends EventInfo {
       textAlterationsPerPage.containsKey(pageIndex + 1);
 }
 
+class IntMapEventTextMapper extends SimpleMapper<Map<int, List<EventText>>> {
+  const IntMapEventTextMapper();
+
+  @override
+  Map<int, List<EventText>> decode(dynamic value) {
+    final map = value as Map<String, List<EventText>>;
+    return map.entries.toMap((x) => int.parse(x.key), (v) => v.value);
+  }
+
+  @override
+  dynamic encode(Map<int, List<EventText>> self) {
+    return self.entries.toMap((x) => x.key.toString(), (x) => x.value);
+  }
+}
+
 class SinglePlayerSelectionWidget extends HookWidget {
-  const SinglePlayerSelectionWidget(this.players, this.playerSelected,
-      {super.key});
+  const SinglePlayerSelectionWidget(
+    this.players,
+    this.playerSelected, {
+    super.key,
+  });
   final List<Player> players;
   final void Function(Player?) playerSelected;
 
@@ -33,20 +62,21 @@ class SinglePlayerSelectionWidget extends HookWidget {
   Widget build(BuildContext context) {
     final selectedPlayer = useState<Player?>(null);
     return ListView.builder(
-        itemCount: players.length,
-        itemBuilder: (context, index) {
-          final player = players[index];
+      itemCount: players.length,
+      itemBuilder: (context, index) {
+        final player = players[index];
 
-          return RadioListTile(
-            title: Text(player.name),
-            value: player,
-            groupValue: selectedPlayer.value,
-            onChanged: (a) {
-              selectedPlayer.value = a;
-              playerSelected(a);
-            },
-          );
-        });
+        return RadioListTile(
+          title: Text(player.name),
+          value: player,
+          groupValue: selectedPlayer.value,
+          onChanged: (a) {
+            selectedPlayer.value = a;
+            playerSelected(a);
+          },
+        );
+      },
+    );
   }
 }
 
@@ -63,43 +93,50 @@ class _SingleSelectionEventWidget extends HookConsumerWidget {
     final childIndex = useState(0);
     final selectedPlayer = useState<Player?>(null);
     final text = eventInfo.textAlterationsPerPage[childIndex.value]!.firstWhere(
-        (x) => x.tags.matches(selectedPlayer.value?.tags.tags ?? []));
+      (x) => x.tags.matches(selectedPlayer.value?.tags.tags ?? []),
+    );
     final canGoNext = useState(false);
 
     return Column(
       children: [
         Expanded(
-          child: _getChildWidget(childIndex, playersExceptSelf, text.text,
-              selectedPlayer, canGoNext),
+          child: _getChildWidget(
+            childIndex,
+            playersExceptSelf,
+            text.text,
+            selectedPlayer,
+            canGoNext,
+          ),
         ),
         OutlinedButton(
-            onPressed: selectedPlayer.value == null
-                ? null
-                : () {
+          onPressed:
+              selectedPlayer.value == null
+                  ? null
+                  : () {
                     if (eventInfo.canShowMore(childIndex.value)) {
                       childIndex.value++;
                     } else {
                       ref.read(eventManagerProvider.notifier).finish();
                     }
                   },
-            child: const Text("Next"))
+          child: const Text("Next"),
+        ),
       ],
     );
   }
 
   Widget _getChildWidget(
-      ValueNotifier<int> childIndex,
-      List<Player> playersExceptSelf,
-      String text,
-      ValueNotifier<Player?> selectedPlayer,
-      ValueNotifier<bool> canGoNext) {
+    ValueNotifier<int> childIndex,
+    List<Player> playersExceptSelf,
+    String text,
+    ValueNotifier<Player?> selectedPlayer,
+    ValueNotifier<bool> canGoNext,
+  ) {
     Widget child;
     if (childIndex.value == 0) {
       child = Column(
         children: [
-          ListTile(
-            title: Text(text),
-          ),
+          ListTile(title: Text(text)),
           Expanded(
             child: SinglePlayerSelectionWidget(
               playersExceptSelf,
@@ -113,7 +150,7 @@ class _SingleSelectionEventWidget extends HookConsumerWidget {
       final formatArgs = eventInfo.getFormatArgs(shuffled);
       formatArgs.addAll({
         "selected_1": selectedPlayer.value!.name,
-        "selected_1_role": selectedPlayer.value!.role.name
+        "selected_1_role": selectedPlayer.value!.role.name,
       });
       child = Text(text.format(formatArgs));
     }

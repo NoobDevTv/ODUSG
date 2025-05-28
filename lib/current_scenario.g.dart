@@ -12,14 +12,15 @@ String _$currentScenarioHash() => r'e73828b4e763a5ba477caa8897a2c3c337cfccb5';
 @ProviderFor(CurrentScenario)
 final currentScenarioProvider =
     NotifierProvider<CurrentScenario, Scenario>.internal(
-  CurrentScenario.new,
-  name: r'currentScenarioProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$currentScenarioHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      CurrentScenario.new,
+      name: r'currentScenarioProvider',
+      debugGetCreateSourceHash:
+          const bool.fromEnvironment('dart.vm.product')
+              ? null
+              : _$currentScenarioHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$CurrentScenario = Notifier<Scenario>;
 // ignore_for_file: type=lint
