@@ -4,7 +4,6 @@ import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/editor/widgets/base_block_widget.dart';
 import 'package:odusg/models/scenario.dart';
-import 'package:stubble/stubble.dart';
 
 class StepEditPage extends HookWidget {
   const StepEditPage({super.key, required this.step, required this.scenario});
@@ -31,7 +30,7 @@ class StepEditPage extends HookWidget {
     }, [step]);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Editor"),
+        title: const Text("Editor"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: ListView(
@@ -54,7 +53,7 @@ class StepEditPage extends HookWidget {
                         name: nameController.text,
                       );
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       label: Text("Name"),
                       hintText: "Unique Name of this step",
                     ),
@@ -81,7 +80,7 @@ class StepEditPage extends HookWidget {
                       }
                     },
                     decoration: InputDecoration(
-                      label: Text("Entry"),
+                      label: const Text("Entry"),
                       error:
                           entryError.value == null
                               ? null
@@ -112,7 +111,7 @@ class StepEditPage extends HookWidget {
                       }
                     },
                     decoration: InputDecoration(
-                      label: Text("Filter"),
+                      label: const Text("Filter"),
                       error:
                           filterError.value == null
                               ? null

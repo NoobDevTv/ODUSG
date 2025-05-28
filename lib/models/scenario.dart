@@ -1,9 +1,10 @@
-import 'dart:convert';
-
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:odusg/conditions/win_condition.dart';
 import 'package:odusg/dynamic_logic/block_widget.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
+import 'package:odusg/dynamic_logic/change_tag_block.dart';
 import 'package:odusg/dynamic_logic/step.dart';
+import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/events/event_info.dart';
 import 'package:odusg/events/events.dart';
 import 'package:odusg/events/tags.dart';
@@ -11,7 +12,6 @@ import 'package:odusg/main.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uuid/uuid.dart';
 import 'package:uuid/v7.dart';
 
 part 'scenario.mapper.dart';
@@ -40,7 +40,7 @@ final defaultScenarios = [
     description:
         "Each one enters a topic, where someone has to do a pitch about it. It can even be the person, who entered the topic. At the end, everyone votes for the best pitch, and the one with the most votes wins.",
   ),
-  const Scenario(
+  Scenario(
     uid: "5231a409-bb75-4f12-8323-398af028ee5b",
     fileVersion: 1,
     saveCounter: 1,
@@ -49,7 +49,49 @@ final defaultScenarios = [
     endText: "please vote for the player, who you think is the bad one",
     preGameWidget: PreGameWidget.roleAssignment,
     showAssignedEventAtEnd: false,
-    steps: [],
+    steps: [
+      Step(
+        "showRolesPerPersonHidden",
+        TagCondition.parse("game.startedAlready = 0"),
+        const NextButtonBlock(
+          endsGame: false,
+          text: "",
+          buttonText: "Verstanden",
+          perTagText: {
+            "player.role.good": "Du bist gut und willst das Böse loswerden.",
+            "player.role.bad": "Du bist böse und willst das Gute loswerden.",
+          },
+          cover: true,
+          foreachPlayer: true,
+        ),
+      ),
+      Step(
+        "gameStarted",
+        TagCondition.parse("game.startedAlready = 0"),
+        const ChangeTagBlock(tags: [Tag("game.startedAlready")]),
+      ),
+      Step(
+        "actualGame",
+        TagCondition.enter,
+        EventInfoBlock(
+          text: "a",
+          eventInfos: textEvents,
+          inOrder: false,
+          foreachPlayer: true,
+          cover: true,
+        ),
+      ),
+      Step(
+        "voting",
+        TagCondition.enter,
+        PlayerVotingBlock(
+          text: "Select the bad one",
+          foreachPlayer: true,
+          setTags: Tags([]),
+          votingTargetPossibilities: TagFilter.empty,
+        ),
+      ),
+    ],
     roles: [
       Roles(
         tag: "good",
@@ -72,7 +114,7 @@ final defaultScenarios = [
     fileVersion: 1,
     saveCounter: 1,
     title: "Werewolf",
-    possibleEvents: textEvents,
+    possibleEvents: [],
     endText: "please vote for the player, who you think is the bad one",
     preGameWidget: PreGameWidget.roleAssignment,
     showAssignedEventAtEnd: false,
@@ -118,12 +160,13 @@ final defaultScenarios = [
 class Scenarios extends _$Scenarios {
   @override
   List<Scenario> build() {
-    return ref
-            .read(sharedPreferencesProvider)
-            .getStringList("scenarios")
-            ?.map((x) => ScenarioMapper.fromMap(migrate(jsonDecode(x))))
-            .toList() ??
-        defaultScenarios;
+    return
+    //  ref
+    //         .read(sharedPreferencesProvider)
+    //         .getStringList("scenarios")
+    //         ?.map((x) => ScenarioMapper.fromMap(migrate(jsonDecode(x))))
+    //         .toList() ??
+    defaultScenarios;
   }
 
   Map<String, dynamic> migrate(Map<String, dynamic> val) {
@@ -131,7 +174,7 @@ class Scenarios extends _$Scenarios {
     if (fileVersion == null) {
       val["fileVersion"] = 1;
       val["saveCounter"] = 1;
-      val["uid"] = UuidV7().generate();
+      val["uid"] = const UuidV7().generate();
     }
     return val;
   }
@@ -163,9 +206,8 @@ class Scenarios extends _$Scenarios {
   }
 
   void _storeScenarios() {
-    ref
-        .read(sharedPreferencesProvider)
-        .setStringList("scenarios", state.map((x) => x.toJson()).toList());
+    final scenarios = state.map((x) => x.toJson()).toList();
+    ref.read(sharedPreferencesProvider).setStringList("scenarios", scenarios);
   }
 }
 

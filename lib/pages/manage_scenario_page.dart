@@ -2,9 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,7 +24,7 @@ class ManageScenarioPage extends HookConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("Manage Scenarios"),
+        title: const Text("Manage Scenarios"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -70,8 +68,8 @@ class ManageScenarioPage extends HookConsumerWidget {
                   ref.read(scenariosProvider.notifier).add(deserialized);
                 }
               },
-              child: Icon(Icons.file_download),
               tooltip: "Import existing Scenario",
+              child: const Icon(Icons.file_download),
             ),
             FloatingActionButton.small(
               heroTag: null,
@@ -89,8 +87,8 @@ class ManageScenarioPage extends HookConsumerWidget {
                   ),
                 );
               },
-              child: Icon(Icons.add),
               tooltip: "Add new Scenario",
+              child: const Icon(Icons.add),
             ),
           ] else ...[
             FloatingActionButton.small(
@@ -113,8 +111,8 @@ class ManageScenarioPage extends HookConsumerWidget {
                   ),
                 );
               },
-              child: Icon(Icons.edit),
               tooltip: "Edit",
+              child: const Icon(Icons.edit),
             ),
             FloatingActionButton.small(
               heroTag: null,
@@ -122,8 +120,8 @@ class ManageScenarioPage extends HookConsumerWidget {
                 final current = scenarios[isOpened.value];
                 ref.read(scenariosProvider.notifier).remove(current);
               },
-              child: Icon(Icons.delete),
               tooltip: "Delete",
+              child: const Icon(Icons.delete),
             ),
             FloatingActionButton.small(
               heroTag: null,
@@ -140,8 +138,8 @@ class ManageScenarioPage extends HookConsumerWidget {
                 await file.writeAsString(current.toJson());
                 print(path);
               },
-              child: Icon(Icons.file_upload),
               tooltip: "Export",
+              child: const Icon(Icons.file_upload),
             ),
           ],
         ],

@@ -64,7 +64,7 @@ class PlayerVotingBlockMapper extends SubClassMapperBase<PlayerVotingBlock> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'PlayerVotingBlock';
+  final dynamic discriminatorValue = "PlayerVotingBlock";
   @override
   late final ClassMapperBase superMapper =
       VotingBlockMapper.ensureInitialized();

@@ -13,6 +13,11 @@ class BlockMapper extends ClassMapperBase<Block> {
   static BlockMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = BlockMapper._());
+      ChangeTagBlockMapper.ensureInitialized();
+      NextButtonBlockMapper.ensureInitialized();
+      VotingBlockMapper.ensureInitialized();
+      TimerBlockMapper.ensureInitialized();
+      EventInfoBlockMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -94,7 +99,7 @@ extension BlockValueCopy<$R, $Out> on ObjectCopyWith<$R, Block, $Out> {
 
 abstract class BlockCopyWith<$R, $In extends Block, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>?>
       get perTagText;
   $R call(
       {String? text,
@@ -111,7 +116,7 @@ class _BlockCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Block, $Out>
   @override
   late final ClassMapperBase<Block> $mapper = BlockMapper.ensureInitialized();
   @override
-  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>?>
       get perTagText => MapCopyWith(
           $value.perTagText,
           (v, t) => ObjectCopyWith(v, $identity, t),

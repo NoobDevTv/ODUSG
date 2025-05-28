@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:odusg/events/tags.dart';
 
@@ -20,18 +19,19 @@ class TagSelector extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (child == null)
+    if (child == null) {
       return IconButton(
         onPressed: () => _openDialog(context),
-        icon: Icon(Icons.edit),
+        icon: const Icon(Icons.edit),
       );
+    }
 
     return MaterialButton(onPressed: () => _openDialog(context), child: child);
   }
 
   Future _openDialog(BuildContext context) async {
     final dialog = AlertDialog(
-      title: Text("Select Tags"),
+      title: const Text("Select Tags"),
       content: HookBuilder(
         builder: (context) {
           final selectedTags = useState(this.selectedTags ?? []);
@@ -66,14 +66,14 @@ class TagSelector extends HookWidget {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    child: Text("Cancel"),
+                    child: const Text("Cancel"),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                       onClosed(selectedTags.value);
                     },
-                    child: Text("OK"),
+                    child: const Text("OK"),
                   ),
                 ],
               ),

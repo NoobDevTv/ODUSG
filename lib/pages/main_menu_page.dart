@@ -20,7 +20,7 @@ class MainMenuPage extends ConsumerWidget {
             onTap: () => Navigator.pushNamed(context, "/setup_game"),
           ),
           ListTile(
-            title: Text("Scenarien verwalten"),
+            title: const Text("Scenarien verwalten"),
             onTap: () => Navigator.pushNamed(context, "/manage_scenarios"),
           ),
           const ListTile(

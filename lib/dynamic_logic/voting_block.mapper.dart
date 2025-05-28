@@ -14,6 +14,7 @@ class VotingBlockMapper extends SubClassMapperBase<VotingBlock> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = VotingBlockMapper._());
       BlockMapper.ensureInitialized().addSubMapper(_instance!);
+      PlayerVotingBlockMapper.ensureInitialized();
       TagsMapper.ensureInitialized();
     }
     return _instance!;
@@ -62,7 +63,8 @@ class VotingBlockMapper extends SubClassMapperBase<VotingBlock> {
   late final ClassMapperBase superMapper = BlockMapper.ensureInitialized();
 
   static VotingBlock _instantiate(DecodingData data) {
-    throw MapperException.missingConstructor('VotingBlock');
+    throw MapperException.missingSubclass(
+        'VotingBlock', 'type', '${data.value['type']}');
   }
 
   @override
@@ -87,7 +89,7 @@ abstract class VotingBlockCopyWith<$R, $In extends VotingBlock, $Out>
     implements BlockCopyWith<$R, $In, $Out> {
   TagsCopyWith<$R, Tags, Tags> get setTags;
   @override
-  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>>
+  MapCopyWith<$R, String, String, ObjectCopyWith<$R, String, String>?>
       get perTagText;
   @override
   $R call(

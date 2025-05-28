@@ -6,7 +6,7 @@ part of 'scenario.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$scenariosHash() => r'1675b3df11f06f423e2de170202455305ad371bc';
+String _$scenariosHash() => r'd7f35401a4d719397591b884869493608b563b82';
 
 /// See also [Scenarios].
 @ProviderFor(Scenarios)

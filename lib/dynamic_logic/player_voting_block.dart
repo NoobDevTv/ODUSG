@@ -8,7 +8,7 @@ import 'package:odusg/game_logic.dart';
 
 part 'player_voting_block.mapper.dart';
 
-@MappableClass()
+@MappableClass(discriminatorValue: "PlayerVotingBlock")
 class PlayerVotingBlock extends VotingBlock with PlayerVotingBlockMappable {
   final TagFilter votingTargetPossibilities;
 

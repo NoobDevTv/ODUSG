@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/change_tag_block.dart';
 import 'package:odusg/editor/editing_tags.dart';
 import 'package:odusg/editor/widgets/block_widget.dart';
@@ -27,7 +25,7 @@ class ChangeTagBlockWidget extends BlockWidget<ChangeTagBlock> {
     return [
       ListTile(
         title: TagFilterWidget(
-          label: Text("Affected Players"),
+          label: const Text("Affected Players"),
           hintText: "Players where these tags should be added / removed",
           tagFilter: b.value.affectedPlayers,
           onChanged:
@@ -36,7 +34,7 @@ class ChangeTagBlockWidget extends BlockWidget<ChangeTagBlock> {
         ),
       ),
       ListTile(
-        title: Text("Change Tags"),
+        title: const Text("Change Tags"),
         subtitle: EditingTags(
           selectableTags: scenario.availableGameTags,
           selectedTags: b.value.tags,
@@ -51,7 +49,7 @@ class ChangeTagBlockWidget extends BlockWidget<ChangeTagBlock> {
         onChanged: (val) {
           b.value = b.value.copyWith(remove: val);
         },
-        title: Text("Remove tags"),
+        title: const Text("Remove tags"),
       ),
     ];
   }

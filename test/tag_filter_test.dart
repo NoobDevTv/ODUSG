@@ -1,12 +1,9 @@
-import 'dart:math';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:odusg/dynamic_logic/condition_operator.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/events/tags.dart';
-import 'package:odusg/helpers/iterable_extensions.dart';
 
-import 'package:odusg/main.dart';
 import 'package:parameterized_test/parameterized_test.dart';
 import 'package:collection/collection.dart';
 

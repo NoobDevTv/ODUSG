@@ -1,15 +1,15 @@
 import 'dart:collection';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/change_tag_block.dart';
+import 'package:odusg/dynamic_logic/event_info_block.dart';
 import 'package:odusg/dynamic_logic/next_button_block.dart';
 import 'package:odusg/dynamic_logic/player_voting_block.dart';
 import 'package:odusg/dynamic_logic/timer_block.dart';
 import 'package:odusg/editor/widgets/change_tag_block_widget.dart';
+import 'package:odusg/editor/widgets/event_info_block_widget.dart';
 import 'package:odusg/editor/widgets/next_button_block_widget.dart';
 import 'package:odusg/editor/widgets/player_voting_block_widget.dart';
 import 'package:odusg/editor/widgets/timer_block_widget.dart';
@@ -55,8 +55,8 @@ class BaseBlockWidget extends HookWidget {
           onChanged:
               (v) => b.value = b.value.copyWith(foreachPlayer: v ?? false),
         ),
-        Divider(),
-        ListTile(title: Text("Per Tag Texts")),
+        const Divider(),
+        const ListTile(title: Text("Per Tag Texts")),
         Column(
           children: [
             ...b.value.perTagText.entries.map(
@@ -82,6 +82,7 @@ class BaseBlockWidget extends HookWidget {
                   icon: const Icon(Icons.delete_forever),
                 ),
                 title: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(right: 16.0),
@@ -95,7 +96,6 @@ class BaseBlockWidget extends HookWidget {
                       ),
                     ),
                   ],
-                  mainAxisSize: MainAxisSize.min,
                 ),
               ),
             ),
@@ -126,6 +126,10 @@ class BaseBlockWidget extends HookWidget {
             scenario: scenario,
           ),
           ChangeTagBlock b => ChangeTagBlockWidget(
+            block: b,
+            scenario: scenario,
+          ),
+          EventInfoBlock b => EventInfoBlockWidget(
             block: b,
             scenario: scenario,
           ),
@@ -174,7 +178,7 @@ class BaseBlockWidget extends HookWidget {
                     title: TextField(
                       minLines: 4,
                       maxLines: 5,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: "Text",
                         hintText: "Enter your awesome text here",
                       ),
@@ -190,7 +194,7 @@ class BaseBlockWidget extends HookWidget {
                       () => Navigator.of(
                         context,
                       ).pop((keyState.value, valueState.value)),
-                  child: Text("OK"),
+                  child: const Text("OK"),
                 ),
               ],
             );

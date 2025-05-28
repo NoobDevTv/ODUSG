@@ -25,6 +25,9 @@ class EventInfoMapper extends ClassMapperBase<EventInfo> {
   static List<EventText> _$textAlterations(EventInfo v) => v.textAlterations;
   static const Field<EventInfo, List<EventText>> _f$textAlterations =
       Field('textAlterations', _$textAlterations);
+  static String _$name(EventInfo v) => v.name;
+  static const Field<EventInfo, String> _f$name =
+      Field('name', _$name, opt: true, def: "");
   static int _$maximumAmount(EventInfo v) => v.maximumAmount;
   static const Field<EventInfo, int> _f$maximumAmount =
       Field('maximumAmount', _$maximumAmount, opt: true, def: 1);
@@ -35,12 +38,14 @@ class EventInfoMapper extends ClassMapperBase<EventInfo> {
   @override
   final MappableFields<EventInfo> fields = const {
     #textAlterations: _f$textAlterations,
+    #name: _f$name,
     #maximumAmount: _f$maximumAmount,
     #requiredTags: _f$requiredTags,
   };
 
   static EventInfo _instantiate(DecodingData data) {
     return EventInfo(data.dec(_f$textAlterations),
+        name: data.dec(_f$name),
         maximumAmount: data.dec(_f$maximumAmount),
         requiredTags: data.dec(_f$requiredTags));
   }
@@ -100,6 +105,7 @@ abstract class EventInfoCopyWith<$R, $In extends EventInfo, $Out>
   TagsCopyWith<$R, Tags, Tags> get requiredTags;
   $R call(
       {List<EventText>? textAlterations,
+      String? name,
       int? maximumAmount,
       Tags? requiredTags});
   EventInfoCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -123,16 +129,19 @@ class _EventInfoCopyWithImpl<$R, $Out>
   @override
   $R call(
           {List<EventText>? textAlterations,
+          String? name,
           int? maximumAmount,
           Tags? requiredTags}) =>
       $apply(FieldCopyWithData({
         if (textAlterations != null) #textAlterations: textAlterations,
+        if (name != null) #name: name,
         if (maximumAmount != null) #maximumAmount: maximumAmount,
         if (requiredTags != null) #requiredTags: requiredTags
       }));
   @override
   EventInfo $make(CopyWithData data) =>
       EventInfo(data.get(#textAlterations, or: $value.textAlterations),
+          name: data.get(#name, or: $value.name),
           maximumAmount: data.get(#maximumAmount, or: $value.maximumAmount),
           requiredTags: data.get(#requiredTags, or: $value.requiredTags));
 

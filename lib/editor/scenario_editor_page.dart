@@ -303,7 +303,7 @@ class Roles with RolesMappable {
           subtitle: Text(x.intlKey),
           title: Text(x.tag),
           trailing: IconButton(
-            icon: Icon(Icons.delete_forever),
+            icon: const Icon(Icons.delete_forever),
             onPressed: () {
               scenario.value = scenario.value.copyWith.roles.removeAt(i);
             },
@@ -314,11 +314,12 @@ class Roles with RolesMappable {
               builder: (c) => _roleEditDialog(c, scenario, x),
               barrierDismissible: true,
             );
-            if (newRole != null)
+            if (newRole != null) {
               scenario.value = scenario.value.copyWith.roles.replace(
                 scenario.value.roles.indexOf(x),
                 newRole,
               );
+            }
           },
         );
       }),
@@ -331,14 +332,15 @@ class Roles with RolesMappable {
                   (c) => _roleEditDialog(
                     c,
                     scenario,
-                    Roles(tag: "", intlKey: "", getAssignableAmount: []),
+                    const Roles(tag: "", intlKey: "", getAssignableAmount: []),
                   ),
               barrierDismissible: true,
             );
-            if (newRole != null)
+            if (newRole != null) {
               scenario.value = scenario.value.copyWith.roles.add(newRole);
+            }
           },
-          icon: Icon(Icons.add),
+          icon: const Icon(Icons.add),
         ),
       ),
     ];

@@ -72,7 +72,7 @@ class _GamePage extends HookConsumerWidget {
         else
           widget,
         MaterialButton(
-            child: Text("Im the button"),
+            child: const Text("Im the button"),
             onPressed: () {
               ref.read(gameManagerProvider.notifier).advance();
             }),

@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:odusg/dynamic_logic/block.dart';
-import 'package:odusg/dynamic_logic/next_button_block.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/editor/widgets/block_widget.dart';
 
 class NextButtonBlockWidget extends BlockWidget<NextButtonBlock> {

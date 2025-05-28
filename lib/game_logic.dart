@@ -8,7 +8,6 @@ import 'package:odusg/events/tags.dart';
 import 'package:odusg/helpers/iterable_extensions.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
-import 'package:odusg/models/scenario.dart';
 import 'package:odusg/widgets/player_name_list.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -28,12 +27,13 @@ Player? nextPlayer(Ref ref) {
 class GameManager extends _$GameManager {
   late List<Step> _steps;
   late int _currentStepIdx;
-  Map<String, dynamic> _allCurrentTags = {};
+  final Map<String, dynamic> _allCurrentTags = {};
   Tags gameTags = Tags.mutable([]);
 
   Map<String, dynamic> get currentTags => _allCurrentTags;
 
   late final List<Player> _players;
+  @override
   Step build() {
     _steps = ref.watch(currentScenarioProvider).steps;
     _currentStepIdx = 0;

@@ -52,7 +52,7 @@ final List<Step> werewolfGame = [
   Step(
     "gameStarted",
     TagCondition.parse("game.startedAlready = 0"),
-    ChangeTagBlock(tags: const [Tag("game.startedAlready")]),
+    const ChangeTagBlock(tags: [Tag("game.startedAlready")]),
   ),
   const Step(
     "showInstructionsForNight",
@@ -79,7 +79,7 @@ final List<Step> werewolfGame = [
       votingTargetPossibilities: TagFilter.parse(
         "!player.dead & !player.role.werewolf",
       ),
-      setTags: Tags([
+      setTags: const Tags([
         Tag("wolfVoting", temporary: true),
       ]), //Maybe add target.Tag syntax
       text: "Wer soll sterben?",
@@ -101,7 +101,7 @@ final List<Step> werewolfGame = [
       votingTargetPossibilities: TagFilter.parse(
         "!player.dead & !player.role.seer",
       ),
-      setTags: Tags([Tag("seerVoting", temporary: true)]),
+      setTags: const Tags([Tag("seerVoting", temporary: true)]),
       text: "Wen willst du gesehen haben?",
     ),
     filter: TagFilter.parse("player.role.seer & !player.dead"),
@@ -140,7 +140,7 @@ final List<Step> werewolfGame = [
     TagCondition.parse("player.role.doctor > 0"),
     PlayerVotingBlock(
       votingTargetPossibilities: TagFilter.parse("!player.dead"),
-      setTags: Tags([Tag("doctorVoting", temporary: true)]),
+      setTags: const Tags([Tag("doctorVoting", temporary: true)]),
       text: "Wer darf nicht sterben?",
     ),
     filter: TagFilter.parse("player.role.doctor & !player.dead"),

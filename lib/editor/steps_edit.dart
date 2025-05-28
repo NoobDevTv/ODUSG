@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/change_tag_block.dart';
+import 'package:odusg/dynamic_logic/event_info_block.dart';
 import 'package:odusg/dynamic_logic/next_button_block.dart';
 import 'package:odusg/dynamic_logic/player_voting_block.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
@@ -71,8 +72,8 @@ class StepsEdit extends StatelessWidget {
           title: IconButton(
             onPressed: () {
               final dialog = SimpleDialog(
+                title: const Text("Select Block Type to add as a step"),
                 children: _selectBlockDialog(context),
-                title: Text("Select Block Type to add as a step"),
               );
               showDialog(context: context, builder: (context) => dialog);
               // final newState = assignables.value.toList();
@@ -105,15 +106,15 @@ class StepsEdit extends StatelessWidget {
      */
     return [
       ListTile(
-        title: Text("Simple Button Block"),
-        subtitle: Text(
+        title: const Text("Simple Button Block"),
+        subtitle: const Text(
           "Text with a Button to go next step. Best used for instructions for the players.",
         ),
         onTap: () => addStep(const NextButtonBlock(endsGame: false, text: "")),
       ),
       ListTile(
-        title: Text("Timer Block"),
-        subtitle: Text(
+        title: const Text("Timer Block"),
+        subtitle: const Text(
           "Timer with min and max seconds. Used for waiting periods or automated next triggers.",
         ),
         onTap:
@@ -126,8 +127,8 @@ class StepsEdit extends StatelessWidget {
             ),
       ),
       ListTile(
-        title: Text("Voting Block"),
-        subtitle: Text(
+        title: const Text("Voting Block"),
+        subtitle: const Text(
           "Block used for player votings. Best used for votes. Democracy yay",
         ),
         onTap:
@@ -140,11 +141,19 @@ class StepsEdit extends StatelessWidget {
             ),
       ),
       ListTile(
-        title: Text("Change Tag Block"),
-        subtitle: Text(
+        title: const Text("Change Tag Block"),
+        subtitle: const Text(
           "Block without UI, but usable to add or remove tags of players and the game itself.",
         ),
         onTap: () => addStep(const ChangeTagBlock(tags: [])),
+      ),
+      ListTile(
+        title: const Text("Event Info Block"),
+        subtitle: const Text("Complex Block with custom Event Info Logic."),
+        onTap:
+            () => addStep(
+              const EventInfoBlock(text: "", eventInfos: [], inOrder: false),
+            ),
       ),
     ];
   }

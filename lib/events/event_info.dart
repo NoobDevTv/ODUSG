@@ -14,12 +14,14 @@ part 'event_info.mapper.dart';
 class EventInfo with EventInfoMappable {
   static Random random = Random();
 
+  final String name;
   final List<EventText> textAlterations;
   final Tags requiredTags;
   final int maximumAmount;
 
   const EventInfo(
     this.textAlterations, {
+    this.name = "",
     this.maximumAmount = 1,
     this.requiredTags = const Tags([]),
   });
@@ -33,9 +35,9 @@ class EventInfo with EventInfoMappable {
       currentEvent: this,
       child: ListTile(
         title: Text(
-          alterations[random.nextInt(alterations.length)]
-              .text
-              .format(formatArgs),
+          alterations[random.nextInt(alterations.length)].text.format(
+            formatArgs,
+          ),
         ),
       ),
     );

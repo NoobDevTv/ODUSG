@@ -1,3 +1,6 @@
+@MappableLib(discriminatorKey: "type") // will be applied to all classes
+library blocks;
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -72,7 +75,7 @@ class MyApp extends StatelessWidget {
       builder: (ctx, child) {
         final data = MediaQuery.of(ctx);
         return MediaQuery(
-          data: data.copyWith(textScaler: const TextScaler.linear(1.3), ),
+          data: data.copyWith(textScaler: const TextScaler.linear(1.3)),
           child: child ?? const SizedBox(),
         );
       },

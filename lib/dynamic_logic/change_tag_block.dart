@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:odusg/dynamic_logic/block.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/game_logic.dart';
@@ -8,7 +9,7 @@ import 'package:odusg/main.dart';
 
 part 'change_tag_block.mapper.dart';
 
-@MappableClass()
+@MappableClass(discriminatorValue: "ChangeTagBlock")
 class ChangeTagBlock extends Block with ChangeTagBlockMappable {
   final TagFilter? affectedPlayers;
   final List<Tag> tags;

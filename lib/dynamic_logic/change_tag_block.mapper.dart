@@ -58,7 +58,7 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
   @override
   final String discriminatorKey = 'type';
   @override
-  final dynamic discriminatorValue = 'ChangeTagBlock';
+  final dynamic discriminatorValue = "ChangeTagBlock";
   @override
   late final ClassMapperBase superMapper = BlockMapper.ensureInitialized();
 

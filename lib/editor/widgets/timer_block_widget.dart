@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/timer_block.dart';
 import 'package:odusg/editor/widgets/block_widget.dart';
 
@@ -95,7 +93,7 @@ class TimerBlockWidget extends BlockWidget<TimerBlock> {
     secondsVal.value = val;
     if ((minTimer && val > otherSeconds) || (!minTimer && val < otherSeconds)) {
       error.value =
-          "Please insert a value ${minTimer ? 'smaller' : 'bigger'} than the ${minTimer ? 'max' : 'min'} timer ${otherSeconds}";
+          "Please insert a value ${minTimer ? 'smaller' : 'bigger'} than the ${minTimer ? 'max' : 'min'} timer $otherSeconds";
       return;
     }
     if (otherError.value?.contains("timer") ?? false) {
