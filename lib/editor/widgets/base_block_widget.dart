@@ -2,14 +2,12 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:odusg/dynamic_logic/block.dart';
-import 'package:odusg/dynamic_logic/change_tag_block.dart';
-import 'package:odusg/dynamic_logic/event_info_block.dart';
-import 'package:odusg/dynamic_logic/next_button_block.dart';
-import 'package:odusg/dynamic_logic/player_voting_block.dart';
-import 'package:odusg/dynamic_logic/timer_block.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
+import 'package:odusg/dynamic_logic/step.dart' as s;
+
 import 'package:odusg/editor/widgets/change_tag_block_widget.dart';
 import 'package:odusg/editor/widgets/event_info_block_widget.dart';
+import 'package:odusg/editor/widgets/group_block_widget.dart';
 import 'package:odusg/editor/widgets/next_button_block_widget.dart';
 import 'package:odusg/editor/widgets/player_voting_block_widget.dart';
 import 'package:odusg/editor/widgets/timer_block_widget.dart';
@@ -19,19 +17,48 @@ class BaseBlockWidget extends HookWidget {
   const BaseBlockWidget({
     super.key,
     required this.block,
+    required this.step,
     required this.scenario,
   });
   final Block block;
+  final ValueNotifier<s.Step> step;
   final Scenario scenario;
 
   @override
   Widget build(BuildContext context) {
-    final b = useState(block);
+    final b = switch (block) {
+      GroupBlock b => useState(b),
+      NextButtonBlock b => useState(b),
+      TimerBlock b => useState(b),
+      PlayerVotingBlock b => useState(b),
+      ChangeTagBlock b => useState(b),
+      _ => useState(block),
+    };
+    useOnListenableChange(b, () {
+      step.value = step.value.copyWith(block: b.value);
+    });
     useEffect(() {
       b.value = block;
       return null;
     }, [block]);
     final textController = useTextEditingController(text: block.text);
+
+    T2 _create<T, T2>(
+      T2 Function({
+        required ValueNotifier<T> block,
+        Key? key,
+        required Scenario scenario,
+        required s.Step step,
+      })
+      func,
+    ) {
+      return func(
+        block: b as ValueNotifier<T>,
+        scenario: scenario,
+        step: step.value,
+      );
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -42,6 +69,7 @@ class BaseBlockWidget extends HookWidget {
               labelText: "Display Text",
               hintText: "The text to show during gameplay",
             ),
+            onChanged: (v) => b.value = b.value.copyWith(text: v),
           ),
         ),
         CheckboxListTile(
@@ -50,7 +78,7 @@ class BaseBlockWidget extends HookWidget {
           onChanged: (v) => b.value = b.value.copyWith(cover: v ?? false),
         ),
         CheckboxListTile(
-          value: b.value.cover,
+          value: b.value.foreachPlayer,
           title: const Text("Execute for each player"),
           onChanged:
               (v) => b.value = b.value.copyWith(foreachPlayer: v ?? false),
@@ -115,24 +143,16 @@ class BaseBlockWidget extends HookWidget {
             ),
           ],
         ),
-        switch (block) {
-          NextButtonBlock b => NextButtonBlockWidget(
-            block: b,
-            scenario: scenario,
+        switch (b) {
+          ValueNotifier<NextButtonBlock> _ => _create(
+            NextButtonBlockWidget.new,
           ),
-          TimerBlock b => TimerBlockWidget(block: b, scenario: scenario),
-          PlayerVotingBlock b => PlayerVotingBlockWidget(
-            block: b,
-            scenario: scenario,
+          ValueNotifier<TimerBlock> _ => _create(TimerBlockWidget.new),
+          ValueNotifier<PlayerVotingBlock> _ => _create(
+            PlayerVotingBlockWidget.new,
           ),
-          ChangeTagBlock b => ChangeTagBlockWidget(
-            block: b,
-            scenario: scenario,
-          ),
-          EventInfoBlock b => EventInfoBlockWidget(
-            block: b,
-            scenario: scenario,
-          ),
+          ValueNotifier<ChangeTagBlock> _ => _create(ChangeTagBlockWidget.new),
+          ValueNotifier<GroupBlock> _ => _create(GroupBlockWidget.new),
           _ => const SizedBox(),
         },
       ],

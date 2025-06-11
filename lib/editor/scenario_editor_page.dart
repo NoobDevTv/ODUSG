@@ -370,102 +370,107 @@ class Roles with RolesMappable {
               child: const Text("Save"),
             ),
           ],
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ListTile(
-                title: TextField(
-                  controller: intlKeyText,
-                  onChanged: (val) {
-                    roleState.value = roleState.value.copyWith(intlKey: val);
-                  },
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    label: const Text("Translation Key"),
-                    hintText:
-                        "The key used to search through the translations.",
-                    errorText: intlKeyError.value,
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  title: TextField(
+                    controller: intlKeyText,
+                    onChanged: (val) {
+                      roleState.value = roleState.value.copyWith(intlKey: val);
+                    },
+                    maxLines: 1,
+                    decoration: InputDecoration(
+                      label: const Text("Translation Key"),
+                      hintText:
+                          "The key used to search through the translations.",
+                      errorText: intlKeyError.value,
+                    ),
                   ),
                 ),
-              ),
-              ListTile(
-                title: DropdownMenu<String>(
-                  initialSelection: role.tag,
-                  label: const Text("Starting Tag"),
-                  onSelected: (value) {
-                    roleState.value = roleState.value.copyWith(tag: value);
-                  },
-                  dropdownMenuEntries:
-                      UnmodifiableListView<DropdownMenuEntry<String>>(
-                        scenario.value.availableGameTags.map(
-                          (e) => DropdownMenuEntry(value: e.tag, label: e.tag),
+                ListTile(
+                  title: DropdownMenu<String>(
+                    initialSelection: role.tag,
+                    label: const Text("Starting Tag"),
+                    onSelected: (value) {
+                      roleState.value = roleState.value.copyWith(tag: value);
+                    },
+                    dropdownMenuEntries:
+                        UnmodifiableListView<DropdownMenuEntry<String>>(
+                          scenario.value.availableGameTags.map(
+                            (e) =>
+                                DropdownMenuEntry(value: e.tag, label: e.tag),
+                          ),
                         ),
-                      ),
+                  ),
                 ),
-              ),
-              ListTile(
-                title: TextField(
-                  controller: priorityTextController,
-                  onChanged: (val) {
-                    final newPrio = int.tryParse(val);
-                    if (newPrio == null) return;
+                ListTile(
+                  title: TextField(
+                    controller: priorityTextController,
+                    onChanged: (val) {
+                      final newPrio = int.tryParse(val);
+                      if (newPrio == null) return;
+                      roleState.value = roleState.value.copyWith(
+                        priority: newPrio,
+                      );
+                    },
+                    maxLines: 1,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      label: Text("Priority"),
+                      hintText: "The Priority of assignment of the role",
+                    ),
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  ),
+                ),
+                CheckboxListTile(
+                  title: const Text("Is Default"),
+                  value: roleState.value.isDefault,
+                  onChanged: (value) {
                     roleState.value = roleState.value.copyWith(
-                      priority: newPrio,
+                      isDefault: value,
                     );
                   },
-                  maxLines: 1,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    label: Text("Priority"),
-                    hintText: "The Priority of assignment of the role",
-                  ),
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                 ),
-              ),
-              CheckboxListTile(
-                title: const Text("Is Default"),
-                value: roleState.value.isDefault,
-                onChanged: (value) {
-                  roleState.value = roleState.value.copyWith(isDefault: value);
-                },
-              ),
-              ...assignables.value.mapIndexed(
-                (x, i) => ListTile(
-                  title: RoleAssignmentRule(
-                    assignables: x,
-                    onChanged: (newValue) {
+                ...assignables.value.mapIndexed(
+                  (x, i) => ListTile(
+                    title: RoleAssignmentRule(
+                      assignables: x,
+                      onChanged: (newValue) {
+                        final newState = assignables.value.toList();
+                        newState[i] = newValue;
+                        assignables.value = newState;
+                        roleState.value = roleState.value.copyWith(
+                          getAssignableAmount: newState,
+                        );
+                      },
+                      deleted: () {
+                        final newState = assignables.value.toList();
+                        newState.removeAt(i);
+                        assignables.value = newState;
+                        roleState.value = roleState.value.copyWith(
+                          getAssignableAmount: newState,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                ListTile(
+                  title: IconButton(
+                    onPressed: () {
                       final newState = assignables.value.toList();
-                      newState[i] = newValue;
+                      newState.add((0, 0, 0));
                       assignables.value = newState;
                       roleState.value = roleState.value.copyWith(
                         getAssignableAmount: newState,
                       );
                     },
-                    deleted: () {
-                      final newState = assignables.value.toList();
-                      newState.removeAt(i);
-                      assignables.value = newState;
-                      roleState.value = roleState.value.copyWith(
-                        getAssignableAmount: newState,
-                      );
-                    },
+                    icon: const Icon(Icons.add),
                   ),
                 ),
-              ),
-              ListTile(
-                title: IconButton(
-                  onPressed: () {
-                    final newState = assignables.value.toList();
-                    newState.add((0, 0, 0));
-                    assignables.value = newState;
-                    roleState.value = roleState.value.copyWith(
-                      getAssignableAmount: newState,
-                    );
-                  },
-                  icon: const Icon(Icons.add),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

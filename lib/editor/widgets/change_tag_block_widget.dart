@@ -9,6 +9,7 @@ class ChangeTagBlockWidget extends BlockWidget<ChangeTagBlock> {
     super.key,
     required super.block,
     required super.scenario,
+    required super.step,
   });
 
   /*

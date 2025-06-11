@@ -8,6 +8,7 @@ class TimerBlockWidget extends BlockWidget<TimerBlock> {
     super.key,
     required super.block,
     required super.scenario,
+    required super.step,
   });
 
   @override

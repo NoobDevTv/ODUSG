@@ -48,10 +48,8 @@ class StepEditPage extends HookWidget {
                   ),
                   child: TextField(
                     controller: nameController,
-                    onEditingComplete: () {
-                      current.value = current.value.copyWith(
-                        name: nameController.text,
-                      );
+                    onChanged: (newText) {
+                      current.value = current.value.copyWith(name: newText);
                     },
                     decoration: const InputDecoration(
                       label: Text("Name"),
@@ -66,11 +64,9 @@ class StepEditPage extends HookWidget {
                   ),
                   child: TextField(
                     controller: entryController,
-                    onEditingComplete: () {
+                    onChanged: (newText) {
                       try {
-                        final newCondition = TagCondition.parse(
-                          entryController.text,
-                        );
+                        final newCondition = TagCondition.parse(newText);
                         current.value = current.value.copyWith(
                           entryGuard: newCondition,
                         );
@@ -97,11 +93,9 @@ class StepEditPage extends HookWidget {
                   ),
                   child: TextField(
                     controller: filterController,
-                    onEditingComplete: () {
+                    onChanged: (newText) {
                       try {
-                        final newFilter = TagFilter.parse(
-                          filterController.text,
-                        );
+                        final newFilter = TagFilter.parse(newText);
                         current.value = current.value.copyWith(
                           filter: newFilter,
                         );
@@ -129,6 +123,7 @@ class StepEditPage extends HookWidget {
             child: BaseBlockWidget(
               block: current.value.block,
               scenario: scenario,
+              step: current,
             ),
           ),
         ],

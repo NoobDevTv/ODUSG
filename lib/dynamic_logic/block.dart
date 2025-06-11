@@ -10,6 +10,7 @@ part 'block.mapper.dart';
     VotingBlock,
     TimerBlock,
     EventInfoBlock,
+    GroupBlock,
   ],
 )
 class Block with BlockMappable {

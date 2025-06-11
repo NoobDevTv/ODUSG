@@ -9,6 +9,7 @@ class EventInfoBlockWidget extends BlockWidget<EventInfoBlock> {
     super.key,
     required super.block,
     required super.scenario,
+    required super.step,
   });
 
   @override

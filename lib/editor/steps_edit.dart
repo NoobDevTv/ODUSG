@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/change_tag_block.dart';
 import 'package:odusg/dynamic_logic/event_info_block.dart';
+import 'package:odusg/dynamic_logic/group_block.dart';
 import 'package:odusg/dynamic_logic/next_button_block.dart';
 import 'package:odusg/dynamic_logic/player_voting_block.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
@@ -70,18 +71,14 @@ class StepsEdit extends StatelessWidget {
         ),
         ListTile(
           title: IconButton(
-            onPressed: () {
-              final dialog = SimpleDialog(
-                title: const Text("Select Block Type to add as a step"),
-                children: _selectBlockDialog(context),
+            onPressed: () async {
+              final res = await showDialog(
+                context: context,
+                builder: (context) => const StepSelectorDialog(),
               );
-              showDialog(context: context, builder: (context) => dialog);
-              // final newState = assignables.value.toList();
-              // newState.add((0, 0, 0));
-              // assignables.value = newState;
-              // roleState.value = roleState.value.copyWith(
-              //   getAssignableAmount: newState,
-              // );
+              if (res is s.Step) {
+                scenario.value = scenario.value.copyWith.steps.add(res);
+              }
             },
             icon: const Icon(Icons.add),
           ),
@@ -89,72 +86,79 @@ class StepsEdit extends StatelessWidget {
       ],
     );
   }
+}
 
-  List<Widget> _selectBlockDialog(BuildContext context) {
+class StepSelectorDialog extends StatelessWidget {
+  const StepSelectorDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     void addStep(Block block) {
-      scenario.value = scenario.value.copyWith.steps.add(
-        s.Step("", TagCondition.enter, block),
-      );
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(s.Step("", TagCondition.enter, block));
     }
 
-    /*
-          NextButtonBlock b => NextButtonBlockWidget(block: b),
-          TimerBlock b => TimerBlockWidget(block: b),
-          PlayerVotingBlock b => PlayerVotingBlockWidget(block: b),
-          ChangeTagBlock b => ChangeTagBlockWidget(block: b),
-     */
-    return [
-      ListTile(
-        title: const Text("Simple Button Block"),
-        subtitle: const Text(
-          "Text with a Button to go next step. Best used for instructions for the players.",
+    return SimpleDialog(
+      title: const Text("Select Block Type to add as a step"),
+      children: [
+        ListTile(
+          title: const Text("Simple Button Block"),
+          subtitle: const Text(
+            "Text with a Button to go next step. Best used for instructions for the players.",
+          ),
+          onTap:
+              () => addStep(const NextButtonBlock(endsGame: false, text: "")),
         ),
-        onTap: () => addStep(const NextButtonBlock(endsGame: false, text: "")),
-      ),
-      ListTile(
-        title: const Text("Timer Block"),
-        subtitle: const Text(
-          "Timer with min and max seconds. Used for waiting periods or automated next triggers.",
-        ),
-        onTap:
-            () => addStep(
-              const TimerBlock(
-                text: "",
-                minTimer: Duration(seconds: 0),
-                maxTimer: Duration(seconds: 0),
+        ListTile(
+          title: const Text("Timer Block"),
+          subtitle: const Text(
+            "Timer with min and max seconds. Used for waiting periods or automated next triggers.",
+          ),
+          onTap:
+              () => addStep(
+                const TimerBlock(
+                  text: "",
+                  minTimer: Duration(seconds: 0),
+                  maxTimer: Duration(seconds: 0),
+                ),
               ),
-            ),
-      ),
-      ListTile(
-        title: const Text("Voting Block"),
-        subtitle: const Text(
-          "Block used for player votings. Best used for votes. Democracy yay",
         ),
-        onTap:
-            () => addStep(
-              const PlayerVotingBlock(
-                text: "",
-                votingTargetPossibilities: TagFilter.empty,
-                setTags: Tags([]),
+        ListTile(
+          title: const Text("Voting Block"),
+          subtitle: const Text(
+            "Block used for player votings. Best used for votes. Democracy yay",
+          ),
+          onTap:
+              () => addStep(
+                const PlayerVotingBlock(
+                  text: "",
+                  votingTargetPossibilities: TagFilter.empty,
+                  setTags: Tags([]),
+                ),
               ),
-            ),
-      ),
-      ListTile(
-        title: const Text("Change Tag Block"),
-        subtitle: const Text(
-          "Block without UI, but usable to add or remove tags of players and the game itself.",
         ),
-        onTap: () => addStep(const ChangeTagBlock(tags: [])),
-      ),
-      ListTile(
-        title: const Text("Event Info Block"),
-        subtitle: const Text("Complex Block with custom Event Info Logic."),
-        onTap:
-            () => addStep(
-              const EventInfoBlock(text: "", eventInfos: [], inOrder: false),
-            ),
-      ),
-    ];
+        ListTile(
+          title: const Text("Change Tag Block"),
+          subtitle: const Text(
+            "Block without UI, but usable to add or remove tags of players and the game itself.",
+          ),
+          onTap: () => addStep(const ChangeTagBlock(tags: [])),
+        ),
+        ListTile(
+          title: const Text("Event Info Block"),
+          subtitle: const Text("Complex Block with custom Event Info Logic."),
+          onTap:
+              () => addStep(
+                const EventInfoBlock(text: "", eventInfos: [], inOrder: false),
+              ),
+        ),
+        ListTile(
+          title: const Text("Group Block"),
+          subtitle: const Text(
+            "Simple Block that contains multiple Steps grouped.",
+          ),
+          onTap: () => addStep(const GroupBlock(text: "", steps: [])),
+        ),
+      ],
+    );
   }
 }
