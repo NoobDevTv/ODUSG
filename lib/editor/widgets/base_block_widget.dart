@@ -6,7 +6,6 @@ import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 
 import 'package:odusg/editor/widgets/change_tag_block_widget.dart';
-import 'package:odusg/editor/widgets/event_info_block_widget.dart';
 import 'package:odusg/editor/widgets/group_block_widget.dart';
 import 'package:odusg/editor/widgets/next_button_block_widget.dart';
 import 'package:odusg/editor/widgets/player_voting_block_widget.dart';
@@ -43,7 +42,7 @@ class BaseBlockWidget extends HookWidget {
     }, [block]);
     final textController = useTextEditingController(text: block.text);
 
-    T2 _create<T, T2>(
+    T2 create<T, T2>(
       T2 Function({
         required ValueNotifier<T> block,
         Key? key,
@@ -144,15 +143,13 @@ class BaseBlockWidget extends HookWidget {
           ],
         ),
         switch (b) {
-          ValueNotifier<NextButtonBlock> _ => _create(
-            NextButtonBlockWidget.new,
-          ),
-          ValueNotifier<TimerBlock> _ => _create(TimerBlockWidget.new),
-          ValueNotifier<PlayerVotingBlock> _ => _create(
+          ValueNotifier<NextButtonBlock> _ => create(NextButtonBlockWidget.new),
+          ValueNotifier<TimerBlock> _ => create(TimerBlockWidget.new),
+          ValueNotifier<PlayerVotingBlock> _ => create(
             PlayerVotingBlockWidget.new,
           ),
-          ValueNotifier<ChangeTagBlock> _ => _create(ChangeTagBlockWidget.new),
-          ValueNotifier<GroupBlock> _ => _create(GroupBlockWidget.new),
+          ValueNotifier<ChangeTagBlock> _ => create(ChangeTagBlockWidget.new),
+          ValueNotifier<GroupBlock> _ => create(GroupBlockWidget.new),
           _ => const SizedBox(),
         },
       ],

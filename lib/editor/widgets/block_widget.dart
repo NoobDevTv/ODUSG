@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
-import 'package:odusg/editor/widgets/base_block_widget.dart';
 import 'package:odusg/models/scenario.dart';
 
 abstract class BlockWidget<T extends Block> extends HookWidget {
@@ -16,7 +15,7 @@ abstract class BlockWidget<T extends Block> extends HookWidget {
   final ValueNotifier<T> block;
   final Scenario scenario;
   final s.Step step;
-  T get currentBlock => block.value as T;
+  T get currentBlock => block.value;
 
   @override
   Widget build(BuildContext context) {

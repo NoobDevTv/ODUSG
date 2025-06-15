@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
-import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/editor/steps_edit.dart';
 import 'package:odusg/editor/widgets/block_widget.dart';
 import 'package:odusg/editor/widgets/step_widget.dart';
