@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:odusg/conditions/win_condition.dart';
 import 'package:odusg/dynamic_logic/block_widget.dart';
@@ -22,7 +24,6 @@ final defaultScenarios = [
     fileVersion: 1,
     saveCounter: 1,
     title: "Barcamp",
-    possibleEvents: [],
     endText: "please vote for the player, who gave the best pitch",
     preGameWidget: PreGameWidget.textInput,
     showAssignedEventAtEnd: true,
@@ -44,7 +45,6 @@ final defaultScenarios = [
     fileVersion: 1,
     saveCounter: 1,
     title: "Standard",
-    possibleEvents: textEvents,
     endText: "please vote for the player, who you think is the bad one",
     preGameWidget: PreGameWidget.roleAssignment,
     showAssignedEventAtEnd: false,
@@ -68,17 +68,6 @@ final defaultScenarios = [
         "gameStarted",
         TagCondition.parse("game.startedAlready = 0"),
         const ChangeTagBlock(tags: [Tag("game.startedAlready")]),
-      ),
-      const Step(
-        "actualGame",
-        TagCondition.enter,
-        EventInfoBlock(
-          text: "a",
-          eventInfos: textEvents,
-          inOrder: false,
-          foreachPlayer: true,
-          cover: true,
-        ),
       ),
       const Step(
         "voting",
@@ -113,7 +102,6 @@ final defaultScenarios = [
     fileVersion: 1,
     saveCounter: 1,
     title: "Werewolf",
-    possibleEvents: [],
     endText: "please vote for the player, who you think is the bad one",
     preGameWidget: PreGameWidget.roleAssignment,
     showAssignedEventAtEnd: false,
@@ -159,13 +147,12 @@ final defaultScenarios = [
 class Scenarios extends _$Scenarios {
   @override
   List<Scenario> build() {
-    return
-    //  ref
-    //         .read(sharedPreferencesProvider)
-    //         .getStringList("scenarios")
-    //         ?.map((x) => ScenarioMapper.fromMap(migrate(jsonDecode(x))))
-    //         .toList() ??
-    defaultScenarios;
+    return ref
+            .read(sharedPreferencesProvider)
+            .getStringList("scenarios")
+            ?.map((x) => ScenarioMapper.fromMap(migrate(jsonDecode(x))))
+            .toList() ??
+        defaultScenarios;
   }
 
   Map<String, dynamic> migrate(Map<String, dynamic> val) {
@@ -227,7 +214,6 @@ class Scenario with ScenarioMappable {
     required this.fileVersion,
     required this.saveCounter,
     required this.title,
-    required this.possibleEvents,
     required this.endText,
     required this.showAssignedEventAtEnd,
     required this.preGameWidget,
@@ -243,7 +229,6 @@ class Scenario with ScenarioMappable {
       saveCounter = 1,
       uid = const UuidV7().generate(),
       title = "",
-      possibleEvents = [],
       endText = "",
       preGameWidget = PreGameWidget.roleAssignment,
       showAssignedEventAtEnd = false,
@@ -257,7 +242,6 @@ class Scenario with ScenarioMappable {
   final int fileVersion;
   final int saveCounter;
   final String title;
-  final List<EventInfo> possibleEvents;
   final String endText;
   final bool showAssignedEventAtEnd;
   final PreGameWidget preGameWidget;

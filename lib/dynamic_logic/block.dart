@@ -1,5 +1,6 @@
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
+import 'package:odusg/dynamic_logic/single_child_executor_block.dart';
 
 part 'block.mapper.dart';
 
@@ -9,8 +10,8 @@ part 'block.mapper.dart';
     NextButtonBlock,
     VotingBlock,
     TimerBlock,
-    EventInfoBlock,
     GroupBlock,
+    SingleChildExecutorBlock,
   ],
 )
 class Block with BlockMappable {

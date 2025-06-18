@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/current_scenario.dart';
 import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/events/tags.dart';
+import 'package:odusg/special_states/group_blocks.dart';
 import 'package:odusg/helpers/iterable_extensions.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
@@ -12,6 +13,27 @@ import 'package:odusg/widgets/player_name_list.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_logic.g.dart';
+
+@Riverpod(keepAlive: true)
+class Advancing extends _$Advancing {
+  List<GroupBlockStep>? _groupBlocks;
+
+  @override
+  void build() {
+    _groupBlocks = ref.watch(groupBlocksProvider);
+
+    return;
+  }
+
+  void advance() {
+    final groupBlocks = _groupBlocks;
+    if (groupBlocks == null || groupBlocks.isEmpty) {
+      ref.read(gameManagerProvider.notifier).advance();
+    } else {
+      ref.read(groupBlocksProvider.notifier).advanceCurrent();
+    }
+  }
+}
 
 @Riverpod(keepAlive: true)
 Random random(Ref ref) {
@@ -32,7 +54,7 @@ class GameManager extends _$GameManager {
 
   Map<String, dynamic> get currentTags => _allCurrentTags;
 
-  late final List<Player> _players;
+  late List<Player> _players;
   @override
   Step build() {
     _steps = ref.watch(currentScenarioProvider).steps;
@@ -66,7 +88,7 @@ class GameManager extends _$GameManager {
         final lastPoint = x.lastIndexOf('.');
         return (
           x.substring(0, lastPoint).replaceAll('.', '_'),
-          x.substring(lastPoint + 1)
+          x.substring(lastPoint + 1),
         );
       });
 
@@ -137,12 +159,7 @@ class PlayerManager extends _$PlayerManager {
           role: Role.undefined,
           keyWord: name,
           keyWordSet: keyWords,
-          tags: Tags(
-            [
-              Tag("role.${roleForUser.$1!}"),
-              Tag("name.$name"),
-            ],
-          ),
+          tags: Tags([Tag("role.${roleForUser.$1!}"), Tag("name.$name")]),
         ),
       );
     }
@@ -233,12 +250,10 @@ class VotingManager extends _$VotingManager {
   @override
   Map<Player, int> build() {
     final players = ref.watch(playerManagerProvider);
-    return players.map((x) => {x: 0}).reduce(
-      (value, element) {
-        value.addAll(element);
-        return value;
-      },
-    );
+    return players.map((x) => {x: 0}).reduce((value, element) {
+      value.addAll(element);
+      return value;
+    });
   }
 
   void voteForPlayer(Player player) {

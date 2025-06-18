@@ -1,12 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:odusg/dynamic_logic/block.dart';
-import 'package:odusg/dynamic_logic/change_tag_block.dart';
-import 'package:odusg/dynamic_logic/next_button_block.dart';
-import 'package:odusg/dynamic_logic/player_voting_block.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
-import 'package:odusg/dynamic_logic/timer_block.dart';
-import 'package:odusg/dynamic_logic/voting_block.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/widgets/next_button.dart';
 import 'package:odusg/widgets/timer_block_widget.dart';
@@ -25,6 +20,10 @@ final blockWidgetFactory = <Type, Widget Function(Block)>{
     WidgetsBinding.instance.addPostFrameCallback((_) => change.act());
     return const SizedBox();
   },
+  GroupBlock: (block) {
+    return const SizedBox();
+  },
+  SingleChildExecutorBlock: (block) => const SizedBox(),
 };
 
 final List<Step> werewolfGame = [

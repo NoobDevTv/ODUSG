@@ -59,7 +59,6 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
   static ScenarioMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ScenarioMapper._());
-      EventInfoMapper.ensureInitialized();
       PreGameWidgetMapper.ensureInitialized();
       RolesMapper.ensureInitialized();
       StepMapper.ensureInitialized();
@@ -81,9 +80,6 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
       Field('saveCounter', _$saveCounter);
   static String _$title(Scenario v) => v.title;
   static const Field<Scenario, String> _f$title = Field('title', _$title);
-  static List<EventInfo> _$possibleEvents(Scenario v) => v.possibleEvents;
-  static const Field<Scenario, List<EventInfo>> _f$possibleEvents =
-      Field('possibleEvents', _$possibleEvents);
   static String _$endText(Scenario v) => v.endText;
   static const Field<Scenario, String> _f$endText = Field('endText', _$endText);
   static bool _$showAssignedEventAtEnd(Scenario v) => v.showAssignedEventAtEnd;
@@ -113,7 +109,6 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
     #fileVersion: _f$fileVersion,
     #saveCounter: _f$saveCounter,
     #title: _f$title,
-    #possibleEvents: _f$possibleEvents,
     #endText: _f$endText,
     #showAssignedEventAtEnd: _f$showAssignedEventAtEnd,
     #preGameWidget: _f$preGameWidget,
@@ -130,7 +125,6 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
         fileVersion: data.dec(_f$fileVersion),
         saveCounter: data.dec(_f$saveCounter),
         title: data.dec(_f$title),
-        possibleEvents: data.dec(_f$possibleEvents),
         endText: data.dec(_f$endText),
         showAssignedEventAtEnd: data.dec(_f$showAssignedEventAtEnd),
         preGameWidget: data.dec(_f$preGameWidget),
@@ -190,8 +184,6 @@ extension ScenarioValueCopy<$R, $Out> on ObjectCopyWith<$R, Scenario, $Out> {
 
 abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<$R, EventInfo, EventInfoCopyWith<$R, EventInfo, EventInfo>>
-      get possibleEvents;
   ListCopyWith<$R, Roles, RolesCopyWith<$R, Roles, Roles>> get roles;
   ListCopyWith<$R, Step, StepCopyWith<$R, Step, Step>> get steps;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get availableGameTags;
@@ -201,7 +193,6 @@ abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
       int? fileVersion,
       int? saveCounter,
       String? title,
-      List<EventInfo>? possibleEvents,
       String? endText,
       bool? showAssignedEventAtEnd,
       PreGameWidget? preGameWidget,
@@ -221,10 +212,6 @@ class _ScenarioCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<Scenario> $mapper =
       ScenarioMapper.ensureInitialized();
-  @override
-  ListCopyWith<$R, EventInfo, EventInfoCopyWith<$R, EventInfo, EventInfo>>
-      get possibleEvents => ListCopyWith($value.possibleEvents,
-          (v, t) => v.copyWith.$chain(t), (v) => call(possibleEvents: v));
   @override
   ListCopyWith<$R, Roles, RolesCopyWith<$R, Roles, Roles>> get roles =>
       ListCopyWith(
@@ -247,7 +234,6 @@ class _ScenarioCopyWithImpl<$R, $Out>
           int? fileVersion,
           int? saveCounter,
           String? title,
-          List<EventInfo>? possibleEvents,
           String? endText,
           bool? showAssignedEventAtEnd,
           PreGameWidget? preGameWidget,
@@ -261,7 +247,6 @@ class _ScenarioCopyWithImpl<$R, $Out>
         if (fileVersion != null) #fileVersion: fileVersion,
         if (saveCounter != null) #saveCounter: saveCounter,
         if (title != null) #title: title,
-        if (possibleEvents != null) #possibleEvents: possibleEvents,
         if (endText != null) #endText: endText,
         if (showAssignedEventAtEnd != null)
           #showAssignedEventAtEnd: showAssignedEventAtEnd,
@@ -278,7 +263,6 @@ class _ScenarioCopyWithImpl<$R, $Out>
       fileVersion: data.get(#fileVersion, or: $value.fileVersion),
       saveCounter: data.get(#saveCounter, or: $value.saveCounter),
       title: data.get(#title, or: $value.title),
-      possibleEvents: data.get(#possibleEvents, or: $value.possibleEvents),
       endText: data.get(#endText, or: $value.endText),
       showAssignedEventAtEnd:
           data.get(#showAssignedEventAtEnd, or: $value.showAssignedEventAtEnd),

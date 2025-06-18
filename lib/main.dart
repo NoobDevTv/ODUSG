@@ -4,6 +4,8 @@ library;
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:odusg/game_logic.dart';
+import 'package:odusg/special_states/group_blocks.dart';
 import 'package:odusg/mappers/duration_mapper.dart';
 import 'package:odusg/pages/export.dart';
 import 'package:odusg/pages/manage_scenario_page.dart';
@@ -46,6 +48,7 @@ class _EarlyInitializer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(globalRefProvider);
+    ref.watch(advancingProvider);
 
     return child;
   }

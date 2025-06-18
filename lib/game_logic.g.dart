@@ -184,7 +184,21 @@ class _TickerProviderElement extends AutoDisposeStreamProviderElement<int>
   Duration get duration => (origin as TickerProvider).duration;
 }
 
-String _$gameManagerHash() => r'076c71a15a4862010129d93072a693f25ea92230';
+String _$advancingHash() => r'f54a0526ffa683be89c51475d14d7ce1b4f440d7';
+
+/// See also [Advancing].
+@ProviderFor(Advancing)
+final advancingProvider = NotifierProvider<Advancing, void>.internal(
+  Advancing.new,
+  name: r'advancingProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$advancingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Advancing = Notifier<void>;
+String _$gameManagerHash() => r'669d396b6e90462f17fcabfb88a2291289d7d7ce';
 
 /// See also [GameManager].
 @ProviderFor(GameManager)

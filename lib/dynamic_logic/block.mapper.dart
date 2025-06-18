@@ -17,8 +17,8 @@ class BlockMapper extends ClassMapperBase<Block> {
       NextButtonBlockMapper.ensureInitialized();
       VotingBlockMapper.ensureInitialized();
       TimerBlockMapper.ensureInitialized();
-      EventInfoBlockMapper.ensureInitialized();
       GroupBlockMapper.ensureInitialized();
+      SingleChildExecutorBlockMapper.ensureInitialized();
     }
     return _instance!;
   }

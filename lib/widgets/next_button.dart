@@ -52,10 +52,10 @@ class NextButton extends HookConsumerWidget {
       ref.invalidate(nextPlayerProvider);
       final player = ref.read(nextPlayerProvider);
       if (player == null) {
-        ref.read(gameManagerProvider.notifier).advance();
+        ref.read(advancingProvider.notifier).advance();
       }
     } else {
-      ref.read(gameManagerProvider.notifier).advance();
+      ref.read(advancingProvider.notifier).advance();
     }
   }
 }

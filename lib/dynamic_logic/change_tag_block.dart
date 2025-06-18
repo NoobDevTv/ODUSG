@@ -60,6 +60,6 @@ class ChangeTagBlock extends Block with ChangeTagBlockMappable {
         }
       }
     }
-    gameNotifier.advance();
+    ref.read(advancingProvider.notifier).advance();
   }
 }

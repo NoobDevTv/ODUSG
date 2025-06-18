@@ -24,16 +24,14 @@ class VotingBlockWidget extends HookConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(votingBlock.text),
-              ...votings
-                  .map(
-                    (x) => RadioListTile<String>(
-                      value: x,
-                      title: Text(x),
-                      groupValue: selected.value,
-                      onChanged: (val) => selected.value = val ?? "",
-                    ),
-                  )
-                  ,
+              ...votings.map(
+                (x) => RadioListTile<String>(
+                  value: x,
+                  title: Text(x),
+                  groupValue: selected.value,
+                  onChanged: (val) => selected.value = val ?? "",
+                ),
+              ),
             ],
           ),
         ),
@@ -43,7 +41,7 @@ class VotingBlockWidget extends HookConsumerWidget {
                   ? null
                   : () {
                     votingBlock.finish(ref, selected.value);
-                    ref.read(gameManagerProvider.notifier).advance();
+                    ref.read(advancingProvider.notifier).advance();
                   },
           child: const Text("Vote"),
         ),

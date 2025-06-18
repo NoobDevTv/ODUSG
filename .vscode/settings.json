@@ -2,5 +2,6 @@
     "cSpell.words": [
         "assignables"
     ],
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "cmake.sourceDirectory": "C:/Users/susch/source/flutter/odusg/windows/runner"
 }

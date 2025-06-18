@@ -6,3 +6,4 @@ export 'next_button_block.dart';
 export 'timer_block.dart';
 export 'event_info_block.dart';
 export 'group_block.dart';
+export 'single_child_executor_block.dart';

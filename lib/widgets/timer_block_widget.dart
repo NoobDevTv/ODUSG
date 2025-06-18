@@ -29,7 +29,7 @@ class TimerBlockWidget extends ConsumerWidget {
           tickFor: duration,
           elapsed:
               () => WidgetsBinding.instance.addPostFrameCallback(
-                (_) => ref.read(gameManagerProvider.notifier).advance(),
+                (_) => ref.read(advancingProvider.notifier).advance(),
               ),
         ),
       ],

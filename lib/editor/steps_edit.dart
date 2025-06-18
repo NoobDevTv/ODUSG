@@ -143,14 +143,7 @@ class StepSelectorDialog extends StatelessWidget {
           ),
           onTap: () => addStep(const ChangeTagBlock(tags: [])),
         ),
-        ListTile(
-          title: const Text("Event Info Block"),
-          subtitle: const Text("Complex Block with custom Event Info Logic."),
-          onTap:
-              () => addStep(
-                const EventInfoBlock(text: "", eventInfos: [], inOrder: false),
-              ),
-        ),
+
         ListTile(
           title: const Text("Group Block"),
           subtitle: const Text(

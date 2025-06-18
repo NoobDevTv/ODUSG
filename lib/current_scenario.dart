@@ -1,4 +1,3 @@
-import 'package:odusg/events/event_info.dart';
 import 'package:odusg/models/scenario.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -13,7 +12,6 @@ class CurrentScenario extends _$CurrentScenario {
       saveCounter: 0,
       uid: "",
       title: "",
-      possibleEvents: [],
       endText: "",
       preGameWidget: PreGameWidget.roleAssignment,
       showAssignedEventAtEnd: false,
@@ -25,11 +23,5 @@ class CurrentScenario extends _$CurrentScenario {
 
   void selectOther(Scenario scenario) {
     state = scenario;
-  }
-
-  void addNewEventToCurrent(EventInfo additionalEvent) {
-    state = state.copyWith(
-      possibleEvents: [...state.possibleEvents, additionalEvent],
-    );
   }
 }
