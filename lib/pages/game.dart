@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/block_widget.dart';
-import 'package:odusg/dynamic_logic/group_block.dart';
 import 'package:odusg/game_logic.dart';
 import 'package:odusg/special_states/group_blocks.dart';
 import 'package:odusg/pages/for_player.dart';
+import 'package:odusg/special_states/single_execution_blocks.dart';
 
 class GamePage extends ConsumerWidget {
   const GamePage({super.key});
@@ -62,6 +63,13 @@ class _GamePage extends HookConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(groupBlocksProvider.notifier).tryAppend(block);
       });
+    } else if (block is SingleChildExecutorBlock) {
+      step =
+          ref.read(singleExecutionBlocksProvider.notifier).advance(block) ??
+          step;
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ref.read(advancingProvider.notifier).advance(),
+      );
     }
 
     final widget = blockWidgetFactory[step.block.runtimeType]!(step.block);

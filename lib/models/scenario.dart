@@ -6,8 +6,6 @@ import 'package:odusg/dynamic_logic/block_widget.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
-import 'package:odusg/events/event_info.dart';
-import 'package:odusg/events/events.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/main.dart';
 import 'package:odusg/models/player.dart';

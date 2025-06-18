@@ -44,6 +44,13 @@ class SingleChildExecutorBlockMapper
   static bool _$randomOrder(SingleChildExecutorBlock v) => v.randomOrder;
   static const Field<SingleChildExecutorBlock, bool> _f$randomOrder =
       Field('randomOrder', _$randomOrder);
+  static bool _$refillWhenEmpty(SingleChildExecutorBlock v) =>
+      v.refillWhenEmpty;
+  static const Field<SingleChildExecutorBlock, bool> _f$refillWhenEmpty =
+      Field('refillWhenEmpty', _$refillWhenEmpty);
+  static bool _$removeExecuted(SingleChildExecutorBlock v) => v.removeExecuted;
+  static const Field<SingleChildExecutorBlock, bool> _f$removeExecuted =
+      Field('removeExecuted', _$removeExecuted);
 
   @override
   final MappableFields<SingleChildExecutorBlock> fields = const {
@@ -53,6 +60,8 @@ class SingleChildExecutorBlockMapper
     #perTagText: _f$perTagText,
     #steps: _f$steps,
     #randomOrder: _f$randomOrder,
+    #refillWhenEmpty: _f$refillWhenEmpty,
+    #removeExecuted: _f$removeExecuted,
   };
 
   @override
@@ -69,7 +78,9 @@ class SingleChildExecutorBlockMapper
         foreachPlayer: data.dec(_f$foreachPlayer),
         perTagText: data.dec(_f$perTagText),
         steps: data.dec(_f$steps),
-        randomOrder: data.dec(_f$randomOrder));
+        randomOrder: data.dec(_f$randomOrder),
+        refillWhenEmpty: data.dec(_f$refillWhenEmpty),
+        removeExecuted: data.dec(_f$removeExecuted));
   }
 
   @override
@@ -140,7 +151,9 @@ abstract class SingleChildExecutorBlockCopyWith<
       bool? foreachPlayer,
       Map<String, String>? perTagText,
       List<Step>? steps,
-      bool? randomOrder});
+      bool? randomOrder,
+      bool? refillWhenEmpty,
+      bool? removeExecuted});
   SingleChildExecutorBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -171,14 +184,18 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
           bool? foreachPlayer,
           Map<String, String>? perTagText,
           List<Step>? steps,
-          bool? randomOrder}) =>
+          bool? randomOrder,
+          bool? refillWhenEmpty,
+          bool? removeExecuted}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
         if (perTagText != null) #perTagText: perTagText,
         if (steps != null) #steps: steps,
-        if (randomOrder != null) #randomOrder: randomOrder
+        if (randomOrder != null) #randomOrder: randomOrder,
+        if (refillWhenEmpty != null) #refillWhenEmpty: refillWhenEmpty,
+        if (removeExecuted != null) #removeExecuted: removeExecuted
       }));
   @override
   SingleChildExecutorBlock $make(CopyWithData data) => SingleChildExecutorBlock(
@@ -187,7 +204,9 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
       perTagText: data.get(#perTagText, or: $value.perTagText),
       steps: data.get(#steps, or: $value.steps),
-      randomOrder: data.get(#randomOrder, or: $value.randomOrder));
+      randomOrder: data.get(#randomOrder, or: $value.randomOrder),
+      refillWhenEmpty: data.get(#refillWhenEmpty, or: $value.refillWhenEmpty),
+      removeExecuted: data.get(#removeExecuted, or: $value.removeExecuted));
 
   @override
   SingleChildExecutorBlockCopyWith<$R2, SingleChildExecutorBlock, $Out2>

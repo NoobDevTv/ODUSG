@@ -9,6 +9,8 @@ class SingleChildExecutorBlock extends Block
     with SingleChildExecutorBlockMappable {
   final List<Step> steps;
   final bool randomOrder;
+  final bool removeExecuted;
+  final bool refillWhenEmpty;
 
   const SingleChildExecutorBlock({
     required super.text,
@@ -17,5 +19,7 @@ class SingleChildExecutorBlock extends Block
     super.perTagText = const {},
     required this.steps,
     required this.randomOrder,
+    required this.refillWhenEmpty,
+    required this.removeExecuted,
   });
 }

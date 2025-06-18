@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/block.dart';
 import 'package:odusg/dynamic_logic/change_tag_block.dart';
-import 'package:odusg/dynamic_logic/event_info_block.dart';
 import 'package:odusg/dynamic_logic/group_block.dart';
 import 'package:odusg/dynamic_logic/next_button_block.dart';
 import 'package:odusg/dynamic_logic/player_voting_block.dart';
