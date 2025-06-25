@@ -9,6 +9,7 @@ import 'package:odusg/editor/widgets/change_tag_block_widget.dart';
 import 'package:odusg/editor/widgets/group_block_widget.dart';
 import 'package:odusg/editor/widgets/next_button_block_widget.dart';
 import 'package:odusg/editor/widgets/player_voting_block_widget.dart';
+import 'package:odusg/editor/widgets/single_child_executor_block_widget.dart';
 import 'package:odusg/editor/widgets/timer_block_widget.dart';
 import 'package:odusg/models/scenario.dart';
 
@@ -31,6 +32,7 @@ class BaseBlockWidget extends HookWidget {
       TimerBlock b => useState(b),
       PlayerVotingBlock b => useState(b),
       ChangeTagBlock b => useState(b),
+      SingleChildExecutorBlock b => useState(b),
       _ => useState(block),
     };
     useOnListenableChange(b, () {
@@ -150,6 +152,9 @@ class BaseBlockWidget extends HookWidget {
           ),
           ValueNotifier<ChangeTagBlock> _ => create(ChangeTagBlockWidget.new),
           ValueNotifier<GroupBlock> _ => create(GroupBlockWidget.new),
+          ValueNotifier<SingleChildExecutorBlock> _ => create(
+            SingleChildExecutorBlockWidget.new,
+          ),
           _ => const SizedBox(),
         },
       ],

@@ -67,7 +67,7 @@ final defaultScenarios = [
         TagCondition.parse("game.startedAlready = 0"),
         const ChangeTagBlock(tags: [Tag("game.startedAlready")]),
       ),
-      const Step(
+      Step(
         "voting",
         TagCondition.enter,
         PlayerVotingBlock(

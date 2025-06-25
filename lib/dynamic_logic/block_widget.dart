@@ -53,7 +53,7 @@ final List<Step> werewolfGame = [
     TagCondition.parse("game.startedAlready = 0"),
     const ChangeTagBlock(tags: [Tag("game.startedAlready")]),
   ),
-  const Step(
+  Step(
     "showInstructionsForNight",
     TagCondition.enter,
     NextButtonBlock(
@@ -62,7 +62,7 @@ final List<Step> werewolfGame = [
       cover: false,
     ),
   ), //Show Text
-  const Step(
+  Step(
     "waitForEyesClosed",
     TagCondition.enter,
     TimerBlock(
@@ -84,7 +84,7 @@ final List<Step> werewolfGame = [
       text: "Wer soll sterben?",
     ),
   ), //Voting
-  const Step(
+  Step(
     "waitForEyesClosed",
     TagCondition.enter,
     TimerBlock(
@@ -125,7 +125,7 @@ final List<Step> werewolfGame = [
     ),
     filter: TagFilter.parse("player.role.seer & !player.dead"),
   ), //Show Text
-  const Step(
+  Step(
     "waitForEyesClosed",
     TagCondition.enter,
     TimerBlock(

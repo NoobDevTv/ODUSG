@@ -33,6 +33,9 @@ class StepMapper extends ClassMapperBase<Step> {
   static TagFilter _$filter(Step v) => v.filter;
   static const Field<Step, TagFilter> _f$filter =
       Field('filter', _$filter, opt: true, def: TagFilter.empty);
+  static String _$uid(Step v) => v.uid;
+  static const Field<Step, String> _f$uid =
+      Field('uid', _$uid, mode: FieldMode.member);
 
   @override
   final MappableFields<Step> fields = const {
@@ -40,6 +43,7 @@ class StepMapper extends ClassMapperBase<Step> {
     #entryGuard: _f$entryGuard,
     #block: _f$block,
     #filter: _f$filter,
+    #uid: _f$uid,
   };
 
   static Step _instantiate(DecodingData data) {

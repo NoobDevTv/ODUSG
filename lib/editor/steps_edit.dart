@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:odusg/dynamic_logic/block.dart';
-import 'package:odusg/dynamic_logic/change_tag_block.dart';
-import 'package:odusg/dynamic_logic/group_block.dart';
-import 'package:odusg/dynamic_logic/next_button_block.dart';
-import 'package:odusg/dynamic_logic/player_voting_block.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
-import 'package:odusg/dynamic_logic/timer_block.dart';
 import 'package:odusg/editor/widgets/step_widget.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/scenario.dart';
@@ -36,7 +31,7 @@ class StepsEdit extends StatelessWidget {
           itemCount: scenario.value.steps.length,
           itemBuilder: (context, index) {
             final s = scenario.value.steps[index];
-            final key = Key(s.name + index.toString());
+            final key = Key(s.uid);
 
             return Dismissible(
               key: key,
@@ -149,6 +144,23 @@ class StepSelectorDialog extends StatelessWidget {
             "Simple Block that contains multiple Steps grouped.",
           ),
           onTap: () => addStep(const GroupBlock(text: "", steps: [])),
+        ),
+
+        ListTile(
+          title: const Text("Single Execution Block"),
+          subtitle: const Text(
+            "Simple Block that contains multiple Steps grouped. But executes only once per rotation.",
+          ),
+          onTap:
+              () => addStep(
+                const SingleChildExecutorBlock(
+                  text: "",
+                  steps: [],
+                  randomOrder: false,
+                  removeExecuted: true,
+                  refillWhenEmpty: true,
+                ),
+              ),
         ),
       ],
     );
