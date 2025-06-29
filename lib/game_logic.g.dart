@@ -184,7 +184,7 @@ class _TickerProviderElement extends AutoDisposeStreamProviderElement<int>
   Duration get duration => (origin as TickerProvider).duration;
 }
 
-String _$advancingHash() => r'f54a0526ffa683be89c51475d14d7ce1b4f440d7';
+String _$advancingHash() => r'160b51c9f661dfd4c7a725a066c92603ed9331be';
 
 /// See also [Advancing].
 @ProviderFor(Advancing)
@@ -198,7 +198,7 @@ final advancingProvider = NotifierProvider<Advancing, void>.internal(
 );
 
 typedef _$Advancing = Notifier<void>;
-String _$gameManagerHash() => r'669d396b6e90462f17fcabfb88a2291289d7d7ce';
+String _$gameManagerHash() => r'1373112839f103c7ecb1ccc07c4ad849f523df8e';
 
 /// See also [GameManager].
 @ProviderFor(GameManager)

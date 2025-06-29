@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/editor/widgets/base_block_widget.dart';
+import 'package:odusg/editor/widgets/tag_filter_widget.dart';
 import 'package:odusg/models/scenario.dart';
 
 class StepEditPage extends HookWidget {
@@ -91,11 +92,12 @@ class StepEditPage extends HookWidget {
                     vertical: 8.0,
                     horizontal: 16.0,
                   ),
-                  child: TextField(
-                    controller: filterController,
-                    onChanged: (newText) {
+                  child: TagFilterWidget(
+                    tagFilter: current.value.filter,
+                    label: Text("Filter"),
+                    hintText: "Tag Filter for players",
+                    onChanged: (newFilter) {
                       try {
-                        final newFilter = TagFilter.parse(newText);
                         current.value = current.value.copyWith(
                           filter: newFilter,
                         );
@@ -104,14 +106,6 @@ class StepEditPage extends HookWidget {
                         filterError.value = e.toString();
                       }
                     },
-                    decoration: InputDecoration(
-                      label: const Text("Filter"),
-                      error:
-                          filterError.value == null
-                              ? null
-                              : Text(filterError.value!),
-                      hintText: "Tag Filter for players",
-                    ),
                   ),
                 ),
               ],

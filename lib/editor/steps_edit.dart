@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
@@ -63,19 +66,9 @@ class StepsEdit extends StatelessWidget {
             );
           },
         ),
-        ListTile(
-          title: IconButton(
-            onPressed: () async {
-              final res = await showDialog(
-                context: context,
-                builder: (context) => const StepSelectorDialog(),
-              );
-              if (res is s.Step) {
-                scenario.value = scenario.value.copyWith.steps.add(res);
-              }
-            },
-            icon: const Icon(Icons.add),
-          ),
+        StepSelector(
+          stepAdded:
+              (s) => scenario.value = scenario.value.copyWith.steps.add(s),
         ),
       ],
     );
@@ -163,6 +156,55 @@ class StepSelectorDialog extends StatelessWidget {
               ),
         ),
       ],
+    );
+  }
+}
+
+class StepSelector extends StatelessWidget {
+  const StepSelector({super.key, required this.stepAdded});
+
+  final Function(s.Step step) stepAdded;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          FilledButton.icon(
+            label: Text("Paste"),
+            onPressed: () async {
+              final plain =
+                  (await Clipboard.getData(Clipboard.kTextPlain))?.text;
+              if (plain == null) {
+                //TODO: Show error to user
+                return;
+              }
+              try {
+                final res = s.StepMapper.fromJson(plain);
+                stepAdded(res);
+              } catch (e) {
+                //TODO: Show error to user
+                return;
+              }
+            },
+            icon: const Icon(Icons.paste),
+          ),
+          FilledButton.icon(
+            label: Text("Add"),
+            onPressed: () async {
+              final res = await showDialog(
+                context: context,
+                builder: (context) => const StepSelectorDialog(),
+              );
+              if (res is s.Step) {
+                stepAdded(res);
+              }
+            },
+            icon: const Icon(Icons.add),
+          ),
+        ],
+      ),
     );
   }
 }

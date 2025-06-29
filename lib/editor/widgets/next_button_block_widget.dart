@@ -27,6 +27,9 @@ class NextButtonBlockWidget extends BlockWidget<NextButtonBlock> {
             labelText: "Button Text",
             hintText: "The text to show on the Button",
           ),
+          onChanged: (value) {
+            b.value = b.value.copyWith(buttonText: value);
+          },
         ),
       ),
       CheckboxListTile(

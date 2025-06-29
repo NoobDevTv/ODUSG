@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
-import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/editor/steps_edit.dart';
 import 'package:odusg/editor/widgets/block_widget.dart';
 import 'package:odusg/editor/widgets/step_widget.dart';
@@ -11,6 +10,7 @@ class GroupBlockWidget extends BlockWidget<GroupBlock> {
     required super.block,
     required super.scenario,
     required super.step,
+    super.allowDisplayText = false,
   });
 
   @override
@@ -66,19 +66,8 @@ class GroupBlockWidget extends BlockWidget<GroupBlock> {
           );
         },
       ),
-      ListTile(
-        title: IconButton(
-          onPressed: () async {
-            final res = await showDialog(
-              context: context,
-              builder: (context) => const StepSelectorDialog(),
-            );
-            if (res is s.Step) {
-              block.value = block.value.copyWith.steps.add(res);
-            }
-          },
-          icon: const Icon(Icons.add),
-        ),
+      StepSelector(
+        stepAdded: (s) => block.value = block.value.copyWith.steps.add(s),
       ),
     ];
   }

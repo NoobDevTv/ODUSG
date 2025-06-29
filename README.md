@@ -88,13 +88,17 @@
    ~~4. Has to support "Per Player"~~
    ~~5. Maybe add "Randomize Per Player", so that the order is not known beforhand to the players / Make Per Player always randomize~~
 5. Add Group Block, which can have multiple child blocks and executes them in order ✔
-6. Add SingleChildExecutor Block, which executes a single child from it's children, either in order or random, but only single child per revolution
+6. Add SingleChildExecutor Block, which executes a single child from it's children, either in order or random, but only single child per revolution ✔
 7. Make Tag Filter 
 8. (Maybe) add simple templates, especially for old "EventInfo" logic, so that the user has it easier to do this
-9. Copy Paste of Steps
+9. Copy Paste of Steps ✔
 
 
 For Next Stream:
-- Finish implement of SingleExecuteBlockLogic
-- Copy the UI for GroupBlock to SingleExecute Block
-- Somehow try to remove unnecessary options for group and single execute block, which are on the default block 
+- Finish implement of SingleExecuteBlockLogic ✔
+- Copy the UI for GroupBlock to SingleExecute Block ✔
+- Somehow try to remove unnecessary options for group and single execute block, which are on the default block ✔
+
+
+## Future:
+- Add support for Images / Gifs (Url? Maybe not, because they can get taken offline, somaybe b64)

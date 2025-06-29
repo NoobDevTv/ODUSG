@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/editor/step_edit_page.dart';
@@ -26,7 +27,16 @@ class StepWidget extends HookWidget {
 
     return ListTile(
       title: Text(current.value.name),
-      isThreeLine: true,
+      isThreeLine: false,
+      trailing: Padding(
+        padding: const EdgeInsets.only(right: 8.0),
+        child: IconButton(
+          onPressed: () {
+            Clipboard.setData(ClipboardData(text: step.toJson()));
+          },
+          icon: Icon(Icons.copy),
+        ),
+      ),
       subtitle: Text(
         "${current.value.block.runtimeType}\n${current.value.entryGuard}",
       ),

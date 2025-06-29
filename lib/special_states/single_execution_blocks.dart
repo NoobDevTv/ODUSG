@@ -19,6 +19,8 @@ class SingleExecutionBlocks extends _$SingleExecutionBlocks {
   }
 
   Step? advance(SingleChildExecutorBlock block) {
+    if (!state.containsKey(block)) state = {...state, block: []};
+
     final executedBlockSteps = state[block]!;
     final availableSteps = block.steps.except(executedBlockSteps).toList();
 

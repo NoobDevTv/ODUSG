@@ -53,24 +53,6 @@ class _GamePage extends HookConsumerWidget {
 
   Widget _steppedBasedGame(WidgetRef ref) {
     var step = ref.watch(gameManagerProvider);
-    final groupBlock = ref.watch(groupBlocksProvider);
-    if (groupBlock.isNotEmpty) {
-      final last = groupBlock.last;
-      step = last.$1.steps[last.$2];
-    }
-    final block = step.block;
-    if (block is GroupBlock) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(groupBlocksProvider.notifier).tryAppend(block);
-      });
-    } else if (block is SingleChildExecutorBlock) {
-      step =
-          ref.read(singleExecutionBlocksProvider.notifier).advance(block) ??
-          step;
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ref.read(advancingProvider.notifier).advance(),
-      );
-    }
 
     final widget = blockWidgetFactory[step.block.runtimeType]!(step.block);
     final player = ref.watch(nextPlayerProvider);

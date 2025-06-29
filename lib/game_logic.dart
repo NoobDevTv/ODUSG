@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:collection';
 import 'dart:math';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/current_scenario.dart';
+import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/special_states/group_blocks.dart';
 import 'package:odusg/helpers/iterable_extensions.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
+import 'package:odusg/special_states/single_execution_blocks.dart';
 import 'package:odusg/widgets/player_name_list.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,22 +19,22 @@ part 'game_logic.g.dart';
 
 @Riverpod(keepAlive: true)
 class Advancing extends _$Advancing {
-  List<GroupBlockStep>? _groupBlocks;
+  // List<GroupBlockStep>? _groupBlocks;
 
   @override
   void build() {
-    _groupBlocks = ref.watch(groupBlocksProvider);
+    // _groupBlocks = ref.watch(groupBlocksProvider);
 
     return;
   }
 
   void advance() {
-    final groupBlocks = _groupBlocks;
-    if (groupBlocks == null || groupBlocks.isEmpty) {
-      ref.read(gameManagerProvider.notifier).advance();
-    } else {
-      ref.read(groupBlocksProvider.notifier).advanceCurrent();
-    }
+    ref.read(gameManagerProvider.notifier).advance();
+    // final groupBlocks = _groupBlocks;
+    // if (groupBlocks == null || groupBlocks.isEmpty) {
+    // } else {
+    //   ref.read(groupBlocksProvider.notifier).advanceCurrent();
+    // }
   }
 }
 
@@ -45,10 +48,16 @@ Player? nextPlayer(Ref ref) {
   return ref.read(playerManagerProvider.notifier)._getNextPlayer();
 }
 
+class _GameStep {
+  _GameStep(this.step, this.persistant, this.copy);
+  final Step step;
+  final bool persistant;
+  final bool copy;
+}
+
 @Riverpod(keepAlive: true)
 class GameManager extends _$GameManager {
-  late List<Step> _steps;
-  late int _currentStepIdx;
+  late Queue<_GameStep> _steps;
   final Map<String, dynamic> _allCurrentTags = {};
   Tags gameTags = Tags.mutable([]);
 
@@ -57,26 +66,64 @@ class GameManager extends _$GameManager {
   late List<Player> _players;
   @override
   Step build() {
-    _steps = ref.watch(currentScenarioProvider).steps;
-    _currentStepIdx = 0;
+    _steps = Queue<_GameStep>.from(
+      ref
+          .watch(currentScenarioProvider)
+          .steps
+          .map((x) => _GameStep(x, true, false)),
+    );
     _players = ref.watch(playerManagerProvider);
     gameTags.tags.clear();
-    return _steps[_currentStepIdx];
+    return _steps.first.step;
   }
 
   void advance() {
     //TODO Multi Player Advancing (Same Step for all matching players)
 
     //TODO Overflow check
-    //TODO Endless Loop Check (No Step matched)
-    _currentStepIdx = (_currentStepIdx + 1) % _steps.length;
+    // final old = _steps.removeFirst();
+    // if (old.persistant) {
+    //   _steps.add(old);
+    // }
+    _GameStep? step;
+    do {
+      if (false) //TODO Endless Loop Check
+        return; //TODO End game or/and throw an error
+      step = _steps.removeFirst();
+      if (step.persistant) _steps.add(step);
+      if (!getEntryGuardEvaluation(step.step)) {
+        continue;
+      }
+      final block = step.step.block;
+      if (block.foreachPlayer && !step.copy) {
+        for (var i = 0; i < _players.length; i++) {
+          _steps.addFirst(_GameStep(step.step, false, true));
+        }
+      }
+      // final groupBlock = ref.read(groupBlocksProvider);
+      // if (groupBlock.isNotEmpty) {
+      //   final last = groupBlock.last;
+      //   step = last.$1.steps[last.$2];
+      // }
+      if (block is GroupBlock) {
+        for (var element in block.steps.reversed) {
+          _steps.addFirst(_GameStep(element, false, false));
+        }
+        step = null;
+        continue;
+      } else if (block is SingleChildExecutorBlock) {
+        final newChild = ref
+            .read(singleExecutionBlocksProvider.notifier)
+            .advance(block);
+        if (newChild == null) {
+          step = null;
+          continue;
+        }
+        step = _GameStep(newChild, false, false);
+      }
+    } while (step == null);
 
-    var step = _steps[_currentStepIdx];
-    while (!getEntryGuardEvaluation(step)) {
-      _currentStepIdx = (_currentStepIdx + 1) % _steps.length;
-      step = _steps[_currentStepIdx];
-    }
-    state = step;
+    state = step.step;
   }
 
   bool getEntryGuardEvaluation(Step step) {

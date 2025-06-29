@@ -36,7 +36,9 @@ class ManageScenarioPage extends HookConsumerWidget {
                 (panelIndex, isExpanded) =>
                     isOpened.value = isExpanded ? panelIndex : -1,
             children: scenarios
-                .mapIndexed((e, i) => _getListTile(e, isOpened.value == i))
+                .mapIndexed(
+                  (e, i) => _getListTile(context, ref, e, isOpened.value == i),
+                )
                 .toList(growable: false),
           ),
         ),
@@ -46,108 +48,122 @@ class ManageScenarioPage extends HookConsumerWidget {
         type: ExpandableFabType.up,
         distance: 64,
         children: [
-          if (isOpened.value == -1 || isOpened.value > scenarios.length) ...[
-            FloatingActionButton.small(
-              heroTag: null,
-              onPressed: () async {
-                final pickerResult = await FilePicker.platform.pickFiles(
-                  dialogTitle: "Load Scenario",
-                  allowedExtensions: ["json"],
-                );
-                if (pickerResult == null || pickerResult.count < 1) return;
-                for (var file in pickerResult.xFiles) {
-                  final content = await file.readAsString();
-                  if (content.isEmpty) continue;
-                  final deserialized = <Scenario>[];
-                  try {
-                    final scenario = ScenarioMapper.fromJson(content);
-                    deserialized.add(scenario);
-                  } catch (e) {
-                    log(e.toString());
-                  }
-                  ref.read(scenariosProvider.notifier).add(deserialized);
+          FloatingActionButton.extended(
+            heroTag: null,
+            onPressed: () async {
+              final pickerResult = await FilePicker.platform.pickFiles(
+                dialogTitle: "Load Scenario",
+                allowedExtensions: ["json"],
+              );
+              if (pickerResult == null || pickerResult.count < 1) return;
+              for (var file in pickerResult.xFiles) {
+                final content = await file.readAsString();
+                if (content.isEmpty) continue;
+                final deserialized = <Scenario>[];
+                try {
+                  final scenario = ScenarioMapper.fromJson(content);
+                  deserialized.add(scenario);
+                } catch (e) {
+                  log(e.toString());
                 }
-              },
-              tooltip: "Import existing Scenario",
-              child: const Icon(Icons.file_download),
-            ),
-            FloatingActionButton.small(
-              heroTag: null,
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder:
-                        (context) => ScenarioEditorPage(
-                          startScenario: Scenario.create(),
-                          onSave:
-                              (scenario) => ref
-                                  .read(scenariosProvider.notifier)
-                                  .add([scenario]),
-                        ),
-                  ),
-                );
-              },
-              tooltip: "Add new Scenario",
-              child: const Icon(Icons.add),
-            ),
-          ] else ...[
-            FloatingActionButton.small(
-              heroTag: null,
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder:
-                        (context) => ScenarioEditorPage(
-                          startScenario: scenarios[isOpened.value],
-                          onSave: (scenario) {
-                            scenario = scenario.copyWith(
-                              saveCounter: scenario.saveCounter + 1,
-                            );
-                            ref
-                                .read(scenariosProvider.notifier)
-                                .update(scenario);
-                          },
-                        ),
-                  ),
-                );
-              },
-              tooltip: "Edit",
-              child: const Icon(Icons.edit),
-            ),
-            FloatingActionButton.small(
-              heroTag: null,
-              onPressed: () {
-                final current = scenarios[isOpened.value];
-                ref.read(scenariosProvider.notifier).remove(current);
-              },
-              tooltip: "Delete",
-              child: const Icon(Icons.delete),
-            ),
-            FloatingActionButton.small(
-              heroTag: null,
-              onPressed: () async {
-                final current = scenarios[isOpened.value];
-                final path = await FilePicker.platform.saveFile(
-                  dialogTitle: "Save Scenario",
-                  fileName: "${current.title}.json",
-                  allowedExtensions: ["json"],
-                );
-                if (path == null || path.isEmpty) return;
+                ref.read(scenariosProvider.notifier).add(deserialized);
+              }
+            },
+            tooltip: "Import existing Scenario",
 
-                final file = File(path);
-                await file.writeAsString(current.toJson());
-                print(path);
-              },
-              tooltip: "Export",
-              child: const Icon(Icons.file_upload),
+            icon: const Icon(Icons.file_upload),
+            label: Text("Import"),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
             ),
-          ],
+          ),
+          FloatingActionButton.extended(
+            heroTag: null,
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder:
+                      (context) => ScenarioEditorPage(
+                        startScenario: Scenario.create(),
+                        onSave:
+                            (scenario) => ref
+                                .read(scenariosProvider.notifier)
+                                .add([scenario]),
+                      ),
+                ),
+              );
+            },
+            tooltip: "Add new Scenario",
+            icon: const Icon(Icons.add),
+            label: Text("Add new"),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+
+          // else ...[
+          //   FloatingActionButton.small(
+          //     heroTag: null,
+          //     onPressed: () {
+          //       Navigator.of(context).push(
+          //         MaterialPageRoute(
+          //           builder:
+          //               (context) => ScenarioEditorPage(
+          //                 startScenario: scenarios[isOpened.value],
+          //                 onSave: (scenario) {
+          //                   scenario = scenario.copyWith(
+          //                     saveCounter: scenario.saveCounter + 1,
+          //                   );
+          //                   ref
+          //                       .read(scenariosProvider.notifier)
+          //                       .update(scenario);
+          //                 },
+          //               ),
+          //         ),
+          //       );
+          //     },
+          //     tooltip: "Edit",
+          //     child: const Icon(Icons.edit),
+          //   ),
+          //   FloatingActionButton.small(
+          //     heroTag: null,
+          //     onPressed: () {
+          //       final current = scenarios[isOpened.value];
+          //       ref.read(scenariosProvider.notifier).remove(current);
+          //     },
+          //     tooltip: "Delete",
+          //     child: const Icon(Icons.delete),
+          //   ),
+          //   FloatingActionButton.small(
+          //     heroTag: null,
+          //     onPressed: () async {
+          //       final current = scenarios[isOpened.value];
+          //       final path = await FilePicker.platform.saveFile(
+          //         dialogTitle: "Save Scenario",
+          //         fileName: "${current.title}.json",
+          //         allowedExtensions: ["json"],
+          //       );
+          //       if (path == null || path.isEmpty) return;
+
+          //       final file = File(path);
+          //       await file.writeAsString(current.toJson());
+          //       print(path);
+          //     },
+          //     tooltip: "Export",
+          //     child: const Icon(Icons.file_upload),
+          //   ),
+          // ],
         ],
       ),
     );
   }
 
-  ExpansionPanel _getListTile(Scenario scenario, bool isExpanded) {
+  ExpansionPanel _getListTile(
+    BuildContext context,
+    WidgetRef ref,
+    Scenario scenario,
+    bool isExpanded,
+  ) {
     final type = scenario.title;
 
     return ExpansionPanel(
@@ -164,8 +180,71 @@ class ManageScenarioPage extends HookConsumerWidget {
           ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text(scenario.description),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(scenario.description),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  FilledButton.icon(
+                    icon: const Icon(Icons.delete),
+                    label: Text("Delete"),
+                    onPressed: () {
+                      ref.read(scenariosProvider.notifier).remove(scenario);
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: FilledButton.icon(
+                      icon: const Icon(Icons.file_download),
+                      label: Text("Export"),
+                      onPressed: () async {
+                        final current = scenario;
+                        final path = await FilePicker.platform.saveFile(
+                          dialogTitle: "Save Scenario",
+                          fileName: "${current.title}.json",
+                          allowedExtensions: ["json"],
+                        );
+                        if (path == null || path.isEmpty) return;
+
+                        final file = File(path);
+                        await file.writeAsString(current.toJson());
+                        print(path);
+                      },
+                    ),
+                  ),
+                  FilledButton.icon(
+                    icon: const Icon(Icons.edit),
+                    label: Text("Edit"),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder:
+                              (context) => ScenarioEditorPage(
+                                startScenario: scenario,
+                                onSave: (scenario) {
+                                  scenario = scenario.copyWith(
+                                    saveCounter: scenario.saveCounter + 1,
+                                  );
+                                  ref
+                                      .read(scenariosProvider.notifier)
+                                      .update(scenario);
+                                },
+                              ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
+
       canTapOnHeader: true,
     );
   }
