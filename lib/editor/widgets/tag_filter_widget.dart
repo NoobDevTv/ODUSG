@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:odusg/dynamic_logic/condition_operator.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
+import 'package:odusg/models/scenario.dart';
 
 class TagFilterWidget extends HookWidget {
   const TagFilterWidget({
@@ -10,12 +11,14 @@ class TagFilterWidget extends HookWidget {
     required this.label,
     this.hintText,
     required this.onChanged,
+    required this.scenario,
   });
 
   final TagFilter? tagFilter;
   final Widget label;
   final String? hintText;
   final void Function(TagFilter? newFilter) onChanged;
+  final Scenario scenario;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +29,10 @@ class TagFilterWidget extends HookWidget {
 
     final f = tagFilter;
     if (f == null) return const SizedBox();
-
+    //TODO:
+    // Add new dialog, at top the result, center the chips, bottom a textfield for filtering and adding new tags (Order tbd)
+    // Make Dialog already with Entry Filtering in mind for reusability
+    // Toggle the Chips Not / not not with a single select on the chip, as it is intended by material design
     List<Widget> widgets = [];
 
     for (var i = 0; i < f.operands.length; i++) {
@@ -69,41 +75,58 @@ class TagFilterWidget extends HookWidget {
       }
       widgets.add(
         MenuAnchor(
-          menuChildren: [
-            MenuItemButton(onPressed: () {}, child: Text("Test")),
-            MenuItemButton(onPressed: () {}, child: Text("Test 2")),
-          ],
-          builder:
-              (context, controller, child) => GestureDetector(
-                onTap: () {
-                  if (controller.isOpen)
-                    controller.close();
-                  else
-                    controller.open();
-                },
-                onDoubleTap: () {
-                  final newTag = f.copyWith(
-                    modifiers: [
-                      ...f.modifiers.take(i),
-                      f.modifiers[i] == TagModifier.none
-                          ? TagModifier.invert
-                          : TagModifier.none,
-                      ...f.modifiers.skip(i + 1),
-                    ],
-                  );
-                  onChanged(newTag);
-                },
-                child: Chip(
+          menuChildren:
+              scenario.availableGameTags
+                  .map(
+                    (t) => MenuItemButton(onPressed: () {}, child: Text(t.tag)),
+                  )
+                  .toList(),
+          builder: (context, controller, child) {
+            return GestureDetector(
+              onDoubleTap: () {
+                final newTag = f.copyWith(
+                  modifiers: [
+                    ...f.modifiers.take(i),
+                    f.modifiers[i] == TagModifier.none
+                        ? TagModifier.invert
+                        : TagModifier.none,
+                    ...f.modifiers.skip(i + 1),
+                  ],
+                );
+                onChanged(newTag);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: InputChip(
+                  onPressed: () => controller.open(),
+                  deleteIcon: Icon(Icons.delete),
+                  onDeleted: () {},
+
                   label: Text(
                     (f.modifiers[i].representation == "!" ? "not " : "") +
                         f.operands[i],
                   ),
                 ),
               ),
+            );
+          },
         ),
       );
     }
-    return Row(children: widgets);
+    widgets.add(
+      MenuAnchor(
+        menuChildren: [
+          MenuItemButton(onPressed: () {}, child: Text("Test")),
+          MenuItemButton(onPressed: () {}, child: Text("Test 2")),
+        ],
+        builder:
+            (context, controller, child) => IconButton(
+              onPressed: () => controller.open(),
+              icon: Icon(Icons.add),
+            ),
+      ),
+    );
+    return Wrap(children: widgets);
 
     return TextField(
       controller: filterController,

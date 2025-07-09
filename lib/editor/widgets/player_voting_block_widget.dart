@@ -24,6 +24,7 @@ class PlayerVotingBlockWidget extends BlockWidget<PlayerVotingBlock> {
           tagFilter: currentBlock.votingTargetPossibilities,
           label: const Text("Player Votings"),
           hintText: "Tag Filter for player voting candidates",
+          scenario: scenario,
           onChanged:
               (newFilter) =>
                   b.value = b.value.copyWith(

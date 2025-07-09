@@ -42,12 +42,8 @@ class StepEditPage extends HookWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 16.0,
-                  ),
-                  child: TextField(
+                ListTile(
+                  title: TextField(
                     controller: nameController,
                     onChanged: (newText) {
                       current.value = current.value.copyWith(name: newText);
@@ -58,12 +54,8 @@ class StepEditPage extends HookWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 16.0,
-                  ),
-                  child: TextField(
+                ListTile(
+                  title: TextField(
                     controller: entryController,
                     onChanged: (newText) {
                       try {
@@ -87,15 +79,12 @@ class StepEditPage extends HookWidget {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 16.0,
-                  ),
-                  child: TagFilterWidget(
+                ListTile(
+                  title: TagFilterWidget(
                     tagFilter: current.value.filter,
                     label: Text("Filter"),
                     hintText: "Tag Filter for players",
+                    scenario: scenario,
                     onChanged: (newFilter) {
                       try {
                         current.value = current.value.copyWith(

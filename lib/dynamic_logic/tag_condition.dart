@@ -50,8 +50,10 @@ class TagFilter with TagFilterMappable {
         matches[i] = switch (operator) {
           ConditionOperator.and => m1 && m2,
           ConditionOperator.or => m1 || m2,
-          ConditionOperator.none => throw UnsupportedError(
-              "None shouldn't be inside the parsed or created result"),
+          ConditionOperator.none =>
+            throw UnsupportedError(
+              "None shouldn't be inside the parsed or created result",
+            ),
         };
       }
       matched = matches.last;
@@ -84,16 +86,20 @@ class TagFilter with TagFilterMappable {
     for (var i = 0; i < str.length; i++) {
       final char = str[i];
       if (TextLayoutMetrics.isWhitespace(char.runes.first)) continue;
-      if (TagModifier.values.firstWhere((x) => x.representation == char,
-              orElse: () => TagModifier.none)
+      if (TagModifier.values.firstWhere(
+            (x) => x.representation == char,
+            orElse: () => TagModifier.none,
+          )
           case TagModifier op when op != TagModifier.none) {
         currentMod = op;
         buff.clear();
         continue;
       }
 
-      if (ConditionOperator.values.firstWhere((x) => x.representation == char,
-              orElse: () => ConditionOperator.none)
+      if (ConditionOperator.values.firstWhere(
+            (x) => x.representation == char,
+            orElse: () => ConditionOperator.none,
+          )
           case ConditionOperator op when op != ConditionOperator.none) {
         tagMod.add(currentMod);
         currentMod = TagModifier.none;
@@ -110,12 +116,16 @@ class TagFilter with TagFilterMappable {
     }
 
     return TagFilter(
-        modifiers: tagMod, conditionOperators: condOp, operands: operands);
+      modifiers: tagMod,
+      conditionOperators: condOp,
+      operands: operands,
+    );
   }
 
   Map<String, int> getTagMap(List<Player> players, List<Tag> gameTags) {
     final filtered = evaluate(
-        [...players.map((x) => x.getCompleteTags()), gameTags].toList());
+      [...players.map((x) => x.getCompleteTags()), gameTags].toList(),
+    );
     final mapped = filtered.map((x) => x.tag).groupBy((x) => x);
     final map = mapped.map((key, value) => MapEntry(key, value.length));
     return map;
@@ -140,8 +150,11 @@ class TagFilter with TagFilterMappable {
 
 @MappableClass()
 class TagCondition with TagConditionMappable {
-  static const enter =
-      TagCondition(tagOperators: [], conditionOperators: [], operands: []);
+  static const enter = TagCondition(
+    tagOperators: [],
+    conditionOperators: [],
+    operands: [],
+  );
 
   final List<TagOperator> tagOperators;
   final List<ConditionOperator> conditionOperators;
@@ -165,19 +178,26 @@ class TagCondition with TagConditionMappable {
       op2Num ??= tags[op2Raw] ?? 0;
 
       final res = switch (operator) {
+        TagOperator.none =>
+          throw UnsupportedError(
+            "None shouldn't be inside the parsed or created result",
+          ),
         TagOperator.less => op1Num < op2Num,
         TagOperator.equals => op1Num == op2Num,
         TagOperator.greater => op1Num > op2Num,
-        TagOperator.none => throw UnsupportedError(
-            "None shouldn't be inside the parsed or created result"),
+        TagOperator.lessEquals => op1Num <= op2Num,
+        TagOperator.unequal => op1Num != op2Num,
+        TagOperator.greaterEquals => op1Num >= op2Num,
       };
       if (i > 0) {
         final cond = conditionOperators[i - 1];
         previousRes = switch (cond) {
           ConditionOperator.and => (previousRes ?? true) && res,
           ConditionOperator.or => (previousRes ?? false) || res,
-          ConditionOperator.none => throw UnsupportedError(
-              "None shouldn't be inside the parsed or created result"),
+          ConditionOperator.none =>
+            throw UnsupportedError(
+              "None shouldn't be inside the parsed or created result",
+            ),
         };
       } else {
         previousRes = res;
@@ -198,16 +218,20 @@ class TagCondition with TagConditionMappable {
       final char = str[i];
       if (TextLayoutMetrics.isWhitespace(char.runes.first)) continue;
 
-      if (TagOperator.values.firstWhere((x) => x.representation == char,
-              orElse: () => TagOperator.none)
+      if (TagOperator.values.firstWhere(
+            (x) => x.representation == char,
+            orElse: () => TagOperator.none,
+          )
           case TagOperator op when op != TagOperator.none) {
         tagOp.add(op);
         operands.add(buff.toString());
         buff.clear();
         continue;
       }
-      if (ConditionOperator.values.firstWhere((x) => x.representation == char,
-              orElse: () => ConditionOperator.none)
+      if (ConditionOperator.values.firstWhere(
+            (x) => x.representation == char,
+            orElse: () => ConditionOperator.none,
+          )
           case ConditionOperator op when op != ConditionOperator.none) {
         condOp.add(op);
         operands.add(buff.toString());
@@ -220,7 +244,10 @@ class TagCondition with TagConditionMappable {
     operands.add(buff.toString());
 
     return TagCondition(
-        tagOperators: tagOp, conditionOperators: condOp, operands: operands);
+      tagOperators: tagOp,
+      conditionOperators: condOp,
+      operands: operands,
+    );
   }
 
   @override

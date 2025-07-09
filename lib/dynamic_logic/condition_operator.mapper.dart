@@ -99,6 +99,12 @@ class TagOperatorMapper extends EnumMapper<TagOperator> {
         return 'equals';
       case TagOperator.greater:
         return 'greater';
+      case TagOperator.lessEquals:
+        return 'less or equals';
+      case TagOperator.unequal:
+        return 'unequal';
+      case TagOperator.greaterEquals:
+        return 'greater or equals';
     }
   }
 }

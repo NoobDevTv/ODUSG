@@ -29,6 +29,7 @@ class ChangeTagBlockWidget extends BlockWidget<ChangeTagBlock> {
           label: const Text("Affected Players"),
           hintText: "Players where these tags should be added / removed",
           tagFilter: b.value.affectedPlayers,
+          scenario: scenario,
           onChanged:
               (newFilter) =>
                   b.value = b.value.copyWith(affectedPlayers: newFilter),

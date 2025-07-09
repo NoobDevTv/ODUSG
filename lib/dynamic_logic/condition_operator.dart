@@ -16,8 +16,11 @@ enum ConditionOperator {
 enum TagOperator {
   none(""),
   less("<"),
+  lessEquals("≤"),
   equals("="),
-  greater(">");
+  unequal("≠"),
+  greater(">"),
+  greaterEquals("≥");
 
   final String representation;
   const TagOperator(this.representation);
