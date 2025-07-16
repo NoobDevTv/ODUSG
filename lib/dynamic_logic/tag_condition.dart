@@ -8,21 +8,34 @@ import 'package:odusg/models/player.dart';
 part 'tag_condition.mapper.dart';
 
 @MappableClass()
-class TagFilter with TagFilterMappable {
+abstract class TagEntryBase<TOperand> with TagEntryBaseMappable<TOperand> {
+  const TagEntryBase({
+    required this.modifiers,
+    required this.operators,
+    required this.conditionOperators,
+    required this.operands,
+  });
+
+  final List<TagModifier> modifiers;
+  final List<TagOperator> operators;
+
+  final List<ConditionOperator> conditionOperators;
+  final List<TOperand> operands;
+}
+
+@MappableClass()
+class TagFilter extends TagEntryBase<String> with TagFilterMappable {
   static const TagFilter empty = TagFilter(
     modifiers: [],
     conditionOperators: [],
     operands: [],
   );
 
-  final List<TagModifier> modifiers;
-  final List<ConditionOperator> conditionOperators;
-  final List<String> operands;
-
   const TagFilter({
-    required this.modifiers,
-    required this.conditionOperators,
-    required this.operands,
+    required super.modifiers,
+    required super.conditionOperators,
+    required super.operands,
+    super.operators = const [],
   });
 
   bool evaluateSingle(List<Tag> tagList) {
@@ -149,27 +162,24 @@ class TagFilter with TagFilterMappable {
 }
 
 @MappableClass()
-class TagCondition with TagConditionMappable {
+class TagCondition extends TagEntryBase<dynamic> with TagConditionMappable {
   static const enter = TagCondition(
-    tagOperators: [],
+    operators: [],
     conditionOperators: [],
     operands: [],
   );
 
-  final List<TagOperator> tagOperators;
-  final List<ConditionOperator> conditionOperators;
-  final List<dynamic> operands;
-
   const TagCondition({
-    required this.tagOperators,
-    required this.conditionOperators,
-    required this.operands,
+    required super.operators,
+    required super.conditionOperators,
+    required super.operands,
+    super.modifiers = const [],
   });
 
   bool evaluate([Map<String, int> tags = const {}]) {
     bool? previousRes;
-    for (var i = 0; i < tagOperators.length; i++) {
-      final operator = tagOperators[i];
+    for (var i = 0; i < operators.length; i++) {
+      final operator = operators[i];
       final op1Raw = operands[i * 2];
       final op2Raw = operands[i * 2 + 1];
       var op1Num = op1Raw is num ? op1Raw : num.tryParse(op1Raw.toString());
@@ -244,7 +254,7 @@ class TagCondition with TagConditionMappable {
     operands.add(buff.toString());
 
     return TagCondition(
-      tagOperators: tagOp,
+      operators: tagOp,
       conditionOperators: condOp,
       operands: operands,
     );
@@ -253,8 +263,8 @@ class TagCondition with TagConditionMappable {
   @override
   String toString() {
     final retBuffer = StringBuffer();
-    for (var i = 0; i < tagOperators.length; i++) {
-      final operator = tagOperators[i];
+    for (var i = 0; i < operators.length; i++) {
+      final operator = operators[i];
       final op1 = operands[i * 2];
       final op2 = operands[i * 2 + 1];
       retBuffer.write(op1);

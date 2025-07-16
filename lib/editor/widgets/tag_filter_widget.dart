@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:odusg/dynamic_logic/condition_operator.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
+import 'package:odusg/editor/pages/editable_chip_page.dart';
 import 'package:odusg/models/scenario.dart';
 
 class TagFilterWidget extends HookWidget {
@@ -29,8 +30,13 @@ class TagFilterWidget extends HookWidget {
 
     final f = tagFilter;
     if (f == null) return const SizedBox();
+
+    return EditableChipPage(tagEntryBase: f, scenario: scenario);
     //TODO:
-    // Add new dialog, at top the result, center the chips, bottom a textfield for filtering and adding new tags (Order tbd)
+    // Add new dialog,
+    //at top the result,
+    //center the chips,
+    //bottom a textfield for filtering and adding new tags (Order tbd)
     // Make Dialog already with Entry Filtering in mind for reusability
     // Toggle the Chips Not / not not with a single select on the chip, as it is intended by material design
     List<Widget> widgets = [];

@@ -79,10 +79,16 @@ class TagOperatorMapper extends EnumMapper<TagOperator> {
         return TagOperator.none;
       case 'less':
         return TagOperator.less;
+      case 'lessEquals':
+        return TagOperator.lessEquals;
       case 'equals':
         return TagOperator.equals;
+      case 'unequal':
+        return TagOperator.unequal;
       case 'greater':
         return TagOperator.greater;
+      case 'greaterEquals':
+        return TagOperator.greaterEquals;
       default:
         throw MapperException.unknownEnumValue(value);
     }
@@ -95,16 +101,16 @@ class TagOperatorMapper extends EnumMapper<TagOperator> {
         return 'none';
       case TagOperator.less:
         return 'less';
+      case TagOperator.lessEquals:
+        return 'lessEquals';
       case TagOperator.equals:
         return 'equals';
-      case TagOperator.greater:
-        return 'greater';
-      case TagOperator.lessEquals:
-        return 'less or equals';
       case TagOperator.unequal:
         return 'unequal';
+      case TagOperator.greater:
+        return 'greater';
       case TagOperator.greaterEquals:
-        return 'greater or equals';
+        return 'greaterEquals';
     }
   }
 }

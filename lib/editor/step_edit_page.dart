@@ -2,6 +2,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
+import 'package:odusg/editor/pages/editable_chip_page.dart';
 import 'package:odusg/editor/widgets/base_block_widget.dart';
 import 'package:odusg/editor/widgets/tag_filter_widget.dart';
 import 'package:odusg/models/scenario.dart';
@@ -79,6 +80,7 @@ class StepEditPage extends HookWidget {
                     ),
                   ),
                 ),
+
                 ListTile(
                   title: TagFilterWidget(
                     tagFilter: current.value.filter,

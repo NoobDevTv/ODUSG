@@ -103,6 +103,17 @@ final defaultScenarios = [
     endText: "please vote for the player, who you think is the bad one",
     preGameWidget: PreGameWidget.roleAssignment,
     showAssignedEventAtEnd: false,
+    availableGameTags: [
+      Tag("werewolf"),
+      Tag("villager"),
+      Tag("doctor"),
+      Tag("seer"),
+      Tag("startedAlready"),
+      Tag("dead"),
+      Tag("wolfVoting"),
+      Tag("seerVoting"),
+      Tag("doctorVoting"),
+    ],
     roles: [
       /*
             Bis [8] Spieler mindestens [1] bis maximal [1]
@@ -145,6 +156,7 @@ final defaultScenarios = [
 class Scenarios extends _$Scenarios {
   @override
   List<Scenario> build() {
+    return defaultScenarios;
     return ref
             .read(sharedPreferencesProvider)
             .getStringList("scenarios")
@@ -154,9 +166,9 @@ class Scenarios extends _$Scenarios {
   }
 
   Map<String, dynamic> migrate(Map<String, dynamic> val) {
-    final fileVersion = val["fileVersion"];
+    var fileVersion = val["fileVersion"];
     if (fileVersion == null) {
-      val["fileVersion"] = 1;
+      fileVersion = val["fileVersion"] = 1;
       val["saveCounter"] = 1;
       val["uid"] = const UuidV7().generate();
     }
