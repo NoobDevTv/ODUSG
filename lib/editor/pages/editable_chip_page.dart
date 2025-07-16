@@ -4,6 +4,7 @@ import 'package:odusg/dynamic_logic/condition_operator.dart';
 import 'dart:async';
 
 import 'package:odusg/dynamic_logic/tag_condition.dart';
+import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/scenario.dart';
 
 enum _SelectedType { operand, conditionOperator, tagOperator }
@@ -43,6 +44,7 @@ class EditableChipPage<TOperand> extends HookWidget {
     final filterText = useState("");
     final globalTags = useState(false);
     final addAsNot = useState(false);
+    final filterTextController = useTextEditingController();
 
     final isOperandSelected = selectedChip.value.$2 == _SelectedType.operand;
     final selectedIdx = selectedChip.value.$1;
@@ -68,7 +70,16 @@ class EditableChipPage<TOperand> extends HookWidget {
       widgets.add(
         InputChip(
           deleteIcon: Icon(Icons.delete),
-          onDeleted: () {},
+          onDeleted: () {
+            f.value = f.value.copyWith.modifiers
+                .removeAt(i)
+                .copyWith
+                .operands
+                .removeAt(i)
+                .copyWith
+                .conditionOperators
+                .removeAt(i == 0 ? i : i - 1);
+          },
           onSelected:
               (value) =>
                   selectedChip.value =
@@ -117,58 +128,15 @@ class EditableChipPage<TOperand> extends HookWidget {
                 child: FilterChip(
                   label: Text(x),
                   onSelected: (sel) {
-                    final op =
-                        "${globalTags.value ? "game." : "player."}$x"
-                            as TOperand;
-
-                    if (selectedIdx != null) {
-                      switch (selectedChip.value.$2) {
-                        case _SelectedType.operand:
-                          f.value = f.value.copyWith.operands.replace(
-                            selectedIdx,
-                            op,
-                          );
-                          break;
-                        case _SelectedType.conditionOperator:
-                          f.value = f.value.copyWith.conditionOperators.replace(
-                            selectedIdx - 1,
-                            ConditionOperator.values.firstWhere(
-                              (y) => y.representation == x,
-                            ),
-                          );
-                          break;
-                        case _SelectedType.tagOperator:
-                          f.value = f.value.copyWith.operators.replace(
-                            selectedIdx - 1,
-                            TagOperator.values.firstWhere(
-                              (y) => y.representation == x,
-                            ),
-                          );
-                          break;
-                      }
-                    } else if (filterUI) {
-                      f.value = f.value.copyWith.operands
-                          .add(op)
-                          .copyWith
-                          .conditionOperators
-                          .add(ConditionOperator.and)
-                          .copyWith
-                          .modifiers
-                          .add(
-                            addAsNot.value
-                                ? TagModifier.invert
-                                : TagModifier.none,
-                          );
-                    } else {
-                      f.value = f.value.copyWith.operands
-                          .add(op)
-                          .copyWith
-                          .conditionOperators
-                          .add(ConditionOperator.and)
-                          .copyWith
-                          .operators
-                          .add(TagOperator.equals);
-                    }
+                    _addTagToOutput(
+                      globalTags,
+                      x,
+                      f,
+                      selectedIdx,
+                      selectedChip,
+                      filterUI,
+                      addAsNot,
+                    );
                   },
                 ),
               ),
@@ -205,9 +173,138 @@ class EditableChipPage<TOperand> extends HookWidget {
               );
             },
           ),
+        Container(
+          constraints: BoxConstraints(maxHeight: 140),
+          child: SingleChildScrollView(child: Wrap(children: availableChips)),
+        ),
 
-        Wrap(children: availableChips),
+        ListTile(
+          title: TextField(
+            onChanged: (value) => filterText.value = value,
+            decoration: InputDecoration(
+              hintText: "Filter available tags or add a new one",
+              labelText: "Add or filter",
+            ),
+            onSubmitted:
+                selectedIdx != null
+                    ? null
+                    : (value) {
+                      if (value.isEmpty) return;
+                      _createNewTag(
+                        filterText,
+                        filterTextController,
+                        globalTags,
+                        f,
+                        selectedIdx,
+                        selectedChip,
+                        filterUI,
+                        addAsNot,
+                      );
+                    },
+            controller: filterTextController,
+          ),
+          trailing:
+              selectedIdx != null
+                  ? null
+                  : IconButton(
+                    onPressed:
+                        filterText.value.isEmpty
+                            ? null
+                            : () {
+                              _createNewTag(
+                                filterText,
+                                filterTextController,
+                                globalTags,
+                                f,
+                                selectedIdx,
+                                selectedChip,
+                                filterUI,
+                                addAsNot,
+                              );
+                            },
+                    icon: Icon(Icons.add),
+                  ),
+        ),
       ],
     );
+  }
+
+  void _createNewTag(
+    ValueNotifier<String> filterText,
+    TextEditingController filterTextController,
+    ValueNotifier<bool> globalTags,
+    ValueNotifier<TagEntryBase<dynamic>> f,
+    int? selectedIdx,
+    ValueNotifier<(int?, _SelectedType)> selectedChip,
+    bool filterUI,
+    ValueNotifier<bool> addAsNot,
+  ) {
+    final tag = Tag(filterText.value);
+    scenario.availableGameTags.add(tag);
+
+    filterText.value = filterTextController.text = "";
+    _addTagToOutput(
+      globalTags,
+      tag.tag,
+      f,
+      selectedIdx,
+      selectedChip,
+      filterUI,
+      addAsNot,
+    );
+  }
+
+  void _addTagToOutput(
+    ValueNotifier<bool> globalTags,
+    String x,
+    ValueNotifier<TagEntryBase<dynamic>> f,
+    int? selectedIdx,
+    ValueNotifier<(int?, _SelectedType)> selectedChip,
+    bool filterUI,
+    ValueNotifier<bool> addAsNot,
+  ) {
+    final op = "${globalTags.value ? "game." : "player."}$x" as TOperand;
+    final newValue = f.value.copyWith.conditionOperators
+        .skip(0)
+        .copyWith
+        .modifiers
+        .skip(0)
+        .copyWith
+        .operands
+        .skip(0)
+        .copyWith
+        .operators
+        .skip(0);
+
+    if (selectedIdx != null) {
+      switch (selectedChip.value.$2) {
+        case _SelectedType.operand:
+          newValue.operands[selectedIdx] = op;
+          break;
+        case _SelectedType.conditionOperator:
+          newValue.conditionOperators[selectedIdx - 1] = ConditionOperator
+              .values
+              .firstWhere((y) => y.representation == x);
+          break;
+        case _SelectedType.tagOperator:
+          newValue.operators[selectedIdx - 1] = TagOperator.values.firstWhere(
+            (y) => y.representation == x,
+          );
+          break;
+      }
+    } else {
+      newValue.operands.add(op);
+      if (f.value.operands.isNotEmpty) {
+        newValue.conditionOperators.add(ConditionOperator.and);
+      }
+      if (filterUI) {
+        newValue.modifiers.add(
+          addAsNot.value ? TagModifier.invert : TagModifier.none,
+        );
+      } else {
+        newValue.operators.add(TagOperator.equals);
+      }
+    }
+    f.value = newValue;
   }
 }
