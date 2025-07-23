@@ -80,12 +80,19 @@ class EditableChipPage<TOperand> extends HookWidget {
                 .conditionOperators
                 .removeAt(i == 0 ? i : i - 1);
           },
-          onSelected:
-              (value) =>
-                  selectedChip.value =
-                      value
-                          ? (i, _SelectedType.operand)
-                          : (null, _SelectedType.operand),
+          onSelected: (value) {
+            if (value) {
+              selectedChip.value = (i, _SelectedType.operand);
+              filterTextController.text =
+                  filterText.value = f.value.operands[i]
+                      .toString()
+                      .replaceFirst("player.", "")
+                      .replaceFirst("game.", "");
+            } else {
+              selectedChip.value = (null, _SelectedType.operand);
+              filterTextController.text = filterText.value = "";
+            }
+          },
           selected: selectedIdx == i && isOperandSelected,
           label: Text(
             (f.value.modifiers[i].representation == "!" ? "not " : "") +
@@ -203,27 +210,24 @@ class EditableChipPage<TOperand> extends HookWidget {
                     },
             controller: filterTextController,
           ),
-          trailing:
-              selectedIdx != null
-                  ? null
-                  : IconButton(
-                    onPressed:
-                        filterText.value.isEmpty
-                            ? null
-                            : () {
-                              _createNewTag(
-                                filterText,
-                                filterTextController,
-                                globalTags,
-                                f,
-                                selectedIdx,
-                                selectedChip,
-                                filterUI,
-                                addAsNot,
-                              );
-                            },
-                    icon: Icon(Icons.add),
-                  ),
+          trailing: IconButton(
+            onPressed:
+                filterText.value.isEmpty
+                    ? null
+                    : () {
+                      _createNewTag(
+                        filterText,
+                        filterTextController,
+                        globalTags,
+                        f,
+                        selectedIdx,
+                        selectedChip,
+                        filterUI,
+                        addAsNot,
+                      );
+                    },
+            icon: Icon(Icons.add),
+          ),
         ),
       ],
     );
