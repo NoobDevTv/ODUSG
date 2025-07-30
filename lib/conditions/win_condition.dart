@@ -6,11 +6,10 @@ import 'package:odusg/models/roles.dart';
 const winConditions = [
   DefaultWinCondition(),
   WantsToLooseCondition(),
-  MostVotesCondition()
+  MostVotesCondition(),
 ];
 
 abstract class WinCondition {
-
   final Tag winConditionTag;
 
   const WinCondition(this.winConditionTag);
@@ -35,15 +34,25 @@ class DefaultWinCondition extends WinCondition {
         votedPlayers.entries.where((x) => x.value == maxVotes).toList();
 
     if (playersWithMaxVotes.length > 1) {
-      return player.tags.contains(Tag(Role.bad.toString()));
+      return player.tags.contains(
+        Tag(Role.bad.toString(), tagType: TagType.playerRole),
+      );
     }
 
     final tags = playersWithMaxVotes.first.key.tags;
 
-    return (tags.contains(Tag(Role.bad.toString())) &&
-            player.tags.contains(Tag(Role.good.toString()))) ||
-        (!tags.contains(Tag(Role.bad.toString())) &&
-            player.tags.contains(Tag(Role.bad.toString())));
+    return (tags.contains(
+              Tag(Role.bad.toString(), tagType: TagType.playerRole),
+            ) &&
+            player.tags.contains(
+              Tag(Role.good.toString(), tagType: TagType.playerRole),
+            )) ||
+        (!tags.contains(
+              Tag(Role.bad.toString(), tagType: TagType.playerRole),
+            ) &&
+            player.tags.contains(
+              Tag(Role.bad.toString(), tagType: TagType.playerRole),
+            ));
   }
 }
 
@@ -56,8 +65,9 @@ class WantsToLooseCondition extends WinCondition {
   bool matched(Map<Player, int> votedPlayers, Player player) {
     if (!super.matched(votedPlayers, player)) return false;
     final maxVotes = votedPlayers.values.reduce((a, b) => a > b ? a : b);
-    return votedPlayers.entries
-        .any((x) => x.value == maxVotes && x.key == player);
+    return votedPlayers.entries.any(
+      (x) => x.value == maxVotes && x.key == player,
+    );
   }
 }
 
@@ -70,7 +80,8 @@ class MostVotesCondition extends WinCondition {
   bool matched(Map<Player, int> votedPlayers, Player player) {
     if (!super.matched(votedPlayers, player)) return false;
     final maxVotes = votedPlayers.values.reduce((a, b) => a > b ? a : b);
-    return votedPlayers.entries
-        .any((x) => x.value == maxVotes && x.key == player);
+    return votedPlayers.entries.any(
+      (x) => x.value == maxVotes && x.key == player,
+    );
   }
 }

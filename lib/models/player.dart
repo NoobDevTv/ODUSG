@@ -2,12 +2,13 @@ import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/roles.dart';
 
 class Player {
-  const Player(
-      {required this.name,
-      required this.role,
-      required this.keyWord,
-      required this.keyWordSet,
-      required this.tags});
+  const Player({
+    required this.name,
+    required this.role,
+    required this.keyWord,
+    required this.keyWordSet,
+    required this.tags,
+  });
 
   final String name;
 
@@ -19,7 +20,7 @@ class Player {
   final Tags tags;
 
   List<Tag> getCompleteTags() {
-    return tags.tags.map((x) => Tag("player.${x.tag}")).toList();
+    return tags.tags.toList();
   }
 
   @override

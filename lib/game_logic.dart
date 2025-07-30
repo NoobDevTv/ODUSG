@@ -127,7 +127,7 @@ class GameManager extends _$GameManager {
   }
 
   bool getEntryGuardEvaluation(Step step) {
-    final allTags = step.filter.getTagMap(_players, getCompleteTags());
+    final allTags = step.filter.getTagMap(_players, gameTags.tags);
     final didMatch = step.entryGuard.evaluate(allTags);
     _allCurrentTags.clear();
     if (didMatch) {
@@ -154,7 +154,10 @@ class GameManager extends _$GameManager {
   }
 
   List<Tag> getCompleteTags() {
-    return gameTags.asStringList().map((x) => Tag("game.$x")).toList();
+    return gameTags
+        .asStringList()
+        .map((x) => Tag(x, tagType: TagType.global))
+        .toList();
   }
 }
 
@@ -206,7 +209,10 @@ class PlayerManager extends _$PlayerManager {
           role: Role.undefined,
           keyWord: name,
           keyWordSet: keyWords,
-          tags: Tags([Tag("role.${roleForUser.$1!}"), Tag("name.$name")]),
+          tags: Tags([
+            Tag(roleForUser.$1!, tagType: TagType.role),
+            Tag(name, tagType: TagType.name),
+          ]),
         ),
       );
     }

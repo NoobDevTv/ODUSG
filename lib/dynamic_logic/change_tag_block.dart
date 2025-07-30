@@ -27,11 +27,7 @@ class ChangeTagBlock extends Block with ChangeTagBlockMappable {
 
   void act() {
     final ref = GlobalRef.globalRef;
-    final gameTags =
-        tags
-            .where((x) => x.tag.startsWith("game."))
-            .map((x) => Tag(x.tag.substring(5)))
-            .toList();
+    final gameTags = tags.where((x) => x.tagType == TagType.global).toList();
     final gameNotifier = ref.read(gameManagerProvider.notifier);
     if (gameTags.isNotEmpty) {
       if (remove) {
@@ -41,11 +37,7 @@ class ChangeTagBlock extends Block with ChangeTagBlockMappable {
       }
     }
 
-    final playerTags =
-        tags
-            .where((x) => x.tag.startsWith("player."))
-            .map((x) => Tag(x.tag.substring(7)))
-            .toList();
+    final playerTags = tags.where((x) => x.tagType == TagType.player).toList();
     if (playerTags.isNotEmpty) {
       if (affectedPlayers != null) {
         final affected = affectedPlayers!.evaluatePlayers(

@@ -1,8 +1,11 @@
+import 'dart:collection';
+import 'dart:typed_data';
+
 import 'package:dart_mappable/dart_mappable.dart';
 
 part 'tags.mapper.dart';
 
-enum TagType { global, player, role, playerRole, wincondition }
+enum TagType { global, player, role, playerRole, wincondition, name }
 
 @MappableClass()
 class Tag with TagMappable {
@@ -34,8 +37,30 @@ class Tag with TagMappable {
       TagType.role => "role.",
       TagType.playerRole => "player.role.",
       TagType.wincondition => "wincondition.",
+      TagType.name => "name.",
       TagType.global || _ => "game.",
     };
+  }
+}
+
+extension ABC on List<Tag> {
+  bool matches(List<Tag> myTags) {
+    if (isEmpty) return true;
+    if (myTags.isEmpty) return false;
+
+    for (var tag in this) {
+      if (!myTags.contains(tag)) return false;
+    }
+    return true;
+  }
+
+  List<String> asStringList() {
+    return map((x) => x.tag).toList(growable: false);
+  }
+
+  bool contains(Tag other) {
+    if (isEmpty) return false;
+    return contains(other);
   }
 }
 
