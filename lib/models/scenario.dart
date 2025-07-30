@@ -65,7 +65,7 @@ final defaultScenarios = [
       Step(
         "gameStarted",
         TagCondition.parse("game.startedAlready = 0"),
-        const ChangeTagBlock(tags: [Tag("game.startedAlready")]),
+        const ChangeTagBlock(tags: [Tag("startedAlready", tagType: TagType.global)]),
       ),
       Step(
         "voting",
@@ -104,15 +104,15 @@ final defaultScenarios = [
     preGameWidget: PreGameWidget.roleAssignment,
     showAssignedEventAtEnd: false,
     availableGameTags: [
-      Tag("werewolf"),
-      Tag("villager"),
-      Tag("doctor"),
-      Tag("seer"),
-      Tag("startedAlready"),
-      Tag("dead"),
-      Tag("wolfVoting"),
-      Tag("seerVoting"),
-      Tag("doctorVoting"),
+      Tag("werewolf", tagType: TagType.role),
+      Tag("villager", tagType: TagType.role),
+      Tag("doctor", tagType: TagType.role),
+      Tag("seer", tagType: TagType.role),
+      Tag("startedAlready", tagType: TagType.global),
+      Tag("dead", tagType: TagType.player),
+      Tag("wolfVoting", tagType: TagType.player),
+      Tag("seerVoting", tagType: TagType.player),
+      Tag("doctorVoting", tagType: TagType.player),
     ],
     roles: [
       /*

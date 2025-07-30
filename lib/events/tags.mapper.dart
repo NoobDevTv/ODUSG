@@ -25,15 +25,20 @@ class TagMapper extends ClassMapperBase<Tag> {
   static bool _$temporary(Tag v) => v.temporary;
   static const Field<Tag, bool> _f$temporary =
       Field('temporary', _$temporary, opt: true, def: false);
+  static TagType _$tagType(Tag v) => v.tagType;
+  static const Field<Tag, TagType> _f$tagType =
+      Field('tagType', _$tagType, opt: true, def: TagType.global);
 
   @override
   final MappableFields<Tag> fields = const {
     #tag: _f$tag,
     #temporary: _f$temporary,
+    #tagType: _f$tagType,
   };
 
   static Tag _instantiate(DecodingData data) {
-    return Tag(data.dec(_f$tag), temporary: data.dec(_f$temporary));
+    return Tag(data.dec(_f$tag),
+        temporary: data.dec(_f$temporary), tagType: data.dec(_f$tagType));
   }
 
   @override
@@ -82,7 +87,7 @@ extension TagValueCopy<$R, $Out> on ObjectCopyWith<$R, Tag, $Out> {
 
 abstract class TagCopyWith<$R, $In extends Tag, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? tag, bool? temporary});
+  $R call({String? tag, bool? temporary, TagType? tagType});
   TagCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -93,13 +98,16 @@ class _TagCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Tag, $Out>
   @override
   late final ClassMapperBase<Tag> $mapper = TagMapper.ensureInitialized();
   @override
-  $R call({String? tag, bool? temporary}) => $apply(FieldCopyWithData({
+  $R call({String? tag, bool? temporary, TagType? tagType}) =>
+      $apply(FieldCopyWithData({
         if (tag != null) #tag: tag,
-        if (temporary != null) #temporary: temporary
+        if (temporary != null) #temporary: temporary,
+        if (tagType != null) #tagType: tagType
       }));
   @override
   Tag $make(CopyWithData data) => Tag(data.get(#tag, or: $value.tag),
-      temporary: data.get(#temporary, or: $value.temporary));
+      temporary: data.get(#temporary, or: $value.temporary),
+      tagType: data.get(#tagType, or: $value.tagType));
 
   @override
   TagCopyWith<$R2, Tag, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>

@@ -10,7 +10,6 @@ const winConditions = [
 ];
 
 abstract class WinCondition {
-  static const String basetag = "wincondition.";
 
   final Tag winConditionTag;
 
@@ -23,7 +22,7 @@ abstract class WinCondition {
 }
 
 class DefaultWinCondition extends WinCondition {
-  static const tag = Tag("${WinCondition.basetag}default");
+  static const tag = Tag("default", tagType: TagType.wincondition);
 
   const DefaultWinCondition() : super(tag);
 
@@ -49,7 +48,7 @@ class DefaultWinCondition extends WinCondition {
 }
 
 class WantsToLooseCondition extends WinCondition {
-  static const tag = Tag("${WinCondition.basetag}loose");
+  static const tag = Tag("loose", tagType: TagType.wincondition);
 
   const WantsToLooseCondition() : super(tag);
 
@@ -63,7 +62,7 @@ class WantsToLooseCondition extends WinCondition {
 }
 
 class MostVotesCondition extends WinCondition {
-  static const tag = Tag("${WinCondition.basetag}MostVotes");
+  static const tag = Tag("MostVotes", tagType: TagType.wincondition);
 
   const MostVotesCondition() : super(tag);
 
