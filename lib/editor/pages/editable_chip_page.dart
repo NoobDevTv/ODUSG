@@ -19,6 +19,49 @@ class EditableChipPage<TOperand> extends HookWidget {
   final TagEntryBase<TOperand> tagEntryBase;
   final Scenario scenario;
 
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: EditableChips<TOperand>(
+            scenario: scenario,
+            tagEntryBase: tagEntryBase,
+            readonly: true,
+          ),
+        ),
+        IconButton(
+          onPressed: () async {
+            final d = Action(
+              title: Text("Edit"),
+              children: [
+                EditableChips<TOperand>(
+                  scenario: scenario,
+                  tagEntryBase: tagEntryBase,
+                  readonly: false,
+                ),
+              ],
+            );
+          },
+          icon: Icon(Icons.edit),
+        ),
+      ],
+    );
+  }
+}
+
+class EditableChips<TOperand> extends HookWidget {
+  const EditableChips({
+    super.key,
+    required this.tagEntryBase,
+    required this.scenario,
+    this.readonly = false,
+  });
+
+  final TagEntryBase<TOperand> tagEntryBase;
+  final Scenario scenario;
+  final bool readonly;
+
   //TODO:
   // Add new dialog,
   //at top the result,
@@ -56,13 +99,15 @@ class EditableChipPage<TOperand> extends HookWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: InputChip(
-                label: Text(f.value.conditionOperators[i-1].representation),
+                label: Text(f.value.conditionOperators[i - 1].representation),
                 onSelected:
-                    (value) =>
-                        selectedChip.value =
-                            value
-                                ? (i, _SelectedType.conditionOperator)
-                                : (null, _SelectedType.operand),
+                    readonly
+                        ? (_) {}
+                        : (value) =>
+                            selectedChip.value =
+                                value
+                                    ? (i, _SelectedType.conditionOperator)
+                                    : (null, _SelectedType.operand),
                 selected: selectedIdx == i && !isOperandSelected,
               ),
             ),
@@ -76,11 +121,13 @@ class EditableChipPage<TOperand> extends HookWidget {
                 child: InputChip(
                   label: Text(f.value.operators[ourIdx].representation),
                   onSelected:
-                      (value) =>
-                          selectedChip.value =
-                              value
-                                  ? (i, _SelectedType.tagOperator)
-                                  : (null, _SelectedType.operand),
+                      readonly
+                          ? (_) {}
+                          : (value) =>
+                              selectedChip.value =
+                                  value
+                                      ? (i, _SelectedType.tagOperator)
+                                      : (null, _SelectedType.operand),
                   selected: selectedIdx == i && !isOperandSelected,
                 ),
               ),
@@ -94,11 +141,13 @@ class EditableChipPage<TOperand> extends HookWidget {
                     f.value.conditionOperators[ourIdx].representation,
                   ),
                   onSelected:
-                      (value) =>
-                          selectedChip.value =
-                              value
-                                  ? (i, _SelectedType.conditionOperator)
-                                  : (null, _SelectedType.operand),
+                      readonly
+                          ? (_) {}
+                          : (value) =>
+                              selectedChip.value =
+                                  value
+                                      ? (i, _SelectedType.conditionOperator)
+                                      : (null, _SelectedType.operand),
                   selected: selectedIdx == i && !isOperandSelected,
                 ),
               ),
@@ -108,30 +157,36 @@ class EditableChipPage<TOperand> extends HookWidget {
       }
       widgets.add(
         InputChip(
-          deleteIcon: Icon(Icons.delete),
-          onDeleted: () {
-            f.value = f.value.copyWith.modifiers
-                .removeAt(i)
-                .copyWith
-                .operands
-                .removeAt(i)
-                .copyWith
-                .conditionOperators
-                .removeAt(i == 0 ? i : i - 1);
-          },
-          onSelected: (value) {
-            if (value) {
-              selectedChip.value = (i, _SelectedType.operand);
-              filterTextController.text =
-                  filterText.value = f.value.operands[i]
-                      .toString()
-                      .replaceFirst("player.", "")
-                      .replaceFirst("game.", "");
-            } else {
-              selectedChip.value = (null, _SelectedType.operand);
-              filterTextController.text = filterText.value = "";
-            }
-          },
+          deleteIcon: readonly ? null : Icon(Icons.delete),
+          onDeleted:
+              readonly
+                  ? null
+                  : () {
+                    f.value = f.value.copyWith.modifiers
+                        .removeAt(i)
+                        .copyWith
+                        .operands
+                        .removeAt(i)
+                        .copyWith
+                        .conditionOperators
+                        .removeAt(i == 0 ? i : i - 1);
+                  },
+          onSelected:
+              readonly
+                  ? (_) {}
+                  : (value) {
+                    if (value) {
+                      selectedChip.value = (i, _SelectedType.operand);
+                      filterTextController.text =
+                          filterText.value = f.value.operands[i]
+                              .toString()
+                              .replaceFirst("player.", "")
+                              .replaceFirst("game.", "");
+                    } else {
+                      selectedChip.value = (null, _SelectedType.operand);
+                      filterTextController.text = filterText.value = "";
+                    }
+                  },
           selected: selectedIdx == i && isOperandSelected,
           label: Text(
             (f.value.modifiers.length > i
@@ -176,21 +231,25 @@ class EditableChipPage<TOperand> extends HookWidget {
                 padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
                 child: FilterChip(
                   label: Text(x),
-                  onSelected: (sel) {
-                    _addTagToOutput(
-                      globalTags,
-                      x,
-                      f,
-                      selectedIdx,
-                      selectedChip,
-                      filterUI,
-                      addAsNot,
-                    );
-                  },
+                  onSelected:
+                      readonly
+                          ? null
+                          : (sel) {
+                            _addTagToOutput(
+                              globalTags,
+                              x,
+                              f,
+                              selectedIdx,
+                              selectedChip,
+                              filterUI,
+                              addAsNot,
+                            );
+                          },
                 ),
               ),
             )
             .toList();
+    if (readonly) return Wrap(children: widgets);
 
     return Column(
       mainAxisSize: MainAxisSize.min,
