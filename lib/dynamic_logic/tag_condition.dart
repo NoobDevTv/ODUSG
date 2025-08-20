@@ -13,7 +13,7 @@ abstract class TagEntryBase<TOperand> with TagEntryBaseMappable<TOperand> {
     required this.modifiers,
     required this.operators,
     required this.conditionOperators,
-    required this.operands,
+    required this.operands
   });
 
   final List<TagModifier> modifiers;

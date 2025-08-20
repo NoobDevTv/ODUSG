@@ -56,29 +56,33 @@ class StepEditPage extends HookWidget {
                   ),
                 ),
                 ListTile(
-                  title: TextField(
-                    controller: entryController,
-                    onChanged: (newText) {
-                      try {
-                        final newCondition = TagCondition.parse(newText);
-                        current.value = current.value.copyWith(
-                          entryGuard: newCondition,
-                        );
-                        entryError.value = null;
-                      } catch (e) {
-                        entryError.value = e.toString();
-                      }
-                    },
-                    decoration: InputDecoration(
-                      label: const Text("Entry"),
-                      error:
-                          entryError.value == null
-                              ? null
-                              : Text(entryError.value!),
-                      hintText:
-                          "The Condition that must match for this step to execute",
-                    ),
+                  title: EditableChipPage(
+                    tagEntryBase: step.entryGuard,
+                    scenario: scenario,
                   ),
+                  // TextField(
+                  //   controller: entryController,
+                  //   onChanged: (newText) {
+                  //     try {
+                  //       final newCondition = TagCondition.parse(newText);
+                  //       current.value = current.value.copyWith(
+                  //         entryGuard: newCondition,
+                  //       );
+                  //       entryError.value = null;
+                  //     } catch (e) {
+                  //       entryError.value = e.toString();
+                  //     }
+                  //   },
+                  //   decoration: InputDecoration(
+                  //     label: const Text("Entry"),
+                  //     error:
+                  //         entryError.value == null
+                  //             ? null
+                  //             : Text(entryError.value!),
+                  //     hintText:
+                  //         "The Condition that must match for this step to execute",
+                  //   ),
+                  // ),
                 ),
 
                 ListTile(

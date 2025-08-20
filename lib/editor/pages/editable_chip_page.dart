@@ -51,21 +51,60 @@ class EditableChipPage<TOperand> extends HookWidget {
 
     for (var i = 0; i < f.value.operands.length; i++) {
       if (i > 0) {
-        widgets.add(
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: InputChip(
-              label: Text(f.value.conditionOperators[i - 1].representation),
-              onSelected:
-                  (value) =>
-                      selectedChip.value =
-                          value
-                              ? (i, _SelectedType.conditionOperator)
-                              : (null, _SelectedType.operand),
-              selected: selectedIdx == i && !isOperandSelected,
+        if (filterUI) {
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: InputChip(
+                label: Text(f.value.conditionOperators[i-1].representation),
+                onSelected:
+                    (value) =>
+                        selectedChip.value =
+                            value
+                                ? (i, _SelectedType.conditionOperator)
+                                : (null, _SelectedType.operand),
+                selected: selectedIdx == i && !isOperandSelected,
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          final ourIdx = (i / 2).toInt();
+          if (i % 2 == 1) {
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: InputChip(
+                  label: Text(f.value.operators[ourIdx].representation),
+                  onSelected:
+                      (value) =>
+                          selectedChip.value =
+                              value
+                                  ? (i, _SelectedType.tagOperator)
+                                  : (null, _SelectedType.operand),
+                  selected: selectedIdx == i && !isOperandSelected,
+                ),
+              ),
+            );
+          } else {
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: InputChip(
+                  label: Text(
+                    f.value.conditionOperators[ourIdx].representation,
+                  ),
+                  onSelected:
+                      (value) =>
+                          selectedChip.value =
+                              value
+                                  ? (i, _SelectedType.conditionOperator)
+                                  : (null, _SelectedType.operand),
+                  selected: selectedIdx == i && !isOperandSelected,
+                ),
+              ),
+            );
+          }
+        }
       }
       widgets.add(
         InputChip(
@@ -95,7 +134,9 @@ class EditableChipPage<TOperand> extends HookWidget {
           },
           selected: selectedIdx == i && isOperandSelected,
           label: Text(
-            (f.value.modifiers[i].representation == "!" ? "not " : "") +
+            (f.value.modifiers.length > i
+                    ? (f.value.modifiers[i].representation == "!" ? "not " : "")
+                    : "") +
                 f.value.operands[i].toString(),
           ),
         ),
@@ -125,9 +166,10 @@ class EditableChipPage<TOperand> extends HookWidget {
         allTags
             .where(
               (x) =>
-                  (globalTags.value ? !x.startsWith("role.") : true) &&
-                  (filterText.value.isEmpty ||
-                      x.contains(RegExp(filterText.value))),
+                  !isOperandSelected ||
+                  ((globalTags.value ? !x.startsWith("role.") : true) &&
+                      (filterText.value.isEmpty ||
+                          x.contains(RegExp(filterText.value)))),
             )
             .map(
               (x) => Padding(
@@ -184,51 +226,51 @@ class EditableChipPage<TOperand> extends HookWidget {
           constraints: BoxConstraints(maxHeight: 140),
           child: SingleChildScrollView(child: Wrap(children: availableChips)),
         ),
-
-        ListTile(
-          title: TextField(
-            onChanged: (value) => filterText.value = value,
-            decoration: InputDecoration(
-              hintText: "Filter available tags or add a new one",
-              labelText: "Add or filter",
+        if (isOperandSelected)
+          ListTile(
+            title: TextField(
+              onChanged: (value) => filterText.value = value,
+              decoration: InputDecoration(
+                hintText: "Filter available tags or add a new one",
+                labelText: "Add or filter",
+              ),
+              onSubmitted:
+                  selectedIdx != null
+                      ? null
+                      : (value) {
+                        if (value.isEmpty) return;
+                        _createNewTag(
+                          filterText,
+                          filterTextController,
+                          globalTags,
+                          f,
+                          selectedIdx,
+                          selectedChip,
+                          filterUI,
+                          addAsNot,
+                        );
+                      },
+              controller: filterTextController,
             ),
-            onSubmitted:
-                selectedIdx != null
-                    ? null
-                    : (value) {
-                      if (value.isEmpty) return;
-                      _createNewTag(
-                        filterText,
-                        filterTextController,
-                        globalTags,
-                        f,
-                        selectedIdx,
-                        selectedChip,
-                        filterUI,
-                        addAsNot,
-                      );
-                    },
-            controller: filterTextController,
+            trailing: IconButton(
+              onPressed:
+                  filterText.value.isEmpty
+                      ? null
+                      : () {
+                        _createNewTag(
+                          filterText,
+                          filterTextController,
+                          globalTags,
+                          f,
+                          selectedIdx,
+                          selectedChip,
+                          filterUI,
+                          addAsNot,
+                        );
+                      },
+              icon: Icon(Icons.add),
+            ),
           ),
-          trailing: IconButton(
-            onPressed:
-                filterText.value.isEmpty
-                    ? null
-                    : () {
-                      _createNewTag(
-                        filterText,
-                        filterTextController,
-                        globalTags,
-                        f,
-                        selectedIdx,
-                        selectedChip,
-                        filterUI,
-                        addAsNot,
-                      );
-                    },
-            icon: Icon(Icons.add),
-          ),
-        ),
       ],
     );
   }
@@ -243,7 +285,10 @@ class EditableChipPage<TOperand> extends HookWidget {
     bool filterUI,
     ValueNotifier<bool> addAsNot,
   ) {
-    final tag = Tag(filterText.value);
+    final tag = Tag(
+      filterText.value,
+      tagType: globalTags.value ? TagType.global : TagType.player,
+    );
     scenario.availableGameTags.add(tag);
 
     filterText.value = filterTextController.text = "";
@@ -286,14 +331,24 @@ class EditableChipPage<TOperand> extends HookWidget {
           newValue.operands[selectedIdx] = op;
           break;
         case _SelectedType.conditionOperator:
-          newValue.conditionOperators[selectedIdx - 1] = ConditionOperator
-              .values
-              .firstWhere((y) => y.representation == x);
-          break;
-        case _SelectedType.tagOperator:
-          newValue.operators[selectedIdx - 1] = TagOperator.values.firstWhere(
+          final co = ConditionOperator.values.firstWhere(
             (y) => y.representation == x,
           );
+          if (filterUI) {
+            newValue.conditionOperators[selectedIdx - 1] = co;
+          } else {
+            newValue.conditionOperators[(selectedIdx / 2).toInt()] = co;
+          }
+          break;
+        case _SelectedType.tagOperator:
+          final to = TagOperator.values.firstWhere(
+            (y) => y.representation == x,
+          );
+          if (filterUI) {
+            newValue.operators[selectedIdx - 1] = to;
+          } else {
+            newValue.operators[(selectedIdx / 2).toInt()] = to;
+          }
           break;
       }
     } else {
