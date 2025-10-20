@@ -13,7 +13,7 @@ abstract class TagEntryBase<TOperand> with TagEntryBaseMappable<TOperand> {
     required this.modifiers,
     required this.operators,
     required this.conditionOperators,
-    required this.operands
+    required this.operands,
   });
 
   final List<TagModifier> modifiers;
@@ -21,6 +21,8 @@ abstract class TagEntryBase<TOperand> with TagEntryBaseMappable<TOperand> {
 
   final List<ConditionOperator> conditionOperators;
   final List<TOperand> operands;
+
+  bool get isValid;
 }
 
 @MappableClass()
@@ -41,7 +43,7 @@ class TagFilter extends TagEntryBase<String> with TagFilterMappable {
   bool evaluateSingle(List<Tag> tagList) {
     List<bool> matches = [];
     for (var i = 0; i < operands.length; i++) {
-      final tag = Tag(operands[i]);
+      final tag = Tag.parse(operands[i]);
       final contained = tagList.contains(tag);
 
       final res = switch (modifiers[i]) {
@@ -135,11 +137,11 @@ class TagFilter extends TagEntryBase<String> with TagFilterMappable {
     );
   }
 
-  Map<String, int> getTagMap(List<Player> players, List<Tag> gameTags) {
+  Map<Tag, int> getTagMap(List<Player> players, List<Tag> gameTags) {
     final filtered = evaluate(
       [...players.map((x) => x.getCompleteTags()), gameTags].toList(),
     );
-    final mapped = filtered.map((x) => x.tag).groupBy((x) => x);
+    final mapped = filtered.groupBy((x) => x);
     final map = mapped.map((key, value) => MapEntry(key, value.length));
     return map;
   }
@@ -159,6 +161,11 @@ class TagFilter extends TagEntryBase<String> with TagFilterMappable {
     }
     return retBuffer.toString();
   }
+
+  @override
+  bool get isValid =>
+      operands.length == modifiers.length &&
+      operands.length == conditionOperators.length + 1;
 }
 
 @MappableClass()
@@ -176,16 +183,24 @@ class TagCondition extends TagEntryBase<dynamic> with TagConditionMappable {
     super.modifiers = const [],
   });
 
-  bool evaluate([Map<String, int> tags = const {}]) {
+  @override
+  bool get isValid =>
+      operands.length == operators.length * 2 &&
+      (operands.length / 2).toInt() - 1 == conditionOperators.length;
+
+  bool evaluate([Map<Tag, int> tags = const {}]) {
     bool? previousRes;
+    final strTags = tags.map(
+      (x, y) => MapEntry(x.getStringRepresantation(), y),
+    );
     for (var i = 0; i < operators.length; i++) {
       final operator = operators[i];
       final op1Raw = operands[i * 2];
       final op2Raw = operands[i * 2 + 1];
       var op1Num = op1Raw is num ? op1Raw : num.tryParse(op1Raw.toString());
       var op2Num = op2Raw is num ? op2Raw : num.tryParse(op2Raw.toString());
-      op1Num ??= tags[op1Raw] ?? 0;
-      op2Num ??= tags[op2Raw] ?? 0;
+      op1Num ??= strTags[op1Raw] ?? 0;
+      op2Num ??= strTags[op2Raw] ?? 0;
 
       final res = switch (operator) {
         TagOperator.none =>

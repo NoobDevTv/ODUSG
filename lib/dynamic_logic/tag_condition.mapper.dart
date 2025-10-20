@@ -179,7 +179,8 @@ mixin TagFilterMappable {
   }
 
   TagFilterCopyWith<TagFilter, TagFilter, TagFilter> get copyWith =>
-      _TagFilterCopyWithImpl(this as TagFilter, $identity, $identity);
+      _TagFilterCopyWithImpl<TagFilter, TagFilter>(
+          this as TagFilter, $identity, $identity);
   @override
   String toString() {
     return TagFilterMapper.ensureInitialized()
@@ -200,7 +201,7 @@ mixin TagFilterMappable {
 
 extension TagFilterValueCopy<$R, $Out> on ObjectCopyWith<$R, TagFilter, $Out> {
   TagFilterCopyWith<$R, TagFilter, $Out> get $asTagFilter =>
-      $base.as((v, t, t2) => _TagFilterCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TagFilterCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TagFilterCopyWith<$R, $In extends TagFilter, $Out>
@@ -276,7 +277,7 @@ class _TagFilterCopyWithImpl<$R, $Out>
   @override
   TagFilterCopyWith<$R2, TagFilter, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TagFilterCopyWithImpl($value, $cast, t);
+      _TagFilterCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TagConditionMapper extends SubClassMapperBase<TagCondition> {
@@ -364,7 +365,8 @@ mixin TagConditionMappable {
   }
 
   TagConditionCopyWith<TagCondition, TagCondition, TagCondition> get copyWith =>
-      _TagConditionCopyWithImpl(this as TagCondition, $identity, $identity);
+      _TagConditionCopyWithImpl<TagCondition, TagCondition>(
+          this as TagCondition, $identity, $identity);
   @override
   String toString() {
     return TagConditionMapper.ensureInitialized()
@@ -387,7 +389,7 @@ mixin TagConditionMappable {
 extension TagConditionValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TagCondition, $Out> {
   TagConditionCopyWith<$R, TagCondition, $Out> get $asTagCondition =>
-      $base.as((v, t, t2) => _TagConditionCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TagConditionCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TagConditionCopyWith<$R, $In extends TagCondition, $Out>
@@ -463,5 +465,5 @@ class _TagConditionCopyWithImpl<$R, $Out>
   @override
   TagConditionCopyWith<$R2, TagCondition, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TagConditionCopyWithImpl($value, $cast, t);
+      _TagConditionCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

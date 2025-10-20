@@ -18,6 +18,7 @@ abstract class VotingBlock extends Block with VotingBlockMappable {
     super.cover,
     super.foreachPlayer,
     super.perTagText,
+    super.image,
   });
 
   List<String> getPossibilities(WidgetRef ref);

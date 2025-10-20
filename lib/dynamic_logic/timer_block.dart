@@ -15,5 +15,6 @@ class TimerBlock extends Block with TimerBlockMappable {
     super.cover,
     super.foreachPlayer,
     super.perTagText,
+    super.image,
   });
 }

@@ -25,11 +25,11 @@ class RoleMapper extends EnumMapper<Role> {
   @override
   Role decode(dynamic value) {
     switch (value) {
-      case 'undefined':
+      case r'undefined':
         return Role.undefined;
-      case 'bad':
+      case r'bad':
         return Role.bad;
-      case 'good':
+      case r'good':
         return Role.good;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -40,11 +40,11 @@ class RoleMapper extends EnumMapper<Role> {
   dynamic encode(Role self) {
     switch (self) {
       case Role.undefined:
-        return 'undefined';
+        return r'undefined';
       case Role.bad:
-        return 'bad';
+        return r'bad';
       case Role.good:
-        return 'good';
+        return r'good';
     }
   }
 }
@@ -127,7 +127,7 @@ mixin RolesMappable {
   }
 
   RolesCopyWith<Roles, Roles, Roles> get copyWith =>
-      _RolesCopyWithImpl(this as Roles, $identity, $identity);
+      _RolesCopyWithImpl<Roles, Roles>(this as Roles, $identity, $identity);
   @override
   String toString() {
     return RolesMapper.ensureInitialized().stringifyValue(this as Roles);
@@ -146,7 +146,7 @@ mixin RolesMappable {
 
 extension RolesValueCopy<$R, $Out> on ObjectCopyWith<$R, Roles, $Out> {
   RolesCopyWith<$R, Roles, $Out> get $asRoles =>
-      $base.as((v, t, t2) => _RolesCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _RolesCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class RolesCopyWith<$R, $In extends Roles, $Out>
@@ -202,7 +202,7 @@ class _RolesCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Roles, $Out>
 
   @override
   RolesCopyWith<$R2, Roles, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _RolesCopyWithImpl($value, $cast, t);
+      _RolesCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 typedef _t$_R0<A, B, C> = (A, B, C);

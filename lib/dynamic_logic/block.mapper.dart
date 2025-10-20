@@ -37,6 +37,9 @@ class BlockMapper extends ClassMapperBase<Block> {
   static Map<String, String> _$perTagText(Block v) => v.perTagText;
   static const Field<Block, Map<String, String>> _f$perTagText =
       Field('perTagText', _$perTagText, opt: true, def: const {});
+  static String? _$image(Block v) => v.image;
+  static const Field<Block, String> _f$image =
+      Field('image', _$image, opt: true);
 
   @override
   final MappableFields<Block> fields = const {
@@ -44,6 +47,7 @@ class BlockMapper extends ClassMapperBase<Block> {
     #cover: _f$cover,
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
+    #image: _f$image,
   };
 
   static Block _instantiate(DecodingData data) {
@@ -51,7 +55,8 @@ class BlockMapper extends ClassMapperBase<Block> {
         text: data.dec(_f$text),
         cover: data.dec(_f$cover),
         foreachPlayer: data.dec(_f$foreachPlayer),
-        perTagText: data.dec(_f$perTagText));
+        perTagText: data.dec(_f$perTagText),
+        image: data.dec(_f$image));
   }
 
   @override
@@ -76,7 +81,7 @@ mixin BlockMappable {
   }
 
   BlockCopyWith<Block, Block, Block> get copyWith =>
-      _BlockCopyWithImpl(this as Block, $identity, $identity);
+      _BlockCopyWithImpl<Block, Block>(this as Block, $identity, $identity);
   @override
   String toString() {
     return BlockMapper.ensureInitialized().stringifyValue(this as Block);
@@ -95,7 +100,7 @@ mixin BlockMappable {
 
 extension BlockValueCopy<$R, $Out> on ObjectCopyWith<$R, Block, $Out> {
   BlockCopyWith<$R, Block, $Out> get $asBlock =>
-      $base.as((v, t, t2) => _BlockCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _BlockCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class BlockCopyWith<$R, $In extends Block, $Out>
@@ -106,7 +111,8 @@ abstract class BlockCopyWith<$R, $In extends Block, $Out>
       {String? text,
       bool? cover,
       bool? foreachPlayer,
-      Map<String, String>? perTagText});
+      Map<String, String>? perTagText,
+      String? image});
   BlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -127,21 +133,24 @@ class _BlockCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Block, $Out>
           {String? text,
           bool? cover,
           bool? foreachPlayer,
-          Map<String, String>? perTagText}) =>
+          Map<String, String>? perTagText,
+          Object? image = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
-        if (perTagText != null) #perTagText: perTagText
+        if (perTagText != null) #perTagText: perTagText,
+        if (image != $none) #image: image
       }));
   @override
   Block $make(CopyWithData data) => Block(
       text: data.get(#text, or: $value.text),
       cover: data.get(#cover, or: $value.cover),
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
-      perTagText: data.get(#perTagText, or: $value.perTagText));
+      perTagText: data.get(#perTagText, or: $value.perTagText),
+      image: data.get(#image, or: $value.image));
 
   @override
   BlockCopyWith<$R2, Block, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _BlockCopyWithImpl($value, $cast, t);
+      _BlockCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

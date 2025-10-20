@@ -73,7 +73,7 @@ mixin StepMappable {
   }
 
   StepCopyWith<Step, Step, Step> get copyWith =>
-      _StepCopyWithImpl(this as Step, $identity, $identity);
+      _StepCopyWithImpl<Step, Step>(this as Step, $identity, $identity);
   @override
   String toString() {
     return StepMapper.ensureInitialized().stringifyValue(this as Step);
@@ -92,7 +92,7 @@ mixin StepMappable {
 
 extension StepValueCopy<$R, $Out> on ObjectCopyWith<$R, Step, $Out> {
   StepCopyWith<$R, Step, $Out> get $asStep =>
-      $base.as((v, t, t2) => _StepCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _StepCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class StepCopyWith<$R, $In extends Step, $Out>
@@ -144,5 +144,5 @@ class _StepCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Step, $Out>
 
   @override
   StepCopyWith<$R2, Step, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _StepCopyWithImpl($value, $cast, t);
+      _StepCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

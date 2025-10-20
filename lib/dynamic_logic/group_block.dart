@@ -14,5 +14,6 @@ class GroupBlock extends Block with GroupBlockMappable {
     super.cover = false,
     super.foreachPlayer = false,
     super.perTagText = const {},
+    super.image,
   });
 }

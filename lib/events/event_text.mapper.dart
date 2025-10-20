@@ -61,7 +61,8 @@ mixin EventTextMappable {
   }
 
   EventTextCopyWith<EventText, EventText, EventText> get copyWith =>
-      _EventTextCopyWithImpl(this as EventText, $identity, $identity);
+      _EventTextCopyWithImpl<EventText, EventText>(
+          this as EventText, $identity, $identity);
   @override
   String toString() {
     return EventTextMapper.ensureInitialized()
@@ -82,7 +83,7 @@ mixin EventTextMappable {
 
 extension EventTextValueCopy<$R, $Out> on ObjectCopyWith<$R, EventText, $Out> {
   EventTextCopyWith<$R, EventText, $Out> get $asEventText =>
-      $base.as((v, t, t2) => _EventTextCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _EventTextCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class EventTextCopyWith<$R, $In extends EventText, $Out>
@@ -114,5 +115,5 @@ class _EventTextCopyWithImpl<$R, $Out>
   @override
   EventTextCopyWith<$R2, EventText, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _EventTextCopyWithImpl($value, $cast, t);
+      _EventTextCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

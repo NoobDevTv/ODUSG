@@ -6,6 +6,68 @@
 
 part of 'tags.dart';
 
+class TagTypeMapper extends EnumMapper<TagType> {
+  TagTypeMapper._();
+
+  static TagTypeMapper? _instance;
+  static TagTypeMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = TagTypeMapper._());
+    }
+    return _instance!;
+  }
+
+  static TagType fromValue(dynamic value) {
+    ensureInitialized();
+    return MapperContainer.globals.fromValue(value);
+  }
+
+  @override
+  TagType decode(dynamic value) {
+    switch (value) {
+      case r'global':
+        return TagType.global;
+      case r'player':
+        return TagType.player;
+      case r'role':
+        return TagType.role;
+      case r'playerRole':
+        return TagType.playerRole;
+      case r'wincondition':
+        return TagType.wincondition;
+      case r'name':
+        return TagType.name;
+      default:
+        throw MapperException.unknownEnumValue(value);
+    }
+  }
+
+  @override
+  dynamic encode(TagType self) {
+    switch (self) {
+      case TagType.global:
+        return r'global';
+      case TagType.player:
+        return r'player';
+      case TagType.role:
+        return r'role';
+      case TagType.playerRole:
+        return r'playerRole';
+      case TagType.wincondition:
+        return r'wincondition';
+      case TagType.name:
+        return r'name';
+    }
+  }
+}
+
+extension TagTypeMapperExtension on TagType {
+  String toValue() {
+    TagTypeMapper.ensureInitialized();
+    return MapperContainer.globals.toValue<TagType>(this) as String;
+  }
+}
+
 class TagMapper extends ClassMapperBase<Tag> {
   TagMapper._();
 
@@ -13,6 +75,7 @@ class TagMapper extends ClassMapperBase<Tag> {
   static TagMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = TagMapper._());
+      TagTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -63,7 +126,7 @@ mixin TagMappable {
   }
 
   TagCopyWith<Tag, Tag, Tag> get copyWith =>
-      _TagCopyWithImpl(this as Tag, $identity, $identity);
+      _TagCopyWithImpl<Tag, Tag>(this as Tag, $identity, $identity);
   @override
   String toString() {
     return TagMapper.ensureInitialized().stringifyValue(this as Tag);
@@ -82,7 +145,7 @@ mixin TagMappable {
 
 extension TagValueCopy<$R, $Out> on ObjectCopyWith<$R, Tag, $Out> {
   TagCopyWith<$R, Tag, $Out> get $asTag =>
-      $base.as((v, t, t2) => _TagCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TagCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TagCopyWith<$R, $In extends Tag, $Out>
@@ -111,7 +174,7 @@ class _TagCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Tag, $Out>
 
   @override
   TagCopyWith<$R2, Tag, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _TagCopyWithImpl($value, $cast, t);
+      _TagCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class TagsMapper extends ClassMapperBase<Tags> {
@@ -163,7 +226,7 @@ mixin TagsMappable {
   }
 
   TagsCopyWith<Tags, Tags, Tags> get copyWith =>
-      _TagsCopyWithImpl(this as Tags, $identity, $identity);
+      _TagsCopyWithImpl<Tags, Tags>(this as Tags, $identity, $identity);
   @override
   String toString() {
     return TagsMapper.ensureInitialized().stringifyValue(this as Tags);
@@ -182,7 +245,7 @@ mixin TagsMappable {
 
 extension TagsValueCopy<$R, $Out> on ObjectCopyWith<$R, Tags, $Out> {
   TagsCopyWith<$R, Tags, $Out> get $asTags =>
-      $base.as((v, t, t2) => _TagsCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TagsCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TagsCopyWith<$R, $In extends Tags, $Out>
@@ -209,5 +272,5 @@ class _TagsCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Tags, $Out>
 
   @override
   TagsCopyWith<$R2, Tags, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _TagsCopyWithImpl($value, $cast, t);
+      _TagsCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

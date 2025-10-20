@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/block_widget.dart';
@@ -55,20 +56,29 @@ class _GamePage extends HookConsumerWidget {
     var step = ref.watch(gameManagerProvider);
 
     final widget = blockWidgetFactory[step.block.runtimeType]!(step.block);
+    final Widget image;
+    if (step.block.image != null) {
+      image = Image.network(step.block.image!);
+    } else {
+      image = const SizedBox();
+    }
     final player = ref.watch(nextPlayerProvider);
-    return Column(
-      children: [
-        if (step.block.cover && player != null)
-          ForPlayer(hiddenContent: widget, player: player)
-        else
-          widget,
-        MaterialButton(
-          child: const Text("Im the button"),
-          onPressed: () {
-            ref.read(advancingProvider.notifier).advance();
-          },
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(padding: EdgeInsetsGeometry.only(bottom: 16), child: image),
+          if (step.block.cover && player != null)
+            ForPlayer(hiddenContent: widget, player: player)
+          else
+            widget,
+          // MaterialButton(
+          //   child: const Text("Im the button"),
+          //   onPressed: () {
+          //     ref.read(advancingProvider.notifier).advance();
+          //   },
+          // ),
+        ],
+      ),
     );
   }
 }

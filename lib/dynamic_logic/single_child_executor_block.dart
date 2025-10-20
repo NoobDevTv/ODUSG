@@ -21,5 +21,6 @@ class SingleChildExecutorBlock extends Block
     required this.randomOrder,
     required this.refillWhenEmpty,
     required this.removeExecuted,
+    super.image,
   });
 }

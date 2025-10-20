@@ -43,6 +43,9 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
   static Map<String, String> _$perTagText(ChangeTagBlock v) => v.perTagText;
   static const Field<ChangeTagBlock, Map<String, String>> _f$perTagText =
       Field('perTagText', _$perTagText, opt: true, def: const {});
+  static String? _$image(ChangeTagBlock v) => v.image;
+  static const Field<ChangeTagBlock, String> _f$image =
+      Field('image', _$image, opt: true);
 
   @override
   final MappableFields<ChangeTagBlock> fields = const {
@@ -53,6 +56,7 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
     #cover: _f$cover,
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
+    #image: _f$image,
   };
 
   @override
@@ -70,7 +74,8 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
         remove: data.dec(_f$remove),
         cover: data.dec(_f$cover),
         foreachPlayer: data.dec(_f$foreachPlayer),
-        perTagText: data.dec(_f$perTagText));
+        perTagText: data.dec(_f$perTagText),
+        image: data.dec(_f$image));
   }
 
   @override
@@ -97,8 +102,9 @@ mixin ChangeTagBlockMappable {
   }
 
   ChangeTagBlockCopyWith<ChangeTagBlock, ChangeTagBlock, ChangeTagBlock>
-      get copyWith => _ChangeTagBlockCopyWithImpl(
-          this as ChangeTagBlock, $identity, $identity);
+      get copyWith =>
+          _ChangeTagBlockCopyWithImpl<ChangeTagBlock, ChangeTagBlock>(
+              this as ChangeTagBlock, $identity, $identity);
   @override
   String toString() {
     return ChangeTagBlockMapper.ensureInitialized()
@@ -121,7 +127,7 @@ mixin ChangeTagBlockMappable {
 extension ChangeTagBlockValueCopy<$R, $Out>
     on ObjectCopyWith<$R, ChangeTagBlock, $Out> {
   ChangeTagBlockCopyWith<$R, ChangeTagBlock, $Out> get $asChangeTagBlock =>
-      $base.as((v, t, t2) => _ChangeTagBlockCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ChangeTagBlockCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ChangeTagBlockCopyWith<$R, $In extends ChangeTagBlock, $Out>
@@ -139,7 +145,8 @@ abstract class ChangeTagBlockCopyWith<$R, $In extends ChangeTagBlock, $Out>
       bool? remove,
       bool? cover,
       bool? foreachPlayer,
-      Map<String, String>? perTagText});
+      Map<String, String>? perTagText,
+      String? image});
   ChangeTagBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -172,7 +179,8 @@ class _ChangeTagBlockCopyWithImpl<$R, $Out>
           bool? remove,
           bool? cover,
           bool? foreachPlayer,
-          Map<String, String>? perTagText}) =>
+          Map<String, String>? perTagText,
+          Object? image = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (affectedPlayers != $none) #affectedPlayers: affectedPlayers,
@@ -180,7 +188,8 @@ class _ChangeTagBlockCopyWithImpl<$R, $Out>
         if (remove != null) #remove: remove,
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
-        if (perTagText != null) #perTagText: perTagText
+        if (perTagText != null) #perTagText: perTagText,
+        if (image != $none) #image: image
       }));
   @override
   ChangeTagBlock $make(CopyWithData data) => ChangeTagBlock(
@@ -190,10 +199,11 @@ class _ChangeTagBlockCopyWithImpl<$R, $Out>
       remove: data.get(#remove, or: $value.remove),
       cover: data.get(#cover, or: $value.cover),
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
-      perTagText: data.get(#perTagText, or: $value.perTagText));
+      perTagText: data.get(#perTagText, or: $value.perTagText),
+      image: data.get(#image, or: $value.image));
 
   @override
   ChangeTagBlockCopyWith<$R2, ChangeTagBlock, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ChangeTagBlockCopyWithImpl($value, $cast, t);
+      _ChangeTagBlockCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

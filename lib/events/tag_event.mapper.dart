@@ -93,7 +93,8 @@ mixin TagEventMappable {
   }
 
   TagEventCopyWith<TagEvent, TagEvent, TagEvent> get copyWith =>
-      _TagEventCopyWithImpl(this as TagEvent, $identity, $identity);
+      _TagEventCopyWithImpl<TagEvent, TagEvent>(
+          this as TagEvent, $identity, $identity);
   @override
   String toString() {
     return TagEventMapper.ensureInitialized().stringifyValue(this as TagEvent);
@@ -113,7 +114,7 @@ mixin TagEventMappable {
 
 extension TagEventValueCopy<$R, $Out> on ObjectCopyWith<$R, TagEvent, $Out> {
   TagEventCopyWith<$R, TagEvent, $Out> get $asTagEvent =>
-      $base.as((v, t, t2) => _TagEventCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TagEventCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TagEventCopyWith<$R, $In extends TagEvent, $Out>
@@ -185,5 +186,5 @@ class _TagEventCopyWithImpl<$R, $Out>
   @override
   TagEventCopyWith<$R2, TagEvent, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TagEventCopyWithImpl($value, $cast, t);
+      _TagEventCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

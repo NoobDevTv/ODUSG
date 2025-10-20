@@ -76,7 +76,8 @@ mixin EventInfoMappable {
   }
 
   EventInfoCopyWith<EventInfo, EventInfo, EventInfo> get copyWith =>
-      _EventInfoCopyWithImpl(this as EventInfo, $identity, $identity);
+      _EventInfoCopyWithImpl<EventInfo, EventInfo>(
+          this as EventInfo, $identity, $identity);
   @override
   String toString() {
     return EventInfoMapper.ensureInitialized()
@@ -97,7 +98,7 @@ mixin EventInfoMappable {
 
 extension EventInfoValueCopy<$R, $Out> on ObjectCopyWith<$R, EventInfo, $Out> {
   EventInfoCopyWith<$R, EventInfo, $Out> get $asEventInfo =>
-      $base.as((v, t, t2) => _EventInfoCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _EventInfoCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class EventInfoCopyWith<$R, $In extends EventInfo, $Out>
@@ -135,5 +136,5 @@ class _EventInfoCopyWithImpl<$R, $Out>
   @override
   EventInfoCopyWith<$R2, EventInfo, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _EventInfoCopyWithImpl($value, $cast, t);
+      _EventInfoCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

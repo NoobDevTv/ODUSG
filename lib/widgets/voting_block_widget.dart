@@ -20,19 +20,19 @@ class VotingBlockWidget extends HookConsumerWidget {
     return Column(
       children: [
         SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(votingBlock.text),
-              ...votings.map(
-                (x) => RadioListTile<String>(
-                  value: x,
-                  title: Text(x),
-                  groupValue: selected.value,
-                  onChanged: (val) => selected.value = val ?? "",
+          child: RadioGroup(
+            groupValue: selected.value,
+            onChanged: (val) => selected.value = val ?? "",
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(votingBlock.text),
+                ...votings.map(
+                  (x) => RadioListTile<String>(value: x, title: Text(x),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         MaterialButton(

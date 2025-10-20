@@ -48,6 +48,9 @@ class PlayerVotingBlockMapper extends SubClassMapperBase<PlayerVotingBlock> {
   static Map<String, String> _$perTagText(PlayerVotingBlock v) => v.perTagText;
   static const Field<PlayerVotingBlock, Map<String, String>> _f$perTagText =
       Field('perTagText', _$perTagText, opt: true, def: const {});
+  static String? _$image(PlayerVotingBlock v) => v.image;
+  static const Field<PlayerVotingBlock, String> _f$image =
+      Field('image', _$image, opt: true);
 
   @override
   final MappableFields<PlayerVotingBlock> fields = const {
@@ -59,6 +62,7 @@ class PlayerVotingBlockMapper extends SubClassMapperBase<PlayerVotingBlock> {
     #cover: _f$cover,
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
+    #image: _f$image,
   };
 
   @override
@@ -78,7 +82,8 @@ class PlayerVotingBlockMapper extends SubClassMapperBase<PlayerVotingBlock> {
         text: data.dec(_f$text),
         cover: data.dec(_f$cover),
         foreachPlayer: data.dec(_f$foreachPlayer),
-        perTagText: data.dec(_f$perTagText));
+        perTagText: data.dec(_f$perTagText),
+        image: data.dec(_f$image));
   }
 
   @override
@@ -106,8 +111,9 @@ mixin PlayerVotingBlockMappable {
 
   PlayerVotingBlockCopyWith<PlayerVotingBlock, PlayerVotingBlock,
           PlayerVotingBlock>
-      get copyWith => _PlayerVotingBlockCopyWithImpl(
-          this as PlayerVotingBlock, $identity, $identity);
+      get copyWith =>
+          _PlayerVotingBlockCopyWithImpl<PlayerVotingBlock, PlayerVotingBlock>(
+              this as PlayerVotingBlock, $identity, $identity);
   @override
   String toString() {
     return PlayerVotingBlockMapper.ensureInitialized()
@@ -130,8 +136,8 @@ mixin PlayerVotingBlockMappable {
 extension PlayerVotingBlockValueCopy<$R, $Out>
     on ObjectCopyWith<$R, PlayerVotingBlock, $Out> {
   PlayerVotingBlockCopyWith<$R, PlayerVotingBlock, $Out>
-      get $asPlayerVotingBlock =>
-          $base.as((v, t, t2) => _PlayerVotingBlockCopyWithImpl(v, t, t2));
+      get $asPlayerVotingBlock => $base
+          .as((v, t, t2) => _PlayerVotingBlockCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class PlayerVotingBlockCopyWith<$R, $In extends PlayerVotingBlock,
@@ -151,7 +157,8 @@ abstract class PlayerVotingBlockCopyWith<$R, $In extends PlayerVotingBlock,
       String? text,
       bool? cover,
       bool? foreachPlayer,
-      Map<String, String>? perTagText});
+      Map<String, String>? perTagText,
+      String? image});
   PlayerVotingBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -186,7 +193,8 @@ class _PlayerVotingBlockCopyWithImpl<$R, $Out>
           String? text,
           bool? cover,
           bool? foreachPlayer,
-          Map<String, String>? perTagText}) =>
+          Map<String, String>? perTagText,
+          Object? image = $none}) =>
       $apply(FieldCopyWithData({
         if (votingTargetPossibilities != null)
           #votingTargetPossibilities: votingTargetPossibilities,
@@ -196,7 +204,8 @@ class _PlayerVotingBlockCopyWithImpl<$R, $Out>
         if (text != null) #text: text,
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
-        if (perTagText != null) #perTagText: perTagText
+        if (perTagText != null) #perTagText: perTagText,
+        if (image != $none) #image: image
       }));
   @override
   PlayerVotingBlock $make(CopyWithData data) => PlayerVotingBlock(
@@ -208,10 +217,11 @@ class _PlayerVotingBlockCopyWithImpl<$R, $Out>
       text: data.get(#text, or: $value.text),
       cover: data.get(#cover, or: $value.cover),
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
-      perTagText: data.get(#perTagText, or: $value.perTagText));
+      perTagText: data.get(#perTagText, or: $value.perTagText),
+      image: data.get(#image, or: $value.image));
 
   @override
   PlayerVotingBlockCopyWith<$R2, PlayerVotingBlock, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _PlayerVotingBlockCopyWithImpl($value, $cast, t);
+      _PlayerVotingBlockCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

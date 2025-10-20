@@ -55,10 +55,17 @@ class StepEditPage extends HookWidget {
                     ),
                   ),
                 ),
+              
+                
                 ListTile(
                   title: EditableChipPage(
-                    tagEntryBase: step.entryGuard,
+                    tagEntryBase: current.value.entryGuard,
                     scenario: scenario,
+                    onSaved: (tagEntryBase) {
+                      current.value = current.value.copyWith(
+                        entryGuard: tagEntryBase as TagCondition,
+                      );
+                    },
                   ),
                   // TextField(
                   //   controller: entryController,

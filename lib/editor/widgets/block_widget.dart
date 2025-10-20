@@ -13,17 +13,20 @@ abstract class BlockWidget<T extends Block> extends HookWidget {
     required this.scenario,
     required this.step,
     this.allowDisplayText = true,
+    this.allowImage = true,
   });
 
   final ValueNotifier<T> block;
   final Scenario scenario;
   final s.Step step;
   final bool allowDisplayText;
+  final bool allowImage;
   T get currentBlock => block.value;
 
   @override
   Widget build(BuildContext context) {
     final textController = useTextEditingController(text: currentBlock.text);
+    final imageController = useTextEditingController(text: currentBlock.image);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -37,6 +40,18 @@ abstract class BlockWidget<T extends Block> extends HookWidget {
               ),
               onChanged:
                   (v) => block.value = block.value.copyWith(text: v) as T,
+            ),
+          ),
+        if (allowImage)
+          ListTile(
+            title: TextField(
+              controller: imageController,
+              onChanged:
+                  (v) => block.value = block.value.copyWith(image: v) as T,
+              decoration: const InputDecoration(
+                label: Text("Image URL"),
+                hintText: "The URL of the image to show at top",
+              ),
             ),
           ),
         CheckboxListTile(

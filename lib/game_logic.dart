@@ -74,6 +74,8 @@ class GameManager extends _$GameManager {
     );
     _players = ref.watch(playerManagerProvider);
     gameTags.tags.clear();
+    _allCurrentTags.clear();
+
     return _steps.first.step;
   }
 
@@ -91,6 +93,7 @@ class GameManager extends _$GameManager {
         return; //TODO End game or/and throw an error
       step = _steps.removeFirst();
       if (step.persistant) _steps.add(step);
+      step = _steps.first;
       if (!getEntryGuardEvaluation(step.step)) {
         continue;
       }
@@ -129,13 +132,15 @@ class GameManager extends _$GameManager {
   bool getEntryGuardEvaluation(Step step) {
     final allTags = step.filter.getTagMap(_players, gameTags.tags);
     final didMatch = step.entryGuard.evaluate(allTags);
-    _allCurrentTags.clear();
+    // _allCurrentTags.clear();
     if (didMatch) {
       final tagVals = allTags.keys.map((x) {
-        final lastPoint = x.lastIndexOf('.');
+        final lastPoint = x.tag.lastIndexOf('.');
+        if (lastPoint == -1)
+          return (x.tagType.representation.replaceAll('.', '_'), x.tag);
         return (
-          x.substring(0, lastPoint).replaceAll('.', '_'),
-          x.substring(lastPoint + 1),
+          x.tag.substring(0, lastPoint).replaceAll('.', '_'),
+          x.tag.substring(lastPoint + 1),
         );
       });
 

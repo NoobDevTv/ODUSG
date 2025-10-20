@@ -92,9 +92,9 @@ mixin SingleSelectionEventMappable {
   }
 
   SingleSelectionEventCopyWith<SingleSelectionEvent, SingleSelectionEvent,
-          SingleSelectionEvent>
-      get copyWith => _SingleSelectionEventCopyWithImpl(
-          this as SingleSelectionEvent, $identity, $identity);
+      SingleSelectionEvent> get copyWith => _SingleSelectionEventCopyWithImpl<
+          SingleSelectionEvent, SingleSelectionEvent>(
+      this as SingleSelectionEvent, $identity, $identity);
   @override
   String toString() {
     return SingleSelectionEventMapper.ensureInitialized()
@@ -117,8 +117,8 @@ mixin SingleSelectionEventMappable {
 extension SingleSelectionEventValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SingleSelectionEvent, $Out> {
   SingleSelectionEventCopyWith<$R, SingleSelectionEvent, $Out>
-      get $asSingleSelectionEvent =>
-          $base.as((v, t, t2) => _SingleSelectionEventCopyWithImpl(v, t, t2));
+      get $asSingleSelectionEvent => $base.as(
+          (v, t, t2) => _SingleSelectionEventCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SingleSelectionEventCopyWith<
@@ -181,5 +181,5 @@ class _SingleSelectionEventCopyWithImpl<$R, $Out>
   @override
   SingleSelectionEventCopyWith<$R2, SingleSelectionEvent, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _SingleSelectionEventCopyWithImpl($value, $cast, t);
+          _SingleSelectionEventCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

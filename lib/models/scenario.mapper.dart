@@ -25,9 +25,9 @@ class PreGameWidgetMapper extends EnumMapper<PreGameWidget> {
   @override
   PreGameWidget decode(dynamic value) {
     switch (value) {
-      case 'roleAssignment':
+      case r'roleAssignment':
         return PreGameWidget.roleAssignment;
-      case 'textInput':
+      case r'textInput':
         return PreGameWidget.textInput;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -38,9 +38,9 @@ class PreGameWidgetMapper extends EnumMapper<PreGameWidget> {
   dynamic encode(PreGameWidget self) {
     switch (self) {
       case PreGameWidget.roleAssignment:
-        return 'roleAssignment';
+        return r'roleAssignment';
       case PreGameWidget.textInput:
-        return 'textInput';
+        return r'textInput';
     }
   }
 }
@@ -159,7 +159,8 @@ mixin ScenarioMappable {
   }
 
   ScenarioCopyWith<Scenario, Scenario, Scenario> get copyWith =>
-      _ScenarioCopyWithImpl(this as Scenario, $identity, $identity);
+      _ScenarioCopyWithImpl<Scenario, Scenario>(
+          this as Scenario, $identity, $identity);
   @override
   String toString() {
     return ScenarioMapper.ensureInitialized().stringifyValue(this as Scenario);
@@ -179,7 +180,7 @@ mixin ScenarioMappable {
 
 extension ScenarioValueCopy<$R, $Out> on ObjectCopyWith<$R, Scenario, $Out> {
   ScenarioCopyWith<$R, Scenario, $Out> get $asScenario =>
-      $base.as((v, t, t2) => _ScenarioCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _ScenarioCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
@@ -277,7 +278,7 @@ class _ScenarioCopyWithImpl<$R, $Out>
   @override
   ScenarioCopyWith<$R2, Scenario, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _ScenarioCopyWithImpl($value, $cast, t);
+      _ScenarioCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 typedef _t$_R0<A, B, C> = (A, B, C);

@@ -38,6 +38,9 @@ class NextButtonBlockMapper extends SubClassMapperBase<NextButtonBlock> {
   static Map<String, String> _$perTagText(NextButtonBlock v) => v.perTagText;
   static const Field<NextButtonBlock, Map<String, String>> _f$perTagText =
       Field('perTagText', _$perTagText, opt: true, def: const {});
+  static String? _$image(NextButtonBlock v) => v.image;
+  static const Field<NextButtonBlock, String> _f$image =
+      Field('image', _$image, opt: true);
 
   @override
   final MappableFields<NextButtonBlock> fields = const {
@@ -47,6 +50,7 @@ class NextButtonBlockMapper extends SubClassMapperBase<NextButtonBlock> {
     #cover: _f$cover,
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
+    #image: _f$image,
   };
 
   @override
@@ -63,7 +67,8 @@ class NextButtonBlockMapper extends SubClassMapperBase<NextButtonBlock> {
         buttonText: data.dec(_f$buttonText),
         cover: data.dec(_f$cover),
         foreachPlayer: data.dec(_f$foreachPlayer),
-        perTagText: data.dec(_f$perTagText));
+        perTagText: data.dec(_f$perTagText),
+        image: data.dec(_f$image));
   }
 
   @override
@@ -90,8 +95,9 @@ mixin NextButtonBlockMappable {
   }
 
   NextButtonBlockCopyWith<NextButtonBlock, NextButtonBlock, NextButtonBlock>
-      get copyWith => _NextButtonBlockCopyWithImpl(
-          this as NextButtonBlock, $identity, $identity);
+      get copyWith =>
+          _NextButtonBlockCopyWithImpl<NextButtonBlock, NextButtonBlock>(
+              this as NextButtonBlock, $identity, $identity);
   @override
   String toString() {
     return NextButtonBlockMapper.ensureInitialized()
@@ -114,7 +120,7 @@ mixin NextButtonBlockMappable {
 extension NextButtonBlockValueCopy<$R, $Out>
     on ObjectCopyWith<$R, NextButtonBlock, $Out> {
   NextButtonBlockCopyWith<$R, NextButtonBlock, $Out> get $asNextButtonBlock =>
-      $base.as((v, t, t2) => _NextButtonBlockCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _NextButtonBlockCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class NextButtonBlockCopyWith<$R, $In extends NextButtonBlock, $Out>
@@ -129,7 +135,8 @@ abstract class NextButtonBlockCopyWith<$R, $In extends NextButtonBlock, $Out>
       String? buttonText,
       bool? cover,
       bool? foreachPlayer,
-      Map<String, String>? perTagText});
+      Map<String, String>? perTagText,
+      String? image});
   NextButtonBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -155,14 +162,16 @@ class _NextButtonBlockCopyWithImpl<$R, $Out>
           String? buttonText,
           bool? cover,
           bool? foreachPlayer,
-          Map<String, String>? perTagText}) =>
+          Map<String, String>? perTagText,
+          Object? image = $none}) =>
       $apply(FieldCopyWithData({
         if (endsGame != null) #endsGame: endsGame,
         if (text != null) #text: text,
         if (buttonText != null) #buttonText: buttonText,
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
-        if (perTagText != null) #perTagText: perTagText
+        if (perTagText != null) #perTagText: perTagText,
+        if (image != $none) #image: image
       }));
   @override
   NextButtonBlock $make(CopyWithData data) => NextButtonBlock(
@@ -171,10 +180,11 @@ class _NextButtonBlockCopyWithImpl<$R, $Out>
       buttonText: data.get(#buttonText, or: $value.buttonText),
       cover: data.get(#cover, or: $value.cover),
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
-      perTagText: data.get(#perTagText, or: $value.perTagText));
+      perTagText: data.get(#perTagText, or: $value.perTagText),
+      image: data.get(#image, or: $value.image));
 
   @override
   NextButtonBlockCopyWith<$R2, NextButtonBlock, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _NextButtonBlockCopyWithImpl($value, $cast, t);
+      _NextButtonBlockCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

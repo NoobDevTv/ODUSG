@@ -18,7 +18,7 @@ class TagFilterWidget extends HookWidget {
   final TagFilter? tagFilter;
   final Widget label;
   final String? hintText;
-  final void Function(TagFilter? newFilter) onChanged;
+  final void Function(TagFilter newFilter) onChanged;
   final Scenario scenario;
 
   @override
@@ -31,7 +31,13 @@ class TagFilterWidget extends HookWidget {
     final f = tagFilter;
     if (f == null) return const SizedBox();
 
-    return EditableChipPage(tagEntryBase: f, scenario: scenario);
+    return EditableChipPage(
+      tagEntryBase: f,
+      scenario: scenario,
+      onSaved: (tagEntryBase) {
+        onChanged(tagEntryBase as TagFilter);
+      },
+    );
     //TODO:
     // Add new dialog,
     //at top the result,

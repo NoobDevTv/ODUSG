@@ -35,6 +35,9 @@ class GroupBlockMapper extends SubClassMapperBase<GroupBlock> {
   static Map<String, String> _$perTagText(GroupBlock v) => v.perTagText;
   static const Field<GroupBlock, Map<String, String>> _f$perTagText =
       Field('perTagText', _$perTagText, opt: true, def: const {});
+  static String? _$image(GroupBlock v) => v.image;
+  static const Field<GroupBlock, String> _f$image =
+      Field('image', _$image, opt: true);
 
   @override
   final MappableFields<GroupBlock> fields = const {
@@ -43,6 +46,7 @@ class GroupBlockMapper extends SubClassMapperBase<GroupBlock> {
     #cover: _f$cover,
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
+    #image: _f$image,
   };
 
   @override
@@ -58,7 +62,8 @@ class GroupBlockMapper extends SubClassMapperBase<GroupBlock> {
         steps: data.dec(_f$steps),
         cover: data.dec(_f$cover),
         foreachPlayer: data.dec(_f$foreachPlayer),
-        perTagText: data.dec(_f$perTagText));
+        perTagText: data.dec(_f$perTagText),
+        image: data.dec(_f$image));
   }
 
   @override
@@ -85,7 +90,8 @@ mixin GroupBlockMappable {
   }
 
   GroupBlockCopyWith<GroupBlock, GroupBlock, GroupBlock> get copyWith =>
-      _GroupBlockCopyWithImpl(this as GroupBlock, $identity, $identity);
+      _GroupBlockCopyWithImpl<GroupBlock, GroupBlock>(
+          this as GroupBlock, $identity, $identity);
   @override
   String toString() {
     return GroupBlockMapper.ensureInitialized()
@@ -107,7 +113,7 @@ mixin GroupBlockMappable {
 extension GroupBlockValueCopy<$R, $Out>
     on ObjectCopyWith<$R, GroupBlock, $Out> {
   GroupBlockCopyWith<$R, GroupBlock, $Out> get $asGroupBlock =>
-      $base.as((v, t, t2) => _GroupBlockCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _GroupBlockCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class GroupBlockCopyWith<$R, $In extends GroupBlock, $Out>
@@ -122,7 +128,8 @@ abstract class GroupBlockCopyWith<$R, $In extends GroupBlock, $Out>
       List<Step>? steps,
       bool? cover,
       bool? foreachPlayer,
-      Map<String, String>? perTagText});
+      Map<String, String>? perTagText,
+      String? image});
   GroupBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -150,13 +157,15 @@ class _GroupBlockCopyWithImpl<$R, $Out>
           List<Step>? steps,
           bool? cover,
           bool? foreachPlayer,
-          Map<String, String>? perTagText}) =>
+          Map<String, String>? perTagText,
+          Object? image = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (steps != null) #steps: steps,
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
-        if (perTagText != null) #perTagText: perTagText
+        if (perTagText != null) #perTagText: perTagText,
+        if (image != $none) #image: image
       }));
   @override
   GroupBlock $make(CopyWithData data) => GroupBlock(
@@ -164,10 +173,11 @@ class _GroupBlockCopyWithImpl<$R, $Out>
       steps: data.get(#steps, or: $value.steps),
       cover: data.get(#cover, or: $value.cover),
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
-      perTagText: data.get(#perTagText, or: $value.perTagText));
+      perTagText: data.get(#perTagText, or: $value.perTagText),
+      image: data.get(#image, or: $value.image));
 
   @override
   GroupBlockCopyWith<$R2, GroupBlock, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _GroupBlockCopyWithImpl($value, $cast, t);
+      _GroupBlockCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

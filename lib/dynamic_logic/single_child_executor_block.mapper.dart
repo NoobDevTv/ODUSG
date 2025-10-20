@@ -51,6 +51,9 @@ class SingleChildExecutorBlockMapper
   static bool _$removeExecuted(SingleChildExecutorBlock v) => v.removeExecuted;
   static const Field<SingleChildExecutorBlock, bool> _f$removeExecuted =
       Field('removeExecuted', _$removeExecuted);
+  static String? _$image(SingleChildExecutorBlock v) => v.image;
+  static const Field<SingleChildExecutorBlock, String> _f$image =
+      Field('image', _$image, opt: true);
 
   @override
   final MappableFields<SingleChildExecutorBlock> fields = const {
@@ -62,6 +65,7 @@ class SingleChildExecutorBlockMapper
     #randomOrder: _f$randomOrder,
     #refillWhenEmpty: _f$refillWhenEmpty,
     #removeExecuted: _f$removeExecuted,
+    #image: _f$image,
   };
 
   @override
@@ -80,7 +84,8 @@ class SingleChildExecutorBlockMapper
         steps: data.dec(_f$steps),
         randomOrder: data.dec(_f$randomOrder),
         refillWhenEmpty: data.dec(_f$refillWhenEmpty),
-        removeExecuted: data.dec(_f$removeExecuted));
+        removeExecuted: data.dec(_f$removeExecuted),
+        image: data.dec(_f$image));
   }
 
   @override
@@ -108,7 +113,8 @@ mixin SingleChildExecutorBlockMappable {
 
   SingleChildExecutorBlockCopyWith<SingleChildExecutorBlock,
           SingleChildExecutorBlock, SingleChildExecutorBlock>
-      get copyWith => _SingleChildExecutorBlockCopyWithImpl(
+      get copyWith => _SingleChildExecutorBlockCopyWithImpl<
+              SingleChildExecutorBlock, SingleChildExecutorBlock>(
           this as SingleChildExecutorBlock, $identity, $identity);
   @override
   String toString() {
@@ -132,8 +138,8 @@ mixin SingleChildExecutorBlockMappable {
 extension SingleChildExecutorBlockValueCopy<$R, $Out>
     on ObjectCopyWith<$R, SingleChildExecutorBlock, $Out> {
   SingleChildExecutorBlockCopyWith<$R, SingleChildExecutorBlock, $Out>
-      get $asSingleChildExecutorBlock => $base
-          .as((v, t, t2) => _SingleChildExecutorBlockCopyWithImpl(v, t, t2));
+      get $asSingleChildExecutorBlock => $base.as((v, t, t2) =>
+          _SingleChildExecutorBlockCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class SingleChildExecutorBlockCopyWith<
@@ -153,7 +159,8 @@ abstract class SingleChildExecutorBlockCopyWith<
       List<Step>? steps,
       bool? randomOrder,
       bool? refillWhenEmpty,
-      bool? removeExecuted});
+      bool? removeExecuted,
+      String? image});
   SingleChildExecutorBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -186,7 +193,8 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
           List<Step>? steps,
           bool? randomOrder,
           bool? refillWhenEmpty,
-          bool? removeExecuted}) =>
+          bool? removeExecuted,
+          Object? image = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (cover != null) #cover: cover,
@@ -195,7 +203,8 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
         if (steps != null) #steps: steps,
         if (randomOrder != null) #randomOrder: randomOrder,
         if (refillWhenEmpty != null) #refillWhenEmpty: refillWhenEmpty,
-        if (removeExecuted != null) #removeExecuted: removeExecuted
+        if (removeExecuted != null) #removeExecuted: removeExecuted,
+        if (image != $none) #image: image
       }));
   @override
   SingleChildExecutorBlock $make(CopyWithData data) => SingleChildExecutorBlock(
@@ -206,10 +215,11 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
       steps: data.get(#steps, or: $value.steps),
       randomOrder: data.get(#randomOrder, or: $value.randomOrder),
       refillWhenEmpty: data.get(#refillWhenEmpty, or: $value.refillWhenEmpty),
-      removeExecuted: data.get(#removeExecuted, or: $value.removeExecuted));
+      removeExecuted: data.get(#removeExecuted, or: $value.removeExecuted),
+      image: data.get(#image, or: $value.image));
 
   @override
   SingleChildExecutorBlockCopyWith<$R2, SingleChildExecutorBlock, $Out2>
       $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-          _SingleChildExecutorBlockCopyWithImpl($value, $cast, t);
+          _SingleChildExecutorBlockCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

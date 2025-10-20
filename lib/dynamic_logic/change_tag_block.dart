@@ -23,6 +23,7 @@ class ChangeTagBlock extends Block with ChangeTagBlockMappable {
     super.cover = false,
     super.foreachPlayer = false,
     super.perTagText = const {},
+    super.image
   });
 
   void act() {

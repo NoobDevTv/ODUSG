@@ -38,6 +38,9 @@ class TimerBlockMapper extends SubClassMapperBase<TimerBlock> {
   static Map<String, String> _$perTagText(TimerBlock v) => v.perTagText;
   static const Field<TimerBlock, Map<String, String>> _f$perTagText =
       Field('perTagText', _$perTagText, opt: true, def: const {});
+  static String? _$image(TimerBlock v) => v.image;
+  static const Field<TimerBlock, String> _f$image =
+      Field('image', _$image, opt: true);
 
   @override
   final MappableFields<TimerBlock> fields = const {
@@ -47,6 +50,7 @@ class TimerBlockMapper extends SubClassMapperBase<TimerBlock> {
     #cover: _f$cover,
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
+    #image: _f$image,
   };
 
   @override
@@ -63,7 +67,8 @@ class TimerBlockMapper extends SubClassMapperBase<TimerBlock> {
         text: data.dec(_f$text),
         cover: data.dec(_f$cover),
         foreachPlayer: data.dec(_f$foreachPlayer),
-        perTagText: data.dec(_f$perTagText));
+        perTagText: data.dec(_f$perTagText),
+        image: data.dec(_f$image));
   }
 
   @override
@@ -90,7 +95,8 @@ mixin TimerBlockMappable {
   }
 
   TimerBlockCopyWith<TimerBlock, TimerBlock, TimerBlock> get copyWith =>
-      _TimerBlockCopyWithImpl(this as TimerBlock, $identity, $identity);
+      _TimerBlockCopyWithImpl<TimerBlock, TimerBlock>(
+          this as TimerBlock, $identity, $identity);
   @override
   String toString() {
     return TimerBlockMapper.ensureInitialized()
@@ -112,7 +118,7 @@ mixin TimerBlockMappable {
 extension TimerBlockValueCopy<$R, $Out>
     on ObjectCopyWith<$R, TimerBlock, $Out> {
   TimerBlockCopyWith<$R, TimerBlock, $Out> get $asTimerBlock =>
-      $base.as((v, t, t2) => _TimerBlockCopyWithImpl(v, t, t2));
+      $base.as((v, t, t2) => _TimerBlockCopyWithImpl<$R, $Out>(v, t, t2));
 }
 
 abstract class TimerBlockCopyWith<$R, $In extends TimerBlock, $Out>
@@ -127,7 +133,8 @@ abstract class TimerBlockCopyWith<$R, $In extends TimerBlock, $Out>
       String? text,
       bool? cover,
       bool? foreachPlayer,
-      Map<String, String>? perTagText});
+      Map<String, String>? perTagText,
+      String? image});
   TimerBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -152,14 +159,16 @@ class _TimerBlockCopyWithImpl<$R, $Out>
           String? text,
           bool? cover,
           bool? foreachPlayer,
-          Map<String, String>? perTagText}) =>
+          Map<String, String>? perTagText,
+          Object? image = $none}) =>
       $apply(FieldCopyWithData({
         if (minTimer != null) #minTimer: minTimer,
         if (maxTimer != null) #maxTimer: maxTimer,
         if (text != null) #text: text,
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
-        if (perTagText != null) #perTagText: perTagText
+        if (perTagText != null) #perTagText: perTagText,
+        if (image != $none) #image: image
       }));
   @override
   TimerBlock $make(CopyWithData data) => TimerBlock(
@@ -168,10 +177,11 @@ class _TimerBlockCopyWithImpl<$R, $Out>
       text: data.get(#text, or: $value.text),
       cover: data.get(#cover, or: $value.cover),
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
-      perTagText: data.get(#perTagText, or: $value.perTagText));
+      perTagText: data.get(#perTagText, or: $value.perTagText),
+      image: data.get(#image, or: $value.image));
 
   @override
   TimerBlockCopyWith<$R2, TimerBlock, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _TimerBlockCopyWithImpl($value, $cast, t);
+      _TimerBlockCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }

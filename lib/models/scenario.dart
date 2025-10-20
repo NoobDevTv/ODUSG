@@ -156,7 +156,7 @@ final defaultScenarios = [
 class Scenarios extends _$Scenarios {
   @override
   List<Scenario> build() {
-    return defaultScenarios;
+    // return defaultScenarios;
     return ref
             .read(sharedPreferencesProvider)
             .getStringList("scenarios")

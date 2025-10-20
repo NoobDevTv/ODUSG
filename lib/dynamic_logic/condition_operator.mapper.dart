@@ -25,11 +25,11 @@ class ConditionOperatorMapper extends EnumMapper<ConditionOperator> {
   @override
   ConditionOperator decode(dynamic value) {
     switch (value) {
-      case 'none':
+      case r'none':
         return ConditionOperator.none;
-      case 'and':
+      case r'and':
         return ConditionOperator.and;
-      case 'or':
+      case r'or':
         return ConditionOperator.or;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -40,11 +40,11 @@ class ConditionOperatorMapper extends EnumMapper<ConditionOperator> {
   dynamic encode(ConditionOperator self) {
     switch (self) {
       case ConditionOperator.none:
-        return 'none';
+        return r'none';
       case ConditionOperator.and:
-        return 'and';
+        return r'and';
       case ConditionOperator.or:
-        return 'or';
+        return r'or';
     }
   }
 }
@@ -75,19 +75,19 @@ class TagOperatorMapper extends EnumMapper<TagOperator> {
   @override
   TagOperator decode(dynamic value) {
     switch (value) {
-      case 'none':
+      case r'none':
         return TagOperator.none;
-      case 'less':
+      case r'less':
         return TagOperator.less;
-      case 'lessEquals':
+      case r'lessEquals':
         return TagOperator.lessEquals;
-      case 'equals':
+      case r'equals':
         return TagOperator.equals;
-      case 'unequal':
+      case r'unequal':
         return TagOperator.unequal;
-      case 'greater':
+      case r'greater':
         return TagOperator.greater;
-      case 'greaterEquals':
+      case r'greaterEquals':
         return TagOperator.greaterEquals;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -98,19 +98,19 @@ class TagOperatorMapper extends EnumMapper<TagOperator> {
   dynamic encode(TagOperator self) {
     switch (self) {
       case TagOperator.none:
-        return 'none';
+        return r'none';
       case TagOperator.less:
-        return 'less';
+        return r'less';
       case TagOperator.lessEquals:
-        return 'lessEquals';
+        return r'lessEquals';
       case TagOperator.equals:
-        return 'equals';
+        return r'equals';
       case TagOperator.unequal:
-        return 'unequal';
+        return r'unequal';
       case TagOperator.greater:
-        return 'greater';
+        return r'greater';
       case TagOperator.greaterEquals:
-        return 'greaterEquals';
+        return r'greaterEquals';
     }
   }
 }
@@ -141,9 +141,9 @@ class TagModifierMapper extends EnumMapper<TagModifier> {
   @override
   TagModifier decode(dynamic value) {
     switch (value) {
-      case 'none':
+      case r'none':
         return TagModifier.none;
-      case 'invert':
+      case r'invert':
         return TagModifier.invert;
       default:
         throw MapperException.unknownEnumValue(value);
@@ -154,9 +154,9 @@ class TagModifierMapper extends EnumMapper<TagModifier> {
   dynamic encode(TagModifier self) {
     switch (self) {
       case TagModifier.none:
-        return 'none';
+        return r'none';
       case TagModifier.invert:
-        return 'invert';
+        return r'invert';
     }
   }
 }

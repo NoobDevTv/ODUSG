@@ -14,5 +14,6 @@ class NextButtonBlock extends Block with NextButtonBlockMappable {
     super.cover,
     super.foreachPlayer,
     super.perTagText,
+    super.image,
   });
 }

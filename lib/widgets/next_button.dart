@@ -11,7 +11,7 @@ class NextButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nextButton = MaterialButton(
+    final nextButton = OutlinedButton(
       child: Text(block.buttonText),
       onPressed: () {
         next(context, ref);
@@ -32,10 +32,12 @@ class NextButton extends HookConsumerWidget {
     }
 
     return Column(
+      mainAxisSize: MainAxisSize.max,
       children: [
+  
         if (block.text.isNotEmpty) StubbleText(block.text),
         if (textMatched != null) StubbleText(textMatched),
-        nextButton,
+        Padding(padding: EdgeInsetsGeometry.all(12), child: nextButton),
       ],
     );
   }

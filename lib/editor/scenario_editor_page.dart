@@ -257,7 +257,7 @@ General
           ),
           onSubmitted: (value) {
             final tags = scenario.value.availableGameTags;
-            final newTag = Tag(value);
+            final newTag = Tag(value, tagType: TagType.global);
             if (tags.contains(newTag)) {
               chipError.value = "The tag '$value' does already exist";
               return;

@@ -17,6 +17,12 @@ class StubbleText extends ConsumerWidget {
 
     final text = fn(data);
 
-    return Text(text);
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Padding(
+        padding: EdgeInsetsGeometry.all(8),
+        child: Text(text, textAlign: TextAlign.center),
+      ),
+    );
   }
 }
