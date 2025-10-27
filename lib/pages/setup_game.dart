@@ -14,6 +14,7 @@ class SetupGamePage extends ConsumerWidget {
       body: ListView(
         children: const [
           ExpansionTile(
+            initiallyExpanded: true,
             title: Text("Player Names"),
             children: [PlayerNameList()],
           ),

@@ -46,6 +46,9 @@ class VotingBlockMapper extends SubClassMapperBase<VotingBlock> {
   static String? _$image(VotingBlock v) => v.image;
   static const Field<VotingBlock, String> _f$image =
       Field('image', _$image, opt: true);
+  static String? _$ttsMessage(VotingBlock v) => v.ttsMessage;
+  static const Field<VotingBlock, String> _f$ttsMessage =
+      Field('ttsMessage', _$ttsMessage, opt: true);
 
   @override
   final MappableFields<VotingBlock> fields = const {
@@ -57,6 +60,7 @@ class VotingBlockMapper extends SubClassMapperBase<VotingBlock> {
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
     #image: _f$image,
+    #ttsMessage: _f$ttsMessage,
   };
 
   @override
@@ -104,6 +108,7 @@ abstract class VotingBlockCopyWith<$R, $In extends VotingBlock, $Out>
       bool? cover,
       bool? foreachPlayer,
       Map<String, String>? perTagText,
-      String? image});
+      String? image,
+      String? ttsMessage});
   VotingBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

@@ -20,12 +20,14 @@ class Block with BlockMappable {
   final bool foreachPlayer;
   final Map<String, String> perTagText;
   final String? image;
+  final String? ttsMessage;
 
   const Block({
     required this.text,
     this.cover = false,
     this.foreachPlayer = false,
     this.perTagText = const {},
-    this.image
+    this.image,
+    this.ttsMessage,
   });
 }

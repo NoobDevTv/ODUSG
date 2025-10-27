@@ -11,12 +11,15 @@ import 'package:odusg/pages/manage_scenario_page.dart';
 import 'package:odusg/pages/scenario_selector_page.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 part 'main.g.dart';
 
 final sharedPreferencesProvider = Provider<SharedPreferences>(
   (ref) => throw UnimplementedError(),
 );
+
+final ttsProvider = Provider<FlutterTts>((ref) => FlutterTts());
 
 @Riverpod(keepAlive: true)
 class GlobalRef extends _$GlobalRef {

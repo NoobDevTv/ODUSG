@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:collection';
-import 'dart:math';
+import 'dart:developer' show log;
+import 'dart:math' show Random;
 
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/current_scenario.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/events/tags.dart';
-import 'package:odusg/special_states/group_blocks.dart';
 import 'package:odusg/helpers/iterable_extensions.dart';
+import 'package:odusg/main.dart';
 import 'package:odusg/models/player.dart';
 import 'package:odusg/models/roles.dart';
 import 'package:odusg/special_states/single_execution_blocks.dart';
@@ -59,11 +61,14 @@ class _GameStep {
 class GameManager extends _$GameManager {
   late Queue<_GameStep> _steps;
   final Map<String, dynamic> _allCurrentTags = {};
+  final Map<String, dynamic> _displayTags = {};
   Tags gameTags = Tags.mutable([]);
 
   Map<String, dynamic> get currentTags => _allCurrentTags;
+  Map<String, dynamic> get displayTags => _displayTags;
 
   late List<Player> _players;
+  late FlutterTts tts;
   @override
   Step build() {
     _steps = Queue<_GameStep>.from(
@@ -75,6 +80,7 @@ class GameManager extends _$GameManager {
     _players = ref.watch(playerManagerProvider);
     gameTags.tags.clear();
     _allCurrentTags.clear();
+    tts = ref.watch(ttsProvider);
 
     return _steps.first.step;
   }
@@ -95,6 +101,7 @@ class GameManager extends _$GameManager {
       if (step.persistant) _steps.add(step);
       step = _steps.first;
       if (!getEntryGuardEvaluation(step.step)) {
+        step = null;
         continue;
       }
       final block = step.step.block;
@@ -127,12 +134,15 @@ class GameManager extends _$GameManager {
     } while (step == null);
 
     state = step.step;
+    if (step.step.block.ttsMessage?.isNotEmpty ?? false) {
+      tts.speak(step.step.block.ttsMessage!);
+    }
   }
 
   bool getEntryGuardEvaluation(Step step) {
     final allTags = step.filter.getTagMap(_players, gameTags.tags);
     final didMatch = step.entryGuard.evaluate(allTags);
-    // _allCurrentTags.clear();
+    _displayTags.clear();
     if (didMatch) {
       final tagVals = allTags.keys.map((x) {
         final lastPoint = x.tag.lastIndexOf('.');
@@ -144,18 +154,25 @@ class GameManager extends _$GameManager {
         );
       });
 
-      for (var element in tagVals) {
-        final curVal = _allCurrentTags[element.$1];
-        if (curVal == null) {
-          _allCurrentTags[element.$1] = element.$2;
-        } else if (curVal is String) {
-          _allCurrentTags[element.$1] = [curVal, element.$2];
-        } else if (curVal is List<String>) {
-          curVal.add(element.$2);
-        }
+      setOnMap(_allCurrentTags, tagVals);
+      setOnMap(_displayTags, tagVals);
+    }
+    log(_displayTags.entries.map((x) => "${x.key}:${x.value}").join(", "));
+
+    return didMatch;
+  }
+
+  void setOnMap(Map<String, dynamic> map, Iterable<(String, String)> tagVals) {
+    for (var element in tagVals) {
+      final curVal = map[element.$1];
+      if (curVal == null) {
+        map[element.$1] = element.$2;
+      } else if (curVal is String) {
+        map[element.$1] = [curVal, element.$2];
+      } else if (curVal is List<String>) {
+        curVal.add(element.$2);
       }
     }
-    return didMatch;
   }
 
   List<Tag> getCompleteTags() {
@@ -215,7 +232,7 @@ class PlayerManager extends _$PlayerManager {
           keyWord: name,
           keyWordSet: keyWords,
           tags: Tags([
-            Tag(roleForUser.$1!, tagType: TagType.role),
+            Tag(roleForUser.$1!, tagType: TagType.playerRole),
             Tag(name, tagType: TagType.name),
           ]),
         ),

@@ -46,6 +46,7 @@ class ScenarioSelectorPage extends HookConsumerWidget {
                     scenarios.elementAt(isOpened.value).steps.isEmpty
                 ? null
                 : () {
+                  ref.invalidate(gameManagerProvider);
                   ref
                       .read(currentScenarioProvider.notifier)
                       .selectOther(scenarios.elementAt(isOpened.value));

@@ -41,6 +41,9 @@ class TimerBlockMapper extends SubClassMapperBase<TimerBlock> {
   static String? _$image(TimerBlock v) => v.image;
   static const Field<TimerBlock, String> _f$image =
       Field('image', _$image, opt: true);
+  static String? _$ttsMessage(TimerBlock v) => v.ttsMessage;
+  static const Field<TimerBlock, String> _f$ttsMessage =
+      Field('ttsMessage', _$ttsMessage, opt: true);
 
   @override
   final MappableFields<TimerBlock> fields = const {
@@ -51,6 +54,7 @@ class TimerBlockMapper extends SubClassMapperBase<TimerBlock> {
     #foreachPlayer: _f$foreachPlayer,
     #perTagText: _f$perTagText,
     #image: _f$image,
+    #ttsMessage: _f$ttsMessage,
   };
 
   @override
@@ -68,7 +72,8 @@ class TimerBlockMapper extends SubClassMapperBase<TimerBlock> {
         cover: data.dec(_f$cover),
         foreachPlayer: data.dec(_f$foreachPlayer),
         perTagText: data.dec(_f$perTagText),
-        image: data.dec(_f$image));
+        image: data.dec(_f$image),
+        ttsMessage: data.dec(_f$ttsMessage));
   }
 
   @override
@@ -134,7 +139,8 @@ abstract class TimerBlockCopyWith<$R, $In extends TimerBlock, $Out>
       bool? cover,
       bool? foreachPlayer,
       Map<String, String>? perTagText,
-      String? image});
+      String? image,
+      String? ttsMessage});
   TimerBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -160,7 +166,8 @@ class _TimerBlockCopyWithImpl<$R, $Out>
           bool? cover,
           bool? foreachPlayer,
           Map<String, String>? perTagText,
-          Object? image = $none}) =>
+          Object? image = $none,
+          Object? ttsMessage = $none}) =>
       $apply(FieldCopyWithData({
         if (minTimer != null) #minTimer: minTimer,
         if (maxTimer != null) #maxTimer: maxTimer,
@@ -168,7 +175,8 @@ class _TimerBlockCopyWithImpl<$R, $Out>
         if (cover != null) #cover: cover,
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
         if (perTagText != null) #perTagText: perTagText,
-        if (image != $none) #image: image
+        if (image != $none) #image: image,
+        if (ttsMessage != $none) #ttsMessage: ttsMessage
       }));
   @override
   TimerBlock $make(CopyWithData data) => TimerBlock(
@@ -178,7 +186,8 @@ class _TimerBlockCopyWithImpl<$R, $Out>
       cover: data.get(#cover, or: $value.cover),
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
       perTagText: data.get(#perTagText, or: $value.perTagText),
-      image: data.get(#image, or: $value.image));
+      image: data.get(#image, or: $value.image),
+      ttsMessage: data.get(#ttsMessage, or: $value.ttsMessage));
 
   @override
   TimerBlockCopyWith<$R2, TimerBlock, $Out2> $chain<$R2, $Out2>(

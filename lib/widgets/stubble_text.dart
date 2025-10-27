@@ -13,7 +13,7 @@ class StubbleText extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final fn = _stubble.compile(template);
-    final data = ref.read(gameManagerProvider.notifier).currentTags;
+    final data = ref.read(gameManagerProvider);
 
     final text = fn(data);
 

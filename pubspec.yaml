@@ -47,6 +47,7 @@ dependencies:
   flutter_expandable_fab: ^2.3.0
   darq: ^2.0.0
   uuid: ^4.4.2
+  flutter_tts: 3.8.0
 
 dev_dependencies:
   flutter_test:

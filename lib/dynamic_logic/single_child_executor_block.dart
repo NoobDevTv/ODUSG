@@ -22,5 +22,6 @@ class SingleChildExecutorBlock extends Block
     required this.refillWhenEmpty,
     required this.removeExecuted,
     super.image,
+    super.ttsMessage,
   });
 }

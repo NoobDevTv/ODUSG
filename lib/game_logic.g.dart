@@ -198,7 +198,7 @@ final advancingProvider = NotifierProvider<Advancing, void>.internal(
 );
 
 typedef _$Advancing = Notifier<void>;
-String _$gameManagerHash() => r'02d1d230e6ee6714ea9e1fe805686e331c92a458';
+String _$gameManagerHash() => r'3f20634b0c0c1316480cdc5df5c18d34889bc00e';
 
 /// See also [GameManager].
 @ProviderFor(GameManager)

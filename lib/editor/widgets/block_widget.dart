@@ -13,24 +13,25 @@ abstract class BlockWidget<T extends Block> extends HookWidget {
     required this.scenario,
     required this.step,
     this.allowDisplayText = true,
-    this.allowImage = true,
   });
 
   final ValueNotifier<T> block;
   final Scenario scenario;
   final s.Step step;
   final bool allowDisplayText;
-  final bool allowImage;
   T get currentBlock => block.value;
 
   @override
   Widget build(BuildContext context) {
     final textController = useTextEditingController(text: currentBlock.text);
+    final ttsController = useTextEditingController(
+      text: currentBlock.ttsMessage,
+    );
     final imageController = useTextEditingController(text: currentBlock.image);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (allowDisplayText)
+        if (allowDisplayText) ...[
           ListTile(
             title: TextField(
               controller: textController,
@@ -42,7 +43,17 @@ abstract class BlockWidget<T extends Block> extends HookWidget {
                   (v) => block.value = block.value.copyWith(text: v) as T,
             ),
           ),
-        if (allowImage)
+          ListTile(
+            title: TextField(
+              controller: ttsController,
+              decoration: const InputDecoration(
+                labelText: "Text To Speech Text",
+                hintText: "The text to read aloud, when executing this step",
+              ),
+              onChanged:
+                  (v) => block.value = block.value.copyWith(ttsMessage: v) as T,
+            ),
+          ),
           ListTile(
             title: TextField(
               controller: imageController,
@@ -54,6 +65,7 @@ abstract class BlockWidget<T extends Block> extends HookWidget {
               ),
             ),
           ),
+        ],
         CheckboxListTile(
           value: block.value.cover,
           title: const Text("Display Cover"),

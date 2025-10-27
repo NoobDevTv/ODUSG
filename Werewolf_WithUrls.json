@@ -1,0 +1,1071 @@
+{
+    "uid": "fb99c190-1dbc-4e9c-825d-4df87461aadc",
+    "fileVersion": 1,
+    "saveCounter": 17,
+    "title": "Werewolf (Bilder)",
+    "endText": "please vote for the player, who you think is the bad one",
+    "showAssignedEventAtEnd": false,
+    "preGameWidget": "roleAssignment",
+    "description": "A social deduction game. Find out which players are the bad ones, with the help of events. Only if atleast one bad person has the most votes, the good ones win, otherwise the bad ones have it.",
+    "roles": [
+        {
+            "tag": "werewolf",
+            "intlKey": "werewolf_role",
+            "getAssignableAmount": [
+                {
+                    "$1": 8,
+                    "$2": 1,
+                    "$3": 1
+                },
+                {
+                    "$1": 12,
+                    "$2": 2,
+                    "$3": 2
+                },
+                {
+                    "$1": 19,
+                    "$2": 3,
+                    "$3": 3
+                },
+                {
+                    "$1": 25,
+                    "$2": 4,
+                    "$3": 4
+                }
+            ],
+            "priority": 1,
+            "isDefault": false
+        },
+        {
+            "tag": "villager",
+            "intlKey": "villager_player",
+            "getAssignableAmount": [],
+            "priority": 0,
+            "isDefault": true
+        },
+        {
+            "tag": "doctor",
+            "intlKey": "doctor_player",
+            "getAssignableAmount": [
+                {
+                    "$1": 0,
+                    "$2": 1,
+                    "$3": 1
+                }
+            ],
+            "priority": 1,
+            "isDefault": false
+        },
+        {
+            "tag": "seer",
+            "intlKey": "seer_player",
+            "getAssignableAmount": [
+                {
+                    "$1": 0,
+                    "$2": 1,
+                    "$3": 1
+                }
+            ],
+            "priority": 1,
+            "isDefault": false
+        }
+    ],
+    "steps": [{
+            "name": "seer",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.role.seer",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "votingTargetPossibilities": {
+                    "modifiers": [
+                        "invert",
+                        "invert"
+                    ],
+                    "conditionOperators": [
+                        "and"
+                    ],
+                    "operands": [
+                        "player.dead",
+                        "player.role.seer"
+                    ],
+                    "operators": [],
+                    "type": "TagFilter"
+                },
+                "minMultiselect": 1,
+                "maxMultiselect": 1,
+                "setTags": {
+                    "tags": [
+                        {
+                            "tag": "seerVoting",
+                            "temporary": true,
+                            "tagType": "player"
+                        }
+                    ]
+                },
+                "text": "Wen willst du gesehen haben?",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://www.publicdomainpictures.net/pictures/600000/velka/fortune-teller-1713336009vhJ.jpg",
+                "ttsMessage": "Der Seher erwacht",
+                "type": "PlayerVotingBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.role.seer",
+                    "player.dead"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "seerResult",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.seerVoting",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": false,
+                "text": "{{player_name}} ist {{player_role}}",
+                "buttonText": "Next",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": null,
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.seerVoting"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "showRolesPerPersonHidden",
+            "entryGuard": {
+                "operators": [
+                    "equals"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "game.startedAlready",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": false,
+                "text": "",
+                "buttonText": "Verstanden",
+                "cover": true,
+                "foreachPlayer": true,
+                "perTagText": {
+                    "villager": "Du bist'n Dorfbewohner. Diskutiere am Tag und bleib am leben. Viel Glück und als Tipp, am besten Werewölfe erhängen :)",
+                    "werewolf": "Du monster, tötest in der Nacht, aber willst unschuldig sein am Tag. Ob dieses Doppelleben unbemerkt bleibt?",
+                    "seer": "Du brauchst keine Brille, weil du bist Sehering. Das heißt du kannst pro Nacht bei einer Person erkennen, ob diese Werewolf oder Dorfebwohner ist.",
+                    "doctor": "Du hast promoviert und kannst deshalb einen Dorfbewohner pro Nacht vor dem Unglück bewahren, von einem Werewolf tötlich verletzt zu werden. Auch dich selbst."
+                },
+                "image": "https://www.publicdomainpictures.net/pictures/80000/velka/village-life-painting.jpg",
+                "ttsMessage": "",
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "gameStarted",
+            "entryGuard": {
+                "operators": [
+                    "equals"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "game.startedAlready",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "text": "",
+                "affectedPlayers": null,
+                "tags": [
+                    {
+                        "tag": "startedAlready",
+                        "temporary": false,
+                        "tagType": "global"
+                    }
+                ],
+                "remove": false,
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": null,
+                "type": "ChangeTagBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "showInstructionsForNight",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": false,
+                "text": "Night, please close eyes",
+                "buttonText": "Next",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://www.publicdomainpictures.net/pictures/180000/velka/mond-in-bergen.jpg",
+                "ttsMessage": "",
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "waitForEyesClosed",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "minTimer": 5000,
+                "maxTimer": 5000,
+                "text": "Schließt die Augen zu und schnarcht nicht",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://c.pxhere.com/photos/13/c7/woman_girl_makeup_lashes_female_young_white_caucasian-490167.jpg!d",
+                "ttsMessage": "Das Dorf schläft ein",
+                "type": "TimerBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "wolfVoting",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "votingTargetPossibilities": {
+                    "modifiers": [
+                        "invert",
+                        "invert"
+                    ],
+                    "conditionOperators": [
+                        "and"
+                    ],
+                    "operands": [
+                        "player.dead",
+                        "player.role.werewolf"
+                    ],
+                    "operators": [],
+                    "type": "TagFilter"
+                },
+                "minMultiselect": 1,
+                "maxMultiselect": 1,
+                "setTags": {
+                    "tags": [
+                        {
+                            "tag": "wolfVoting",
+                            "temporary": true,
+                            "tagType": "player"
+                        }
+                    ]
+                },
+                "text": "Wer soll sterben?",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://www.publicdomainpictures.net/pictures/170000/velka/wolf-1462352813Fu2.jpg",
+                "ttsMessage": "Die Wölfe erwachen",
+                "type": "PlayerVotingBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "waitForEyesClosed",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "minTimer": 5000,
+                "maxTimer": 5000,
+                "text": "Schließt die Augen zu und schnarcht nicht",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://c.pxhere.com/photos/13/c7/woman_girl_makeup_lashes_female_young_white_caucasian-490167.jpg!d",
+                "ttsMessage": "Wölfe schlafen ein",
+                "type": "TimerBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "seer",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.role.seer",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "votingTargetPossibilities": {
+                    "modifiers": [
+                        "invert",
+                        "invert"
+                    ],
+                    "conditionOperators": [
+                        "and"
+                    ],
+                    "operands": [
+                        "player.dead",
+                        "player.role.seer"
+                    ],
+                    "operators": [],
+                    "type": "TagFilter"
+                },
+                "minMultiselect": 1,
+                "maxMultiselect": 1,
+                "setTags": {
+                    "tags": [
+                        {
+                            "tag": "seerVoting",
+                            "temporary": true,
+                            "tagType": "player"
+                        }
+                    ]
+                },
+                "text": "Wen willst du gesehen haben?",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://www.publicdomainpictures.net/pictures/600000/velka/fortune-teller-1713336009vhJ.jpg",
+                "ttsMessage": "Der Seher erwacht",
+                "type": "PlayerVotingBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.role.seer",
+                    "player.dead"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "seerResult",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.seerVoting",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": false,
+                "text": "{{player_name}} ist {{player_role}}",
+                "buttonText": "Next",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": null,
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.seerVoting"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "fakeSeer",
+            "entryGuard": {
+                "operators": [
+                    "equals"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.role.seer",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "minTimer": 6000,
+                "maxTimer": 15000,
+                "text": "Hier gibt es nichts zu sehen :(",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": "Der Seher erwacht",
+                "type": "TimerBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.role.seer",
+                    "player.dead"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "waitForEyesClosed",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "minTimer": 5000,
+                "maxTimer": 5000,
+                "text": "Schließt die Augen zu und schnarcht nicht",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://c.pxhere.com/photos/13/c7/woman_girl_makeup_lashes_female_young_white_caucasian-490167.jpg!d",
+                "ttsMessage": "Der Seher schläft ein",
+                "type": "TimerBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "doctor",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.role.doctor",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "votingTargetPossibilities": {
+                    "modifiers": [
+                        "invert"
+                    ],
+                    "conditionOperators": [],
+                    "operands": [
+                        "player.dead"
+                    ],
+                    "operators": [],
+                    "type": "TagFilter"
+                },
+                "minMultiselect": 1,
+                "maxMultiselect": 1,
+                "setTags": {
+                    "tags": [
+                        {
+                            "tag": "doctorVoting",
+                            "temporary": true,
+                            "tagType": "player"
+                        }
+                    ]
+                },
+                "text": "Wer darf nicht sterben?",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": "Der Heiler erwacht",
+                "type": "PlayerVotingBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.role.doctor",
+                    "player.dead"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "fakedoctor",
+            "entryGuard": {
+                "operators": [
+                    "equals"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.role.doctor",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "minTimer": 6000,
+                "maxTimer": 15000,
+                "text": "Keine Heilung in Sicht",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": "Der Heiler erwacht",
+                "type": "TimerBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "waitForEyesClosed",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "minTimer": 5000,
+                "maxTimer": 5000,
+                "text": "Schließt die Augen zu und schnarcht nicht",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://c.pxhere.com/photos/13/c7/woman_girl_makeup_lashes_female_young_white_caucasian-490167.jpg!d",
+                "ttsMessage": "Der Heiler schläft ein",
+                "type": "TimerBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "wolfVotingResultSuccess",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.wolfVoting",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": false,
+                "text": "{{player_name}} wurde von den Wölfen getötet",
+                "buttonText": "Next",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.newstarget.com%2Fwp-content%2Fuploads%2Fsites%2F43%2F2024%2F12%2FCrime-Scene-Murder-Body-Outline-Chalk-Dead.jpg&f=1&nofb=1&ipt=89b8799d2136df49b25cb1e2df93134a27f834eb2f7b463eaaeba01d20914b06",
+                "ttsMessage": null,
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.wolfVoting",
+                    "player.doctorVoting"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "wolfVotingResultFailed",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.wolfVoting",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": false,
+                "text": "No one is dead",
+                "buttonText": "Next",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": null,
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "none"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.wolfVoting",
+                    "player.doctorVoting"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "unalivePlayer",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "text": "",
+                "affectedPlayers": {
+                    "modifiers": [
+                        "none",
+                        "invert"
+                    ],
+                    "conditionOperators": [
+                        "and"
+                    ],
+                    "operands": [
+                        "player.wolfVoting",
+                        "player.doctorVoting"
+                    ],
+                    "operators": [],
+                    "type": "TagFilter"
+                },
+                "tags": [
+                    {
+                        "tag": "dead",
+                        "temporary": false,
+                        "tagType": "player"
+                    }
+                ],
+                "remove": false,
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": null,
+                "type": "ChangeTagBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.wolfVoting",
+                    "player.doctorVoting"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "removeVotings",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "text": "",
+                "affectedPlayers": {
+                    "modifiers": [
+                        "none",
+                        "none",
+                        "none"
+                    ],
+                    "conditionOperators": [
+                        "or",
+                        "or"
+                    ],
+                    "operands": [
+                        "player.wolfVoting",
+                        "player.doctorVoting",
+                        "player.seerVoting"
+                    ],
+                    "operators": [],
+                    "type": "TagFilter"
+                },
+                "tags": [
+                    {
+                        "tag": "wolfVoting",
+                        "temporary": false,
+                        "tagType": "player"
+                    },
+                    {
+                        "tag": "doctorVoting",
+                        "temporary": false,
+                        "tagType": "player"
+                    },
+                    {
+                        "tag": "seerVoting",
+                        "temporary": false,
+                        "tagType": "player"
+                    }
+                ],
+                "remove": true,
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": null,
+                "ttsMessage": null,
+                "type": "ChangeTagBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "peopleVoting",
+            "entryGuard": {
+                "operators": [],
+                "conditionOperators": [],
+                "operands": [],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "votingTargetPossibilities": {
+                    "modifiers": [
+                        "invert"
+                    ],
+                    "conditionOperators": [],
+                    "operands": [
+                        "player.dead"
+                    ],
+                    "operators": [],
+                    "type": "TagFilter"
+                },
+                "minMultiselect": 1,
+                "maxMultiselect": 1,
+                "setTags": {
+                    "tags": [
+                        {
+                            "tag": "dead",
+                            "temporary": false,
+                            "tagType": "player"
+                        }
+                    ]
+                },
+                "text": "Wen wollt ihr hängen, um die Nacht zu starten?",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fweltexpress.info%2Fwp-content%2Fuploads%2F2017%2F08%2FGalgen-Strick-QF-Pixel-1920-Quelle-Source-Pixabay-Download-2017-08-06-Stefan-Pribnhttps://weltexpress.info/wp-content/uploads/2017/08/Galgen-Strick-QF-Pixel-1920-Quelle-Source-Pixabay-Download-2017-08-06-Stefan-Pribnow.jpgow.jpg&f=1&nofb=1&ipt=3f6f0ce091b9200654c5e026c87a56d046ef082f9904b7c3d8cc1b0c42475531",
+                "ttsMessage": null,
+                "type": "PlayerVotingBlock"
+            },
+            "filter": {
+                "modifiers": [],
+                "conditionOperators": [],
+                "operands": [],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "gameEndWerewolfWon",
+            "entryGuard": {
+                "operators": [
+                    "greater"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.role.werewolf",
+                    "player.role.villager"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": true,
+                "text": "Werewölfe haben gesiegt, die Dorfbewohner haben keine Möglichkeit mehr sich zu verteidigen",
+                "buttonText": "Next",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg00.deviantart.net%2F82fa%2Fi%2F2016%2F132%2F3%2F9%2Fhappy_wolf_by_cometbt-da29r89.jpg&f=1&nofb=1&ipt=1c75036a54652bc7229278d1569aff03618a628755078a85973618d619fe4578",
+                "ttsMessage": null,
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "or",
+                    "and"
+                ],
+                "operands": [
+                    "player.role.werewolf",
+                    "player.role.villager",
+                    "player.dead"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        },
+        {
+            "name": "gameEndVillagersWon",
+            "entryGuard": {
+                "operators": [
+                    "equals"
+                ],
+                "conditionOperators": [],
+                "operands": [
+                    "player.role.werewolf",
+                    "0"
+                ],
+                "modifiers": [],
+                "type": "TagCondition"
+            },
+            "block": {
+                "endsGame": true,
+                "text": "Die Dorfbewohner haben gesiegt, sämtliche Werewölfe wurden beseitigt",
+                "buttonText": "Next",
+                "cover": false,
+                "foreachPlayer": false,
+                "perTagText": {},
+                "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fonovia.com%2Fwp-content%2Fuploads%2F2020%2F03%2Fminecraft-villagers.jpg&f=1&nofb=1&ipt=0fcbce6a54ca8547f45afa2f41df28c27e52dc2cda6275bfc5b292336665a178",
+                "ttsMessage": null,
+                "type": "NextButtonBlock"
+            },
+            "filter": {
+                "modifiers": [
+                    "none",
+                    "invert"
+                ],
+                "conditionOperators": [
+                    "and"
+                ],
+                "operands": [
+                    "player.role.werewolf",
+                    "player.dead"
+                ],
+                "operators": [],
+                "type": "TagFilter"
+            }
+        }
+    ],
+    "availableGameTags": [
+        {
+            "tag": "werewolf",
+            "temporary": false,
+            "tagType": "role"
+        },
+        {
+            "tag": "villager",
+            "temporary": false,
+            "tagType": "role"
+        },
+        {
+            "tag": "doctor",
+            "temporary": false,
+            "tagType": "role"
+        },
+        {
+            "tag": "seer",
+            "temporary": false,
+            "tagType": "role"
+        },
+        {
+            "tag": "startedAlready",
+            "temporary": false,
+            "tagType": "global"
+        },
+        {
+            "tag": "dead",
+            "temporary": false,
+            "tagType": "player"
+        },
+        {
+            "tag": "wolfVoting",
+            "temporary": false,
+            "tagType": "player"
+        },
+        {
+            "tag": "seerVoting",
+            "temporary": false,
+            "tagType": "player"
+        },
+        {
+            "tag": "doctorVoting",
+            "temporary": false,
+            "tagType": "player"
+        }
+    ],
+    "startingTags": [
+        {
+            "tag": "default",
+            "temporary": false,
+            "tagType": "wincondition"
+        }
+    ]
+}

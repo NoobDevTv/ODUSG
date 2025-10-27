@@ -20,7 +20,8 @@ class PlayerVotingBlock extends VotingBlock with PlayerVotingBlockMappable {
     super.cover,
     super.foreachPlayer,
     super.perTagText,
-    super.image
+    super.image,
+    super.ttsMessage,
   });
 
   @override

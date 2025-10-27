@@ -92,6 +92,8 @@
 7. Make Tag Filter ✔
 8. (Maybe) add simple templates, especially for old "EventInfo" logic, so that the user has it easier to do this
 9. Copy Paste of Steps ✔
+10. Simple Choice Block (Single, Multi, TagPerSelection)
+11. Find a way to store multiple (Like inventory, have 2 or 3 of same item)
 
 
 For Next Stream:

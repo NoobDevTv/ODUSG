@@ -54,6 +54,9 @@ class SingleChildExecutorBlockMapper
   static String? _$image(SingleChildExecutorBlock v) => v.image;
   static const Field<SingleChildExecutorBlock, String> _f$image =
       Field('image', _$image, opt: true);
+  static String? _$ttsMessage(SingleChildExecutorBlock v) => v.ttsMessage;
+  static const Field<SingleChildExecutorBlock, String> _f$ttsMessage =
+      Field('ttsMessage', _$ttsMessage, opt: true);
 
   @override
   final MappableFields<SingleChildExecutorBlock> fields = const {
@@ -66,6 +69,7 @@ class SingleChildExecutorBlockMapper
     #refillWhenEmpty: _f$refillWhenEmpty,
     #removeExecuted: _f$removeExecuted,
     #image: _f$image,
+    #ttsMessage: _f$ttsMessage,
   };
 
   @override
@@ -85,7 +89,8 @@ class SingleChildExecutorBlockMapper
         randomOrder: data.dec(_f$randomOrder),
         refillWhenEmpty: data.dec(_f$refillWhenEmpty),
         removeExecuted: data.dec(_f$removeExecuted),
-        image: data.dec(_f$image));
+        image: data.dec(_f$image),
+        ttsMessage: data.dec(_f$ttsMessage));
   }
 
   @override
@@ -160,7 +165,8 @@ abstract class SingleChildExecutorBlockCopyWith<
       bool? randomOrder,
       bool? refillWhenEmpty,
       bool? removeExecuted,
-      String? image});
+      String? image,
+      String? ttsMessage});
   SingleChildExecutorBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -194,7 +200,8 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
           bool? randomOrder,
           bool? refillWhenEmpty,
           bool? removeExecuted,
-          Object? image = $none}) =>
+          Object? image = $none,
+          Object? ttsMessage = $none}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (cover != null) #cover: cover,
@@ -204,7 +211,8 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
         if (randomOrder != null) #randomOrder: randomOrder,
         if (refillWhenEmpty != null) #refillWhenEmpty: refillWhenEmpty,
         if (removeExecuted != null) #removeExecuted: removeExecuted,
-        if (image != $none) #image: image
+        if (image != $none) #image: image,
+        if (ttsMessage != $none) #ttsMessage: ttsMessage
       }));
   @override
   SingleChildExecutorBlock $make(CopyWithData data) => SingleChildExecutorBlock(
@@ -216,7 +224,8 @@ class _SingleChildExecutorBlockCopyWithImpl<$R, $Out>
       randomOrder: data.get(#randomOrder, or: $value.randomOrder),
       refillWhenEmpty: data.get(#refillWhenEmpty, or: $value.refillWhenEmpty),
       removeExecuted: data.get(#removeExecuted, or: $value.removeExecuted),
-      image: data.get(#image, or: $value.image));
+      image: data.get(#image, or: $value.image),
+      ttsMessage: data.get(#ttsMessage, or: $value.ttsMessage));
 
   @override
   SingleChildExecutorBlockCopyWith<$R2, SingleChildExecutorBlock, $Out2>

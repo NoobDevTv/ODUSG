@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
 import 'package:odusg/dynamic_logic/block_widget.dart';
 import 'package:odusg/game_logic.dart';
+import 'package:odusg/main.dart';
 import 'package:odusg/special_states/group_blocks.dart';
 import 'package:odusg/pages/for_player.dart';
 import 'package:odusg/special_states/single_execution_blocks.dart';
@@ -54,7 +55,6 @@ class _GamePage extends HookConsumerWidget {
 
   Widget _steppedBasedGame(WidgetRef ref) {
     var step = ref.watch(gameManagerProvider);
-
     final widget = blockWidgetFactory[step.block.runtimeType]!(step.block);
     final Widget image;
     if (step.block.image != null) {
