@@ -25,7 +25,7 @@ class EditingTags extends HookWidget {
             child: Chip(label: Text(x.tag)),
           ),
         ),
-        TagSelector(
+        TagSelectorDialog(
           onClosed: onClosed,
           selectableTags: selectableTags,
           selectedTags: selectedTags,

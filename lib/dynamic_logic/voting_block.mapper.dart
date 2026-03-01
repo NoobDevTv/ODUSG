@@ -15,6 +15,7 @@ class VotingBlockMapper extends SubClassMapperBase<VotingBlock> {
       MapperContainer.globals.use(_instance = VotingBlockMapper._());
       BlockMapper.ensureInitialized().addSubMapper(_instance!);
       PlayerVotingBlockMapper.ensureInitialized();
+      ChoiceVotingBlockMapper.ensureInitialized();
       TagsMapper.ensureInitialized();
     }
     return _instance!;
@@ -49,6 +50,9 @@ class VotingBlockMapper extends SubClassMapperBase<VotingBlock> {
   static String? _$ttsMessage(VotingBlock v) => v.ttsMessage;
   static const Field<VotingBlock, String> _f$ttsMessage =
       Field('ttsMessage', _$ttsMessage, opt: true);
+  static bool _$optional(VotingBlock v) => v.optional;
+  static const Field<VotingBlock, bool> _f$optional =
+      Field('optional', _$optional, opt: true, def: false);
 
   @override
   final MappableFields<VotingBlock> fields = const {
@@ -61,6 +65,7 @@ class VotingBlockMapper extends SubClassMapperBase<VotingBlock> {
     #perTagText: _f$perTagText,
     #image: _f$image,
     #ttsMessage: _f$ttsMessage,
+    #optional: _f$optional,
   };
 
   @override
@@ -109,6 +114,7 @@ abstract class VotingBlockCopyWith<$R, $In extends VotingBlock, $Out>
       bool? foreachPlayer,
       Map<String, String>? perTagText,
       String? image,
-      String? ttsMessage});
+      String? ttsMessage,
+      bool? optional});
   VotingBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }

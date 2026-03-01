@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/game_logic.dart';
+import 'package:odusg/i18n/strings.g.dart';
 import 'package:stubble/stubble.dart';
 
 final _stubble = Stubble();
@@ -12,8 +13,9 @@ class StubbleText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final fn = _stubble.compile(template);
-    final data = ref.read(gameManagerProvider);
+    final translated = t[template] ?? template;
+    final fn = _stubble.compile(translated);
+    final data = ref.read(gameManagerProvider.notifier).displayTags;
 
     final text = fn(data);
 

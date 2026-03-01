@@ -1,0 +1,11 @@
+{
+    "player_greeting": "Hallo $playerName",
+    "name": "Name",
+    "display_text": "Anzeigetext",
+    "tts_text": "Sprachausgabentext",
+    "image_url": "Bild Url",
+    "display_cover": "Versteckt anzeigen",
+    "execute_for_each_player": "Für jeden Spieler ausführen",
+    "can_be_skipped": "Überspringbar",
+    "per_tag_texts": "Text pro Tag"
+}

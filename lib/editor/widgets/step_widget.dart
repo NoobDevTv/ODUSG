@@ -11,10 +11,12 @@ class StepWidget extends HookWidget {
     required this.step,
     required this.onChanged,
     required this.scenario,
+    this.onClosed,
   });
 
   final s.Step step;
   final void Function(s.Step) onChanged;
+  final void Function()? onClosed;
   final Scenario scenario;
 
   @override
@@ -53,6 +55,7 @@ class StepWidget extends HookWidget {
           current.value = ret;
           onChanged(ret);
         }
+        onClosed?.call();
       },
     );
   }

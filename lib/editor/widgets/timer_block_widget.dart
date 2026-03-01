@@ -32,7 +32,7 @@ class TimerBlockWidget extends BlockWidget<TimerBlock> {
           keyboardType: const TextInputType.numberWithOptions(),
           autocorrect: false,
           onChanged: (value) {
-            validate(
+            _validate(
               value,
               true,
               minError,
@@ -54,7 +54,7 @@ class TimerBlockWidget extends BlockWidget<TimerBlock> {
           keyboardType: const TextInputType.numberWithOptions(),
           autocorrect: false,
           onChanged: (value) {
-            validate(
+            _validate(
               value,
               false,
               maxError,
@@ -73,7 +73,7 @@ class TimerBlockWidget extends BlockWidget<TimerBlock> {
     ];
   }
 
-  void validate(
+  void _validate(
     String value,
     bool minTimer,
     ValueNotifier<String?> error,

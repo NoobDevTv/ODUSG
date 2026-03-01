@@ -218,13 +218,19 @@ class PlayerManager extends _$PlayerManager {
     }
     rolesBucket.shuffle(random);
     rolesBucket.sort((x, y) => x.$2.compareTo(y.$2));
-    final defRole = (roles.firstOrDefault((x) => x.isDefault)?.tag, 0);
+    final defRoles =
+        roles.where((x) => x.isDefault).map((e) => (e.tag, 0)).toList();
 
     List<Player> ret = [];
+    var defRoleIdx = 0;
     for (var name in names) {
       final keyWords = [name, "$name 1", "$name 2", "$name 3", "$name 4"];
       final roleForUser =
-          rolesBucket.isEmpty ? defRole : rolesBucket.removeAt(0);
+          rolesBucket.isEmpty
+              ? defRoles[defRoleIdx++]
+              : rolesBucket.removeAt(0);
+      defRoleIdx = defRoleIdx % defRoles.length;
+
       ret.add(
         Player(
           name: name,
@@ -232,7 +238,7 @@ class PlayerManager extends _$PlayerManager {
           keyWord: name,
           keyWordSet: keyWords,
           tags: Tags([
-            Tag(roleForUser.$1!, tagType: TagType.playerRole),
+            Tag(roleForUser.$1, tagType: TagType.playerRole),
             Tag(name, tagType: TagType.name),
           ]),
         ),

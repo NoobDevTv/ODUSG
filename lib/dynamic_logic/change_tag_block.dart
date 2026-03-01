@@ -25,6 +25,7 @@ class ChangeTagBlock extends Block with ChangeTagBlockMappable {
     super.perTagText = const {},
     super.image,
     super.ttsMessage,
+    super.optional,
   });
 
   void act() {

@@ -16,5 +16,6 @@ class NextButtonBlock extends Block with NextButtonBlockMappable {
     super.perTagText,
     super.image,
     super.ttsMessage,
+    super.optional,
   });
 }

@@ -2,9 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
+import 'package:odusg/dynamic_logic/choice_voting_block.dart';
 import 'package:odusg/dynamic_logic/step.dart' as s;
 import 'package:odusg/dynamic_logic/tag_condition.dart';
+import 'package:odusg/editor/widgets/choice_voting_block_widget.dart';
 import 'package:odusg/editor/widgets/step_widget.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/models/scenario.dart';
@@ -62,6 +65,11 @@ class StepsEdit extends StatelessWidget {
                     step,
                   );
                 },
+                onClosed: () {
+                  scenario.value = scenario.value.copyWith(
+                    saveCounter: scenario.value.forceRenderCounter + 1,
+                  );
+                },
               ),
             );
           },
@@ -110,7 +118,7 @@ class StepSelectorDialog extends StatelessWidget {
               ),
         ),
         ListTile(
-          title: const Text("Voting Block"),
+          title: const Text("Player Voting Block"),
           subtitle: const Text(
             "Block used for player votings. Best used for votes. Democracy yay",
           ),
@@ -123,6 +131,22 @@ class StepSelectorDialog extends StatelessWidget {
                 ),
               ),
         ),
+        ListTile(
+          title: const Text("Single / Multi Choice Voting Block"),
+          subtitle: const Text(
+            "Block used for letting a player make a single or multi choice.",
+          ),
+          onTap:
+              () => addStep(
+                const ChoiceVotingBlock(
+                  text: "",
+                  choices: [],
+                  maxMultiselect: 1,
+                  minMultiselect: 1,
+                ),
+              ),
+        ),
+
         ListTile(
           title: const Text("Change Tag Block"),
           subtitle: const Text(

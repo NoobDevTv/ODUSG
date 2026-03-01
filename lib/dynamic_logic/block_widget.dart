@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:odusg/dynamic_logic/block_types.dart';
+import 'package:odusg/dynamic_logic/choice_voting_block.dart';
 import 'package:odusg/dynamic_logic/step.dart';
 import 'package:odusg/dynamic_logic/tag_condition.dart';
 import 'package:odusg/events/tags.dart';
@@ -13,6 +14,9 @@ final blockWidgetFactory = <Type, Widget Function(Block)>{
     return TimerBlockWidget(timer: block as TimerBlock);
   },
   PlayerVotingBlock: (block) {
+    return VotingBlockWidget(votingBlock: block as VotingBlock);
+  },
+  ChoiceVotingBlock: (block) {
     return VotingBlockWidget(votingBlock: block as VotingBlock);
   },
   ChangeTagBlock: (block) {

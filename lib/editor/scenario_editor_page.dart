@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:odusg/editor/pages/translation_editor_page.dart';
 import 'package:odusg/editor/role_assignment_rule.dart';
 import 'package:odusg/editor/steps_edit.dart';
 import 'package:odusg/editor/widgets/tag_selector.dart';
 import 'package:odusg/events/tags.dart';
 import 'package:odusg/extensions.dart';
+import 'package:odusg/i18n/strings.g.dart';
 import 'package:odusg/models/roles.dart';
 import 'package:odusg/models/scenario.dart';
 
@@ -48,7 +50,7 @@ class ScenarioEditorPage extends HookConsumerWidget {
                   elevation: 4,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: _generalCardContent(scenario),
+                    children: _generalCardContent(context, scenario),
                   ),
                 ),
               ],
@@ -123,7 +125,10 @@ General
 
  */
 
-  List<Widget> _generalCardContent(ValueNotifier<Scenario> scenario) {
+  List<Widget> _generalCardContent(
+    BuildContext context,
+    ValueNotifier<Scenario> scenario,
+  ) {
     final titleEdit = useTextEditingController(text: scenario.value.title);
     final descriptionEdit = useTextEditingController(
       text: scenario.value.description,
@@ -156,6 +161,14 @@ General
                 "The description of the game, to explain what it is about",
           ),
         ),
+      ),
+      ListTile(
+        title: Text(t.$wip.editor("Manage Translations")),
+        onTap:
+            () => showDialog(
+              context: context,
+              builder: (context) => TranslationEditorPage(scenario: scenario),
+            ),
       ),
       CheckboxListTile(
         value: showEndAssigned.value,
@@ -200,7 +213,7 @@ General
                 ),
               ),
             ),
-            TagSelector(
+            TagSelectorDialog(
               selectableTags:
                   scenario.value.availableGameTags
                       .where((x) => !scenario.value.startingTags.contains(x))
@@ -247,9 +260,6 @@ General
       ListTile(
         title: TextField(
           controller: chipText,
-          onEditingComplete: () {
-            scenario.value = scenario.value.copyWith(title: chipText.text);
-          },
           maxLines: 1,
           decoration: InputDecoration(
             label: const Text("Add new tag"),
@@ -405,25 +415,6 @@ class Roles with RolesMappable {
                         ),
                   ),
                 ),
-                ListTile(
-                  title: TextField(
-                    controller: priorityTextController,
-                    onChanged: (val) {
-                      final newPrio = int.tryParse(val);
-                      if (newPrio == null) return;
-                      roleState.value = roleState.value.copyWith(
-                        priority: newPrio,
-                      );
-                    },
-                    maxLines: 1,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      label: Text("Priority"),
-                      hintText: "The Priority of assignment of the role",
-                    ),
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                  ),
-                ),
                 CheckboxListTile(
                   title: const Text("Is Default"),
                   value: roleState.value.isDefault,
@@ -433,6 +424,26 @@ class Roles with RolesMappable {
                     );
                   },
                 ),
+                if (!roleState.value.isDefault)
+                  ListTile(
+                    title: TextField(
+                      controller: priorityTextController,
+                      onChanged: (val) {
+                        final newPrio = int.tryParse(val);
+                        if (newPrio == null) return;
+                        roleState.value = roleState.value.copyWith(
+                          priority: newPrio,
+                        );
+                      },
+                      maxLines: 1,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        label: Text("Priority"),
+                        hintText: "The Priority of assignment of the role",
+                      ),
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    ),
+                  ),
                 ...assignables.value.mapIndexed(
                   (x, i) => ListTile(
                     title: RoleAssignmentRule(

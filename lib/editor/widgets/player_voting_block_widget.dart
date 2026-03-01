@@ -34,7 +34,7 @@ class PlayerVotingBlockWidget extends BlockWidget<PlayerVotingBlock> {
       ),
       ListTile(
         title: Text("Tags to set on voted player", textAlign: TextAlign.start),
-        subtitle: TagSelector(
+        subtitle: TagSelectorDialog(
           selectedTags: currentBlock.setTags.tags,
           selectableTags: scenario.availableGameTags,
           onClosed:

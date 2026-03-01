@@ -71,12 +71,13 @@ class _GamePage extends HookConsumerWidget {
             ForPlayer(hiddenContent: widget, player: player)
           else
             widget,
-          // MaterialButton(
-          //   child: const Text("Im the button"),
-          //   onPressed: () {
-          //     ref.read(advancingProvider.notifier).advance();
-          //   },
-          // ),
+          if (step.block.optional) //TODO: Make optisch schöner
+            MaterialButton(
+              child: const Text("Skip"),
+              onPressed: () {
+                ref.read(advancingProvider.notifier).advance();
+              },
+            ),
         ],
       ),
     );

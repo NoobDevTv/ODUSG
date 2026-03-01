@@ -80,6 +80,13 @@ abstract class BlockWidget<T extends Block> extends HookWidget {
                   block.value =
                       block.value.copyWith(foreachPlayer: v ?? false) as T,
         ),
+        CheckboxListTile(
+          value: block.value.optional,
+          title: const Text("Can be skipped"),
+          onChanged:
+              (v) =>
+                  block.value = block.value.copyWith(optional: v ?? false) as T,
+        ),
         if (allowDisplayText) ...[
           const Divider(),
           const ListTile(title: Text("Per Tag Texts")),

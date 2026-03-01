@@ -92,8 +92,10 @@
 7. Make Tag Filter ✔
 8. (Maybe) add simple templates, especially for old "EventInfo" logic, so that the user has it easier to do this
 9. Copy Paste of Steps ✔
-10. Simple Choice Block (Single, Multi, TagPerSelection)
-11. Find a way to store multiple (Like inventory, have 2 or 3 of same item)
+10. Simple Choice Block (Single, Multi, TagPerSelection) ✔
+    1.  (With Randomized entries like for Secret Hitler Articles)
+11. ~~Find a way to store multiple (Like inventory, have 2 or 3 of same item)~~
+    1.  For now we will store those in differnet tags like 1Used, 2Used, Remove all (For 3 Uses)
 
 
 For Next Stream:
@@ -103,8 +105,16 @@ For Next Stream:
 
 
 ## Future:
+- Multiple Default Roles ✔
 - Add support for Images / Gifs (Url? Maybe not, because they can get taken offline, somaybe b64)
   - Add support for different outcomes (Maybe via Groups?)
     - Seer sees Villager / Werewolf
     - Game Win / Loose Screen
     - Unalive / No ones Dead etc.
+- Skip Possibillity ✔
+- Dynamic Tag Templates (Rundenanzahl, ...?)
+- Group with backwards moving capability
+- Translations
+- Multiplayer / Multiple one Multiple devices like 2 Phones with 4 Players each
+  - Via Server
+  - Via BL(E?)

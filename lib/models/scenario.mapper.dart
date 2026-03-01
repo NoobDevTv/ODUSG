@@ -102,6 +102,14 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
   static const Field<Scenario, List<Tag>> _f$startingTags = Field(
       'startingTags', _$startingTags,
       opt: true, def: const [DefaultWinCondition.tag]);
+  static int _$forceRenderCounter(Scenario v) => v.forceRenderCounter;
+  static const Field<Scenario, int> _f$forceRenderCounter =
+      Field('forceRenderCounter', _$forceRenderCounter, opt: true, def: 0);
+  static Map<String, Map<String, String>> _$translations(Scenario v) =>
+      v.translations;
+  static const Field<Scenario, Map<String, Map<String, String>>>
+      _f$translations =
+      Field('translations', _$translations, opt: true, def: const {});
 
   @override
   final MappableFields<Scenario> fields = const {
@@ -117,6 +125,8 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
     #steps: _f$steps,
     #availableGameTags: _f$availableGameTags,
     #startingTags: _f$startingTags,
+    #forceRenderCounter: _f$forceRenderCounter,
+    #translations: _f$translations,
   };
 
   static Scenario _instantiate(DecodingData data) {
@@ -132,7 +142,9 @@ class ScenarioMapper extends ClassMapperBase<Scenario> {
         roles: data.dec(_f$roles),
         steps: data.dec(_f$steps),
         availableGameTags: data.dec(_f$availableGameTags),
-        startingTags: data.dec(_f$startingTags));
+        startingTags: data.dec(_f$startingTags),
+        forceRenderCounter: data.dec(_f$forceRenderCounter),
+        translations: data.dec(_f$translations));
   }
 
   @override
@@ -189,6 +201,9 @@ abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
   ListCopyWith<$R, Step, StepCopyWith<$R, Step, Step>> get steps;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get availableGameTags;
   ListCopyWith<$R, Tag, TagCopyWith<$R, Tag, Tag>> get startingTags;
+  MapCopyWith<$R, String, Map<String, String>,
+          ObjectCopyWith<$R, Map<String, String>, Map<String, String>>>
+      get translations;
   $R call(
       {String? uid,
       int? fileVersion,
@@ -201,7 +216,9 @@ abstract class ScenarioCopyWith<$R, $In extends Scenario, $Out>
       List<Roles>? roles,
       List<Step>? steps,
       List<Tag>? availableGameTags,
-      List<Tag>? startingTags});
+      List<Tag>? startingTags,
+      int? forceRenderCounter,
+      Map<String, Map<String, String>>? translations});
   ScenarioCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -230,6 +247,13 @@ class _ScenarioCopyWithImpl<$R, $Out>
       ListCopyWith($value.startingTags, (v, t) => v.copyWith.$chain(t),
           (v) => call(startingTags: v));
   @override
+  MapCopyWith<$R, String, Map<String, String>,
+          ObjectCopyWith<$R, Map<String, String>, Map<String, String>>>
+      get translations => MapCopyWith(
+          $value.translations,
+          (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(translations: v));
+  @override
   $R call(
           {String? uid,
           int? fileVersion,
@@ -242,7 +266,9 @@ class _ScenarioCopyWithImpl<$R, $Out>
           List<Roles>? roles,
           List<Step>? steps,
           List<Tag>? availableGameTags,
-          List<Tag>? startingTags}) =>
+          List<Tag>? startingTags,
+          int? forceRenderCounter,
+          Map<String, Map<String, String>>? translations}) =>
       $apply(FieldCopyWithData({
         if (uid != null) #uid: uid,
         if (fileVersion != null) #fileVersion: fileVersion,
@@ -256,7 +282,9 @@ class _ScenarioCopyWithImpl<$R, $Out>
         if (roles != null) #roles: roles,
         if (steps != null) #steps: steps,
         if (availableGameTags != null) #availableGameTags: availableGameTags,
-        if (startingTags != null) #startingTags: startingTags
+        if (startingTags != null) #startingTags: startingTags,
+        if (forceRenderCounter != null) #forceRenderCounter: forceRenderCounter,
+        if (translations != null) #translations: translations
       }));
   @override
   Scenario $make(CopyWithData data) => Scenario(
@@ -273,7 +301,10 @@ class _ScenarioCopyWithImpl<$R, $Out>
       steps: data.get(#steps, or: $value.steps),
       availableGameTags:
           data.get(#availableGameTags, or: $value.availableGameTags),
-      startingTags: data.get(#startingTags, or: $value.startingTags));
+      startingTags: data.get(#startingTags, or: $value.startingTags),
+      forceRenderCounter:
+          data.get(#forceRenderCounter, or: $value.forceRenderCounter),
+      translations: data.get(#translations, or: $value.translations));
 
   @override
   ScenarioCopyWith<$R2, Scenario, $Out2> $chain<$R2, $Out2>(

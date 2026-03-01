@@ -1,0 +1,14 @@
+input_directory: assets/i18n
+output_directory: lib/i18n # defaulting to lib/gen if input is outside of lib/
+autodoc:
+  enabled: true
+  locales:
+    - en
+    - de
+translation_overrides: true
+flat_map: true
+timestamp: true
+statistics: true
+fallback_strategy: base_locale
+locale_handling: true # remove unused t variable, LocaleSettings, etc.
+translation_class_visibility: public

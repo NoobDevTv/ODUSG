@@ -22,6 +22,7 @@ class PlayerVotingBlock extends VotingBlock with PlayerVotingBlockMappable {
     super.perTagText,
     super.image,
     super.ttsMessage,
+    super.optional,
   });
 
   @override
@@ -34,9 +35,10 @@ class PlayerVotingBlock extends VotingBlock with PlayerVotingBlockMappable {
   }
 
   @override
-  void finish(WidgetRef ref, String value) {
+  void finish(WidgetRef ref, List<String> value) {
+    final voted = value.first;
     final players = ref.read(playerManagerProvider);
-    final player = players.firstWhere((x) => x.name == value);
+    final player = players.firstWhere((x) => x.name == voted);
     player.tags.tags.addAll(setTags.tags);
   }
 }

@@ -3,8 +3,10 @@ library;
 
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:odusg/game_logic.dart';
+import 'package:odusg/i18n/strings.g.dart';
 import 'package:odusg/mappers/duration_mapper.dart';
 import 'package:odusg/pages/export.dart';
 import 'package:odusg/pages/manage_scenario_page.dart';
@@ -12,6 +14,7 @@ import 'package:odusg/pages/scenario_selector_page.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:slang/overrides.dart';
 
 part 'main.g.dart';
 
@@ -33,11 +36,15 @@ class GlobalRef extends _$GlobalRef {
 Future main() async {
   MapperContainer.globals.use(const DurationMapper());
   final prefs = await SharedPreferences.getInstance();
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocaleSettings.useDeviceLocale();
 
   runApp(
-    ProviderScope(
-      overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
-      child: const _EarlyInitializer(child: MyApp()),
+    TranslationProvider(
+      child: ProviderScope(
+        overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+        child: const _EarlyInitializer(child: MyApp()),
+      ),
     ),
   );
 }
@@ -56,12 +63,15 @@ class _EarlyInitializer extends ConsumerWidget {
   }
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
+      locale: TranslationProvider.of(context).flutterLocale,
+      supportedLocales: AppLocaleUtils.supportedLocales,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       title: 'ODUSG',
       routes: {
         "/main_menu": (_) => const MainMenuPage(),
@@ -100,7 +110,7 @@ class MyHomePage extends ConsumerWidget {
         title: const Text("ODUSG"),
       ),
       body: Center(
-        child: Column(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ListTile(

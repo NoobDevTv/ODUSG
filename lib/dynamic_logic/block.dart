@@ -8,7 +8,7 @@ part 'block.mapper.dart';
     ChangeTagBlock,
     NextButtonBlock,
     VotingBlock,
-    // PlayerVotingBlock inside VotingBlock
+    // PlayerVotingBlock, ChoiceVotingBlock inside VotingBlock
     TimerBlock,
     GroupBlock,
     SingleChildExecutorBlock,
@@ -21,6 +21,7 @@ class Block with BlockMappable {
   final Map<String, String> perTagText;
   final String? image;
   final String? ttsMessage;
+  final bool optional;
 
   const Block({
     required this.text,
@@ -29,5 +30,6 @@ class Block with BlockMappable {
     this.perTagText = const {},
     this.image,
     this.ttsMessage,
+    this.optional = false,
   });
 }

@@ -41,6 +41,9 @@ class GroupBlockMapper extends SubClassMapperBase<GroupBlock> {
   static String? _$ttsMessage(GroupBlock v) => v.ttsMessage;
   static const Field<GroupBlock, String> _f$ttsMessage =
       Field('ttsMessage', _$ttsMessage, opt: true);
+  static bool _$optional(GroupBlock v) => v.optional;
+  static const Field<GroupBlock, bool> _f$optional =
+      Field('optional', _$optional, opt: true, def: false);
 
   @override
   final MappableFields<GroupBlock> fields = const {
@@ -51,6 +54,7 @@ class GroupBlockMapper extends SubClassMapperBase<GroupBlock> {
     #perTagText: _f$perTagText,
     #image: _f$image,
     #ttsMessage: _f$ttsMessage,
+    #optional: _f$optional,
   };
 
   @override
@@ -68,7 +72,8 @@ class GroupBlockMapper extends SubClassMapperBase<GroupBlock> {
         foreachPlayer: data.dec(_f$foreachPlayer),
         perTagText: data.dec(_f$perTagText),
         image: data.dec(_f$image),
-        ttsMessage: data.dec(_f$ttsMessage));
+        ttsMessage: data.dec(_f$ttsMessage),
+        optional: data.dec(_f$optional));
   }
 
   @override
@@ -135,7 +140,8 @@ abstract class GroupBlockCopyWith<$R, $In extends GroupBlock, $Out>
       bool? foreachPlayer,
       Map<String, String>? perTagText,
       String? image,
-      String? ttsMessage});
+      String? ttsMessage,
+      bool? optional});
   GroupBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -165,7 +171,8 @@ class _GroupBlockCopyWithImpl<$R, $Out>
           bool? foreachPlayer,
           Map<String, String>? perTagText,
           Object? image = $none,
-          Object? ttsMessage = $none}) =>
+          Object? ttsMessage = $none,
+          bool? optional}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (steps != null) #steps: steps,
@@ -173,7 +180,8 @@ class _GroupBlockCopyWithImpl<$R, $Out>
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
         if (perTagText != null) #perTagText: perTagText,
         if (image != $none) #image: image,
-        if (ttsMessage != $none) #ttsMessage: ttsMessage
+        if (ttsMessage != $none) #ttsMessage: ttsMessage,
+        if (optional != null) #optional: optional
       }));
   @override
   GroupBlock $make(CopyWithData data) => GroupBlock(
@@ -183,7 +191,8 @@ class _GroupBlockCopyWithImpl<$R, $Out>
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
       perTagText: data.get(#perTagText, or: $value.perTagText),
       image: data.get(#image, or: $value.image),
-      ttsMessage: data.get(#ttsMessage, or: $value.ttsMessage));
+      ttsMessage: data.get(#ttsMessage, or: $value.ttsMessage),
+      optional: data.get(#optional, or: $value.optional));
 
   @override
   GroupBlockCopyWith<$R2, GroupBlock, $Out2> $chain<$R2, $Out2>(

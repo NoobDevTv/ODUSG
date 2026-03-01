@@ -30,6 +30,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -48,6 +50,14 @@ dependencies:
   darq: ^2.0.0
   uuid: ^4.4.2
   flutter_tts: 3.8.0
+  slang_flutter: ^4.12.0
+
+dependency_overrides: 
+  slang:
+    git: 
+      url: https://github.com/NoobDevTv/slang.git
+      path: slang
+      ref: feat/fallback_override
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +76,7 @@ dev_dependencies:
   parameterized_test: ^2.0.1
   collection: ^1.18.0
   dart_mappable_builder: ^4.3.1+1
+  slang_build_runner: ^4.12.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -49,6 +49,9 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
   static String? _$ttsMessage(ChangeTagBlock v) => v.ttsMessage;
   static const Field<ChangeTagBlock, String> _f$ttsMessage =
       Field('ttsMessage', _$ttsMessage, opt: true);
+  static bool _$optional(ChangeTagBlock v) => v.optional;
+  static const Field<ChangeTagBlock, bool> _f$optional =
+      Field('optional', _$optional, opt: true, def: false);
 
   @override
   final MappableFields<ChangeTagBlock> fields = const {
@@ -61,6 +64,7 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
     #perTagText: _f$perTagText,
     #image: _f$image,
     #ttsMessage: _f$ttsMessage,
+    #optional: _f$optional,
   };
 
   @override
@@ -80,7 +84,8 @@ class ChangeTagBlockMapper extends SubClassMapperBase<ChangeTagBlock> {
         foreachPlayer: data.dec(_f$foreachPlayer),
         perTagText: data.dec(_f$perTagText),
         image: data.dec(_f$image),
-        ttsMessage: data.dec(_f$ttsMessage));
+        ttsMessage: data.dec(_f$ttsMessage),
+        optional: data.dec(_f$optional));
   }
 
   @override
@@ -152,7 +157,8 @@ abstract class ChangeTagBlockCopyWith<$R, $In extends ChangeTagBlock, $Out>
       bool? foreachPlayer,
       Map<String, String>? perTagText,
       String? image,
-      String? ttsMessage});
+      String? ttsMessage,
+      bool? optional});
   ChangeTagBlockCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -187,7 +193,8 @@ class _ChangeTagBlockCopyWithImpl<$R, $Out>
           bool? foreachPlayer,
           Map<String, String>? perTagText,
           Object? image = $none,
-          Object? ttsMessage = $none}) =>
+          Object? ttsMessage = $none,
+          bool? optional}) =>
       $apply(FieldCopyWithData({
         if (text != null) #text: text,
         if (affectedPlayers != $none) #affectedPlayers: affectedPlayers,
@@ -197,7 +204,8 @@ class _ChangeTagBlockCopyWithImpl<$R, $Out>
         if (foreachPlayer != null) #foreachPlayer: foreachPlayer,
         if (perTagText != null) #perTagText: perTagText,
         if (image != $none) #image: image,
-        if (ttsMessage != $none) #ttsMessage: ttsMessage
+        if (ttsMessage != $none) #ttsMessage: ttsMessage,
+        if (optional != null) #optional: optional
       }));
   @override
   ChangeTagBlock $make(CopyWithData data) => ChangeTagBlock(
@@ -209,7 +217,8 @@ class _ChangeTagBlockCopyWithImpl<$R, $Out>
       foreachPlayer: data.get(#foreachPlayer, or: $value.foreachPlayer),
       perTagText: data.get(#perTagText, or: $value.perTagText),
       image: data.get(#image, or: $value.image),
-      ttsMessage: data.get(#ttsMessage, or: $value.ttsMessage));
+      ttsMessage: data.get(#ttsMessage, or: $value.ttsMessage),
+      optional: data.get(#optional, or: $value.optional));
 
   @override
   ChangeTagBlockCopyWith<$R2, ChangeTagBlock, $Out2> $chain<$R2, $Out2>(

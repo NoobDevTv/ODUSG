@@ -23,19 +23,10 @@ class MainMenuPage extends ConsumerWidget {
             title: const Text("Scenarien verwalten"),
             onTap: () => Navigator.pushNamed(context, "/manage_scenarios"),
           ),
-          const ListTile(
-            title: Text("Hilfe"),
-          ),
-          const ListTile(
-            title: Text("Einstellungen"),
-          ),
-          const ListTile(
-            title: Text("Über"),
-          ),
-          ListTile(
-            title: const Text("Beenden"),
-            onTap: () => exit(0),
-          ),
+          ListTile(title: Text("Hilfe")),
+          const ListTile(title: Text("Einstellungen")),
+          const ListTile(title: Text("Über")),
+          ListTile(title: const Text("Beenden"), onTap: () => exit(0)),
         ],
       ),
     );

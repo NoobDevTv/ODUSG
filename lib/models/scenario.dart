@@ -65,7 +65,9 @@ final defaultScenarios = [
       Step(
         "gameStarted",
         TagCondition.parse("game.startedAlready = 0"),
-        const ChangeTagBlock(tags: [Tag("startedAlready", tagType: TagType.global)]),
+        const ChangeTagBlock(
+          tags: [Tag("startedAlready", tagType: TagType.global)],
+        ),
       ),
       Step(
         "voting",
@@ -172,6 +174,10 @@ class Scenarios extends _$Scenarios {
       val["saveCounter"] = 1;
       val["uid"] = const UuidV7().generate();
     }
+    if (fileVersion == 1) {
+      val["translations"] = {};
+      fileVersion = val["fileVersion"] = 2;
+    }
     return val;
   }
 
@@ -232,10 +238,12 @@ class Scenario with ScenarioMappable {
     required this.steps,
     this.availableGameTags = const [],
     this.startingTags = const [DefaultWinCondition.tag],
+    this.forceRenderCounter = 0,
+    this.translations = const {},
   });
 
   Scenario.create()
-    : fileVersion = 1,
+    : fileVersion = 2,
       saveCounter = 1,
       uid = const UuidV7().generate(),
       title = "",
@@ -246,7 +254,9 @@ class Scenario with ScenarioMappable {
       roles = const [],
       steps = const [],
       availableGameTags = const [],
-      startingTags = const [DefaultWinCondition.tag];
+      startingTags = const [DefaultWinCondition.tag],
+      forceRenderCounter = 0,
+      translations = {};
 
   final String uid;
   final int fileVersion;
@@ -260,6 +270,8 @@ class Scenario with ScenarioMappable {
   final List<Roles> roles;
   final List<Step> steps;
   final List<Tag> availableGameTags;
+  final int forceRenderCounter;
+  final Map<String, Map<String, String>> translations;
 
   void preparePlayers(List<Player> players) {
     for (var player in players) {

@@ -17,5 +17,6 @@ class TimerBlock extends Block with TimerBlockMappable {
     super.perTagText,
     super.image,
     super.ttsMessage,
+    super.optional,
   });
 }

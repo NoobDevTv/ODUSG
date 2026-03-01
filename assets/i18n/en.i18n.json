@@ -1,0 +1,11 @@
+{
+  "player_greeting": "Hello $playerName",
+  "name": "Name",
+  "display_text": "Display Text",
+  "tts_text": "Text To Speech Text",
+  "image_url": "Image Url",
+  "display_cover": "Display Cover",
+  "execute_for_each_player": "Execute for each player",
+  "can_be_skipped": "Can be skipped",
+  "per_tag_texts": "Per Tag Texts"
+}

@@ -23,5 +23,6 @@ class SingleChildExecutorBlock extends Block
     required this.removeExecuted,
     super.image,
     super.ttsMessage,
+    super.optional = false,
   });
 }
